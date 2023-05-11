@@ -40,11 +40,12 @@ export class MazeStructure {
         }
 
         this.defineMaze()
-        this.defineBonusPlaces()
 
         const {startCord, endCord} = this.defineStartEnd()
         this.startCoord = startCord
         this.endCoord = endCord
+
+        this.defineBonusPlaces(startCord, endCord)
     }
 
     private generateMap = (): MazeCell[][] => {
@@ -185,16 +186,37 @@ export class MazeStructure {
         return {startCord: startCoord, endCord: endCoord}
     }
 
-    private defineBonusPlaces = () =>  {
+    private defineBonusPlaces = (playerStartCoord: Coordinate, finishCoord: Coordinate) =>  {
         const bonuses = this.minStars
         const chunks = returnChunks(bonuses, this.mazeWidth, this.mazeHeight )
         const selectedChunks = returnSelectedChucks(bonuses, chunks)
 
         for(let i = 0; i < selectedChunks.length; i++) {
-            const xCord = returnRandomInt(selectedChunks[i].x1, selectedChunks[i].x2)
-            const yCord = returnRandomInt(selectedChunks[i].y1, selectedChunks[i].y2)
-            this.mazeMap[xCord][yCord].bonus.placed = true
+            const {x, y} = this.defineBonusPlace(selectedChunks[i], playerStartCoord, finishCoord)
+
+            this.mazeMap[x][y].bonus.placed = true
         }
+    }
+
+    private defineBonusPlace = (chunk: Chunk, playerStartCoord: Coordinate, finishCoord: Coordinate): Coordinate => {
+        let isValid = false
+
+        let xCord: number
+        let yCord: number
+        while(!isValid) {
+            xCord = returnRandomInt(chunk.x1, chunk.x2)
+            yCord = returnRandomInt(chunk.y1, chunk.y2)
+
+            // Checks whether bonus is not on the same place as playerStartCoord and finishCoord
+            if (xCord !== playerStartCoord.x && xCord !== finishCoord.x) {
+                if (yCord !== playerStartCoord.y && yCord !== finishCoord.y) {
+                    isValid = true
+                }
+            }
+            // TODO: add check for enemies spawn point
+        }
+
+        return {x: xCord!, y: yCord!}
     }
 }
 
