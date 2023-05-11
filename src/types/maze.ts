@@ -14,7 +14,9 @@ export type MazeCell = {
         placed: boolean,
         collected: boolean
     },
-    enemy: boolean,
+    enemyObject: {
+        withEnemy: boolean
+    },
     visited: boolean,
     priorPos: Coordinate | null
 }
