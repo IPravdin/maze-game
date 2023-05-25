@@ -29,7 +29,6 @@
 .container {
   box-sizing: border-box;
   margin: 40px auto;
-  overflow: hidden;
   position: relative;
   background: rgb(86, 5, 247);
 }
@@ -42,6 +41,14 @@
 }
 
 .enemy {
+  z-index: 99;
+  left: 0;
+  position: absolute;
+  border: solid #efefef;
+  background: rgb(175, 13, 47);
+}
+
+.bonus {
   z-index: 99;
   left: 0;
   position: absolute;

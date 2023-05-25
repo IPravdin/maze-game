@@ -1,14 +1,16 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import './App.css';
 import {MazeStructure} from "./data/MazeStructure";
 import Cell from "./layouts/new-components/Cell";
+import Maze from "./layouts/new-components/Maze";
+import Bonuses from "./layouts/new-components/Bonuses";
 
 
 // TODO: it will be a starting screen in v2 and v3
 // additionally in the v3 it will have a loading screen which transitions to starting menu
 
 function App() {
-
+    const divRef = useRef<HTMLDivElement>(null)
     const [canvaSize] = useState(800)
     const [mazeStructure] = useState(new MazeStructure(20, 20, 3))
     const [cellSize] = useState({
@@ -27,6 +29,12 @@ function App() {
         borderWidth: 2.5,
         margin: 5,
     })
+
+    // ** Sets focus on main div
+    useEffect(() => {
+        if (!divRef) return
+        divRef.current?.focus()
+    }, [divRef])
 
     const handleSetLeft = () => {
         setPlayerPosit((prevState) => {
@@ -127,7 +135,7 @@ function App() {
     }, [])
 
     return (
-        <div className="App">
+        <div className="App" onKeyDown={keyDownEvent} tabIndex={0} ref={divRef}>
             {/*TODO: register all routes here*/}
             {/*<Routes>
                 <Route path="/" element={<Home />} />
@@ -135,17 +143,11 @@ function App() {
             </Routes>*/}
             {/*TODO: Add Menu Here*/}
 
-            <div className="container" style={{ width: canvaSize, height: canvaSize }} onKeyDown={keyDownEvent} tabIndex={0}>
+            <div className="container" style={{ width: canvaSize, height: canvaSize }}>
                 <div className="enemy" style={{ ...playerSize, left: cellSize.w }}></div>
                 <div className="player" style={{ ...playerSize, top: playerPosit.top, left: playerPosit.left }}></div>
-                <div>
-                    {mazeStructure.mazeMap.map((columns, x) => {
-                        return columns.map((cell, y) => {
-                            return <Cell key={`cell[${x}][${y}]`} x={x} y={y} cell={cell} cellSize={cellSize}/>
-                            }
-                        )
-                    })}
-                </div>
+                <Maze mazeMap={mazeStructure.mazeMap} cellSize={cellSize}/>
+                <Bonuses mazeMap={mazeStructure.mazeMap} cellSize={cellSize}/>
             </div>
         </div>
     );
