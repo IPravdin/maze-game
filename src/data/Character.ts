@@ -29,8 +29,17 @@ export class Character {
         this.offsetRight = cellSize / 25
     }
 
-    protected drawSprite = (sprite: Sprite, coord: Coordinate) => {
-        this.context.drawImage(
+    public drawSprite (coord: Coordinate) {
+        const context = this.context
+
+        const xSprite = coord.x * this.cellSize + this.cellSize / 4
+        const ySprite = coord.y * this.cellSize + this.cellSize / 4
+
+        context.beginPath();
+        context.fillStyle = 'blue';
+        context.fillRect(xSprite, ySprite, this.cellSize / 2, this.cellSize / 2);
+
+        /*this.context.drawImage(
             sprite,
             0,
             0,
@@ -40,15 +49,15 @@ export class Character {
             coord.y * this.cellSize + this.offsetLeft,
             this.cellSize - this.offsetRight,
             this.cellSize - this.offsetRight
-        )
+        )*/
     }
 
-    protected removeSprite = (coord: Coordinate) => {
-        this.context.clearRect(
+    protected removeSprite (coord: Coordinate) {
+        /*this.context.clearRect(
             coord.x * this.cellSize + this.offsetLeft,
             coord.y * this.cellSize + this.offsetLeft,
             this.cellSize - this.offsetRight,
             this.cellSize - this.offsetRight
-        );
+        );*/
     }
 }

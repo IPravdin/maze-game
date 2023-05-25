@@ -15,27 +15,27 @@ export class MazeStructure {
         this.mazeHeight = mazeHeight
         this.minStars = minStars
         this.mazeMap = this.generateMap()
-        this.directions = ["t", "b", "l", "r"]
+        this.directions = ["top", "bottom", "left", "right"]
         this.modifiedDir = {
-            t: {
+            top: {
                 y: -1,
                 x: 0,
-                o: "b"
+                o: "bottom"
             },
-            b: {
+            bottom: {
                 y: 1,
                 x: 0,
-                o: "t"
+                o: "top"
             },
-            r: {
+            right: {
                 y: 0,
                 x: 1,
-                o: "l"
+                o: "left"
             },
-            l: {
+            left: {
                 y: 0,
                 x: -1,
-                o: "r"
+                o: "right"
             }
         }
 
@@ -50,15 +50,15 @@ export class MazeStructure {
 
     private generateMap = (): MazeCell[][] => {
         let mazeMap = new Array(this.mazeHeight);
-        for (let y = 0; y < this.mazeHeight; y++) {
-            mazeMap[y] = new Array(this.mazeWidth);
-            for (let x = 0; x < this.mazeWidth; ++x) {
-                mazeMap[y][x] = {
+        for (let x = 0; x < this.mazeHeight; x++) {
+            mazeMap[x] = new Array(this.mazeWidth);
+            for (let y = 0; y < this.mazeWidth; ++y) {
+                mazeMap[x][y] = {
                     walkable: {
-                        t: false,
-                        b: false,
-                        l: false,
-                        r: false,
+                        top: false,
+                        bottom: false,
+                        left: false,
+                        right: false,
                     },
                     bonus: {
                         placed: false,

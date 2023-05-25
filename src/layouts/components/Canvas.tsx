@@ -6,14 +6,20 @@ type CanvasProps =
 const Canvas: FC<CanvasProps> = ({ draw, ...props}) => {
 
     const canvasRef = useRef<HTMLCanvasElement>(null)
+    let firstTime = true
 
     useEffect(() => {
-        const mazeCanv = canvasRef.current
-        if (!mazeCanv) return
-        const canvasContext = mazeCanv.getContext('2d')
+        const canvasContext = canvasRef.current?.getContext('2d')
+
         if (!canvasContext) return
 
         draw(canvasContext)
+
+        if (firstTime) {
+            console.log(firstTime)
+            firstTime = false
+        }
+
 
     }, [draw])
 

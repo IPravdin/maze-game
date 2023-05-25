@@ -97,25 +97,25 @@ export class Maze extends MazeStructure {
         const y = yCord * cellSize;
 
 
-        if (!cell.walkable.t) {
+        if (!cell.walkable.top) {
             context.beginPath();
             context.moveTo(x, y);
             context.lineTo(x + cellSize, y);
             context.stroke();
         }
-        if (!cell.walkable.b) {
+        if (!cell.walkable.bottom) {
             context.beginPath();
             context.moveTo(x, y + cellSize);
             context.lineTo(x + cellSize, y + cellSize);
             context.stroke();
         }
-        if (!cell.walkable.r) {
+        if (!cell.walkable.right) {
             context.beginPath();
             context.moveTo(x + cellSize, y);
             context.lineTo(x + cellSize, y + cellSize);
             context.stroke();
         }
-        if (!cell.walkable.l) {
+        if (!cell.walkable.left) {
             context.beginPath();
             context.moveTo(x, y);
             context.lineTo(x, y + cellSize);

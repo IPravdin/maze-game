@@ -1,8 +1,9 @@
 
 
 export class Sprite extends Image {
-    constructor(width: number, height: number, src: string) {
-        super(width, height);
-        this.src = src
+    constructor(src: string, width?: number, height?: number) {
+        super(width, height)
+        this.src = src + "?" + new Date().getTime()
+        this.setAttribute("crossOrigin", " ")
     }
 }
