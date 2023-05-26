@@ -2,9 +2,11 @@ import React, {useEffect, useRef, useState} from 'react';
 import './App.css';
 import {MazeStructure} from "./data/MazeStructure";
 import Maze from "./layouts/components/Maze";
-import Bonuses from "./layouts/components/Bonuses";
+import MazeBonuses from "./layouts/components/MazeBonuses";
 import {Player} from "./data/Player";
 import {Orientation} from "./types/maze";
+import PlayerBonuses from "./layouts/components/PlayerBonuses";
+import {Hud} from "./data/Hud";
 
 
 // TODO: it will be a starting screen in v2 and v3
@@ -12,15 +14,18 @@ import {Orientation} from "./types/maze";
 
 function App() {
     const divRef = useRef<HTMLDivElement>(null)
+
+    const [mazeStructure] = useState(new MazeStructure(10, 10, 3))
     const [canvaSize] = useState({
         height: 800,
         width: 800
     })
-    const [mazeStructure] = useState(new MazeStructure(10, 10, 3))
     const [cellSize] = useState({
         height: canvaSize.height / mazeStructure.height,
         width: canvaSize.width / mazeStructure.width
     })
+
+    const [hud] = useState( new Hud({width: canvaSize.width, height: 100}, 5))
 
     const [player, setPlayer] = useState(new Player(
         mazeStructure.startCoord.x * cellSize.width,
@@ -42,58 +47,72 @@ function App() {
 
     const returnUpdatedPlayer = (mode: Orientation, prevState: Player) => {
         const isMovementX = mode === 'left' || mode === 'right'
-        const currentY = prevState.position.top / cellSize.height
-        const currentX = prevState.position.left / cellSize.width
-        let newPosition
-
-        switch (mode) {
-            case 'left':
-                newPosition = prevState.position.left - cellSize.width
-                break;
-            case 'right':
-                newPosition = prevState.position.left + cellSize.width
-                break;
-            case 'top':
-                newPosition = prevState.position.top - cellSize.height
-                break;
-            case 'bottom':
-                newPosition = prevState.position.top + cellSize.height
-                break;
+        const currentPosition = {
+            left: prevState.position.left,
+            top: prevState.position.top
+        }
+        const currentCoord = {
+            x: currentPosition.left / cellSize.height,
+            y: currentPosition.top / cellSize.width
         }
 
         // ** Is Cell walkable
-        if(!mazeStructure.mazeMap[currentX][currentY].walkable[mode]) return prevState
+        if(!mazeStructure.mazeMap[currentCoord.x][currentCoord.y].walkable[mode]) return prevState
+
+        let newPosition = {left: 0, top: 0}
+
+        switch (mode) {
+            case 'left':
+                newPosition.left = prevState.position.left - cellSize.width
+                newPosition.top = currentPosition.top
+                break;
+            case 'right':
+                newPosition.left = prevState.position.left + cellSize.width
+                newPosition.top = currentPosition.top
+                break;
+            case 'top':
+                newPosition.left = currentPosition.left
+                newPosition.top = prevState.position.top - cellSize.height
+                break;
+            case 'bottom':
+                newPosition.left = currentPosition.left
+                newPosition.top = prevState.position.top + cellSize.height
+                break;
+        }
 
         // ** Map borders check
-        if (newPosition < 0) return prevState
-        else if (newPosition > canvaSize.height - cellSize.height) return prevState
-        else if (newPosition > canvaSize.width - cellSize.width) return prevState
+        if (newPosition.top < 0 || newPosition.left < 0) return prevState
+        else if (newPosition.top > canvaSize.height - cellSize.height) return prevState
+        else if (newPosition.left > canvaSize.width - cellSize.width) return prevState
 
         // ** Bonus collect
-        const newY = !isMovementX ? newPosition / cellSize.width : currentY
-        const newX = isMovementX ? newPosition / cellSize.width : currentX
-        const newCell = mazeStructure.mazeMap[newX][newY]
-        let addBonus = 0
+        const newCoord = {
+            x: newPosition.left / cellSize.width,
+            y: newPosition.top / cellSize.height
+        }
+
+        const newCell = mazeStructure.mazeMap[newCoord.x][newCoord.y]
+        let collectedBonuses = prevState.collectedBonuses
 
         if(newCell.bonus.placed && !newCell.bonus.collected) {
-            addBonus++
+            collectedBonuses++
             newCell.bonus.collected = true
-
-            console.log(newCell)
+            console.log(collectedBonuses)
         }
 
         return {
             ...prevState,
-            collectedBonuses: prevState.collectedBonuses + addBonus,
+            collectedBonuses: collectedBonuses,
             position: {
-                left: isMovementX ? newPosition : prevState.position.left,
-                top: !isMovementX ? newPosition : prevState.position.top
+                left: newPosition.left,
+                top: newPosition.top
             }
         }
     }
 
     const keyDownEvent = (event: React.KeyboardEvent<HTMLDivElement>) => {
         event.preventDefault()
+
         if (event.code === "ArrowRight") {
             setPlayer((prevState) => returnUpdatedPlayer('right', prevState));
         }
@@ -124,12 +143,14 @@ function App() {
                 <Route path="about" element={<About />} />
             </Routes>*/}
             {/*TODO: Add Menu Here*/}
-
+            <div className="container" style={{ width: hud.size.width, height: hud.size.height }}>
+                <PlayerBonuses bonuses={player.collectedBonuses} cellSize={hud.cellSize}/>
+            </div>
             <div className="container" style={{ width: canvaSize.width, height: canvaSize.height }}>
                 <div className="enemy" style={{ ...playerSize, left: cellSize.width }}></div>
                 <div className="player" style={{ ...playerSize, top: player.position.top, left: player.position.left }}></div>
                 <Maze mazeMap={mazeStructure.mazeMap} cellSize={cellSize}/>
-                <Bonuses mazeMap={mazeStructure.mazeMap} cellSize={cellSize}/>
+                <MazeBonuses mazeMap={mazeStructure.mazeMap} cellSize={cellSize}/>
             </div>
         </div>
     );
