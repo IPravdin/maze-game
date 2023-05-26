@@ -99,6 +99,7 @@ function App() {
 
         return {
             ...prevState,
+            stepsWalked: ++prevState.stepsWalked,
             collectedBonuses: collectedBonuses,
             position: {
                 left: newPosition.left,
