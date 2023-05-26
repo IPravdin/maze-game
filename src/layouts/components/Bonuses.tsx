@@ -3,7 +3,7 @@ import {MazeCell} from "../../types/maze";
 
 type Props = {
     mazeMap: MazeCell[][],
-    cellSize: {h: number, w: number}
+    cellSize: {height: number, width: number}
 }
 
 const Bonuses = ({mazeMap, cellSize}: Props) => {
@@ -11,12 +11,13 @@ const Bonuses = ({mazeMap, cellSize}: Props) => {
         <div>
             {mazeMap.map((columns, x) => {
                 return columns.map((cell, y) => {
-                        if (mazeMap[x][y].bonus.placed) {
+                    const bonus = mazeMap[x][y].bonus
+                        if (bonus.placed && !bonus.collected) {
                             return <div className='bonus' style={{
-                                left: x * cellSize.w,
-                                top: y * cellSize.h,
-                                width: cellSize.w ,
-                                height: cellSize.h ,
+                                left: x * cellSize.width,
+                                top: y * cellSize.height,
+                                width: cellSize.width,
+                                height: cellSize.height,
                             }}/>
                         }
                     }
