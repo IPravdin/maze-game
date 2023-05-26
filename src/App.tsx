@@ -17,17 +17,17 @@ import {PositionType} from "./types/global";
 function App() {
     const divRef = useRef<HTMLDivElement>(null)
 
-    const [mazeStructure] = useState(new MazeData(10, 10, 3))
+    const [mazeStructure] = useState(new MazeData({width: 10, height: 10}, 3))
     const [canvaSize] = useState({
         height: 800,
         width: 800
     })
     const [cellSize] = useState({
-        height: canvaSize.height / mazeStructure.height,
-        width: canvaSize.width / mazeStructure.width
+        height: canvaSize.height / mazeStructure.size.height,
+        width: canvaSize.width / mazeStructure.size.width
     })
 
-    const [hud] = useState(new HudData({width: canvaSize.width, height: 100}, 5))
+    const [hud] = useState(new HudData({width: canvaSize.width, height: 100}, 7))
 
     const [player, setPlayer] = useState(new PlayerData({
         left: mazeStructure.startCoord.x * cellSize.width,
