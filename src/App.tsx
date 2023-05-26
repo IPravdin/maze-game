@@ -1,9 +1,9 @@
 import React, {useEffect, useRef, useState} from 'react';
 import './App.css';
 import {MazeStructure} from "./data/MazeStructure";
-import Cell from "./layouts/new-components/Cell";
-import Maze from "./layouts/new-components/Maze";
-import Bonuses from "./layouts/new-components/Bonuses";
+import Cell from "./layouts/components/Cell";
+import Maze from "./layouts/components/Maze";
+import Bonuses from "./layouts/components/Bonuses";
 
 
 // TODO: it will be a starting screen in v2 and v3
@@ -36,18 +36,22 @@ function App() {
         divRef.current?.focus()
     }, [divRef])
 
+
     const handleSetLeft = () => {
         setPlayerPosit((prevState) => {
+            // ** Is Cell walkable
             const currentY = prevState.top / cellSize.h
             const currentX = prevState.left / cellSize.w
 
-            // Is Cell walkable
             if(!mazeStructure.mazeMap[currentX][currentY].walkable.left) return prevState
 
+            // ** Map borders check
             const posLeft = prevState.left - cellSize.w
 
-            // Map borders check
             if (posLeft < 0) return prevState
+
+            // is new cell contains star
+            // if contains - collect
 
             return {
                 ...prevState,

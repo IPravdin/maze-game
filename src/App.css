@@ -50,10 +50,10 @@
 
 .bonus {
   z-index: 99;
-  left: 0;
   position: absolute;
-  border: solid #efefef;
-  background: rgb(175, 13, 47);
+  background-image: url("/src/assets/star.png");
+  background-position: center;
+  background-size: contain;
 }
 
 .cell {
