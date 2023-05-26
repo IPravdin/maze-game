@@ -1,7 +1,7 @@
 import {PositionType} from "../types/global";
 
 
-export class Player {
+export class PlayerData {
     position: PositionType
     collectedBonuses: number
     constructor(position: PositionType) {

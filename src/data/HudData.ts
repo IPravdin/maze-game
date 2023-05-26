@@ -1,7 +1,7 @@
 import {SizeType} from "../types/global";
 
 
-export class Hud {
+export class HudData {
     size: SizeType
     cellAmount: number
     cellSize: SizeType

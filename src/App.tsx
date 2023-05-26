@@ -1,12 +1,12 @@
 import React, {useEffect, useRef, useState} from 'react';
 import './App.css';
-import {MazeStructure} from "./data/MazeStructure";
+import {MazeData} from "./data/MazeData";
 import Maze from "./layouts/components/Maze";
 import MazeBonuses from "./layouts/components/MazeBonuses";
-import {Player} from "./data/Player";
+import {PlayerData} from "./data/PlayerData";
 import {Coordinate, Orientation} from "./types/maze";
 import PlayerBonuses from "./layouts/components/PlayerBonuses";
-import {Hud} from "./data/Hud";
+import {HudData} from "./data/HudData";
 import Finish from "./layouts/components/Finish";
 import {PositionType} from "./types/global";
 
@@ -17,7 +17,7 @@ import {PositionType} from "./types/global";
 function App() {
     const divRef = useRef<HTMLDivElement>(null)
 
-    const [mazeStructure] = useState(new MazeStructure(10, 10, 3))
+    const [mazeStructure] = useState(new MazeData(10, 10, 3))
     const [canvaSize] = useState({
         height: 800,
         width: 800
@@ -27,9 +27,9 @@ function App() {
         width: canvaSize.width / mazeStructure.width
     })
 
-    const [hud] = useState(new Hud({width: canvaSize.width, height: 100}, 5))
+    const [hud] = useState(new HudData({width: canvaSize.width, height: 100}, 5))
 
-    const [player, setPlayer] = useState(new Player({
+    const [player, setPlayer] = useState(new PlayerData({
         left: mazeStructure.startCoord.x * cellSize.width,
         top: mazeStructure.startCoord.y * cellSize.height
     }))
@@ -47,7 +47,7 @@ function App() {
         divRef.current?.focus()
     }, [divRef])
 
-    const returnUpdatedPlayer = (mode: Orientation, prevState: Player) => {
+    const returnUpdatedPlayer = (mode: Orientation, prevState: PlayerData) => {
         const currentPosition: PositionType = {
             left: prevState.position.left,
             top: prevState.position.top

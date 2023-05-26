@@ -1,7 +1,7 @@
 import {Chunk, Coordinate, MazeCell, ModifiedDirs, Orientation} from "../types/maze";
 import {returnRand, returnRandomInt, shuffle} from "../helpers/mazeStructure";
 
-export class MazeStructure {
+export class MazeData {
     width: number;
     height: number;
     minStars: number;
