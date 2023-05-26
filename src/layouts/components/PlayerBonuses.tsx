@@ -9,7 +9,7 @@ const PlayerBonuses = ({bonuses, cellSize}: Props) => {
     const bonusesArray = []
 
     for(let i = 0; i < bonuses; i++) {
-        bonusesArray[i] = <Bonus key={i} left={i * width} top={0} width={width} height={height}/>
+        bonusesArray[i] = <Bonus key={i} position={{left: i * width, top: 0}} size={{width, height}} />
     }
 
     return (

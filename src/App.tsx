@@ -4,9 +4,11 @@ import {MazeStructure} from "./data/MazeStructure";
 import Maze from "./layouts/components/Maze";
 import MazeBonuses from "./layouts/components/MazeBonuses";
 import {Player} from "./data/Player";
-import {Orientation} from "./types/maze";
+import {Coordinate, Orientation} from "./types/maze";
 import PlayerBonuses from "./layouts/components/PlayerBonuses";
 import {Hud} from "./data/Hud";
+import Finish from "./layouts/components/Finish";
+import {PositionType} from "./types/global";
 
 
 // TODO: it will be a starting screen in v2 and v3
@@ -25,12 +27,12 @@ function App() {
         width: canvaSize.width / mazeStructure.width
     })
 
-    const [hud] = useState( new Hud({width: canvaSize.width, height: 100}, 5))
+    const [hud] = useState(new Hud({width: canvaSize.width, height: 100}, 5))
 
-    const [player, setPlayer] = useState(new Player(
-        mazeStructure.startCoord.x * cellSize.width,
-        mazeStructure.startCoord.y * cellSize.height
-    ))
+    const [player, setPlayer] = useState(new Player({
+        left: mazeStructure.startCoord.x * cellSize.width,
+        top: mazeStructure.startCoord.y * cellSize.height
+    }))
 
     const [playerSize] = useState({
         width: cellSize.width - 15,
@@ -46,12 +48,11 @@ function App() {
     }, [divRef])
 
     const returnUpdatedPlayer = (mode: Orientation, prevState: Player) => {
-        const isMovementX = mode === 'left' || mode === 'right'
-        const currentPosition = {
+        const currentPosition: PositionType = {
             left: prevState.position.left,
             top: prevState.position.top
         }
-        const currentCoord = {
+        const currentCoord: Coordinate = {
             x: currentPosition.left / cellSize.height,
             y: currentPosition.top / cellSize.width
         }
@@ -59,7 +60,7 @@ function App() {
         // ** Is Cell walkable
         if(!mazeStructure.mazeMap[currentCoord.x][currentCoord.y].walkable[mode]) return prevState
 
-        let newPosition = {left: 0, top: 0}
+        let newPosition: PositionType = {left: 0, top: 0}
 
         switch (mode) {
             case 'left':
@@ -80,13 +81,8 @@ function App() {
                 break;
         }
 
-        // ** Map borders check
-        if (newPosition.top < 0 || newPosition.left < 0) return prevState
-        else if (newPosition.top > canvaSize.height - cellSize.height) return prevState
-        else if (newPosition.left > canvaSize.width - cellSize.width) return prevState
-
         // ** Bonus collect
-        const newCoord = {
+        const newCoord: Coordinate = {
             x: newPosition.left / cellSize.width,
             y: newPosition.top / cellSize.height
         }
@@ -151,6 +147,7 @@ function App() {
                 <div className="player" style={{ ...playerSize, top: player.position.top, left: player.position.left }}></div>
                 <Maze mazeMap={mazeStructure.mazeMap} cellSize={cellSize}/>
                 <MazeBonuses mazeMap={mazeStructure.mazeMap} cellSize={cellSize}/>
+                <Finish coord={mazeStructure.endCoord} cellSize={cellSize}/>
             </div>
         </div>
     );

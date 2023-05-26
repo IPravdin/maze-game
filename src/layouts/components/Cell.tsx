@@ -1,16 +1,13 @@
 import React from "react";
-import {MazeCell} from "../../types/maze";
+import {Coordinate, MazeCell} from "../../types/maze";
+import {SizeType} from "../../types/global";
 
 type Props = {
-    x: number,
-    y: number,
+    coord: Coordinate
     cell: MazeCell,
-    cellSize: {
-        height: number,
-        width: number
-    }
+    cellSize: SizeType
 }
-const Cell = ({x, y, cellSize, cell}: Props) => {
+const Cell = ({coord, cellSize, cell}: Props) => {
     const {top, bottom, left, right} = cell.walkable
 
     const borderWidth = 2
@@ -19,8 +16,8 @@ const Cell = ({x, y, cellSize, cell}: Props) => {
     return <div
         className="cell"
         style={{
-            left: x * cellSize.width,
-            top: y * cellSize.height,
+            left: coord.x * cellSize.width,
+            top: coord.y * cellSize.height,
             width: cellSize.width ,
             height: cellSize.height ,
             borderRight: right ? '' : borderProps,

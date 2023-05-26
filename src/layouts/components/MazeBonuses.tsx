@@ -1,10 +1,11 @@
 import React, {Fragment} from "react";
 import {MazeCell} from "../../types/maze";
 import Bonus from "./Bonus";
+import {SizeType} from "../../types/global";
 
 type Props = {
     mazeMap: MazeCell[][],
-    cellSize: {height: number, width: number}
+    cellSize: SizeType
 }
 
 const MazeBonuses = ({mazeMap, cellSize}: Props) => {
@@ -16,10 +17,11 @@ const MazeBonuses = ({mazeMap, cellSize}: Props) => {
                         if (bonus.placed && !bonus.collected) {
                             return <Bonus
                                 key={`cell[${x}][${y}]`}
-                                left={x * cellSize.width}
-                                top={y * cellSize.height}
-                                width={cellSize.width}
-                                height={cellSize.height}
+                                position={{
+                                    left: x * cellSize.width,
+                                    top: y * cellSize.height
+                                }}
+                                size={cellSize}
                             />
                         }
                         return <Fragment key={`cell[${x}][${y}]`}></Fragment>

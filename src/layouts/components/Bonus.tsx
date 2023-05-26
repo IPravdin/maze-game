@@ -1,11 +1,12 @@
+import {PositionType, SizeType} from "../../types/global";
 
 type Props = {
-    left: number,
-    top: number,
-    width: number,
-    height: number
+    size: SizeType
+    position: PositionType
 }
-const Bonus = ({ left, top, width, height }: Props) => {
+const Bonus = ({ size, position }: Props) => {
+    const {height, width} = size
+    const {top, left} = position
     return <div className='bonus' style={{ left, top, width, height }}/>
 }
 
