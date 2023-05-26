@@ -85,8 +85,8 @@ export class Maze extends MazeStructure {
     }
 
     protected clear = () => {
-        const canvasWidth = this.cellSize * this.mazeWidth
-        const canvasHeight = this.cellSize * this.mazeHeight
+        const canvasWidth = this.cellSize * this.width
+        const canvasHeight = this.cellSize * this.height
         this.context.clearRect(0, 0, canvasWidth, canvasHeight);
     }
 

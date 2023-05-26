@@ -4,7 +4,7 @@ import {MazeCell} from "../../types/maze";
 
 type Props = {
     mazeMap: MazeCell[][],
-    cellSize: {h: number, w: number}
+    cellSize: {height: number, width: number}
 }
 const Maze = ({mazeMap, cellSize}: Props) => {
     return (

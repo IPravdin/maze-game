@@ -6,8 +6,8 @@ type Props = {
     y: number,
     cell: MazeCell,
     cellSize: {
-        h: number,
-        w: number
+        height: number,
+        width: number
     }
 }
 const Cell = ({x, y, cellSize, cell}: Props) => {
@@ -19,10 +19,10 @@ const Cell = ({x, y, cellSize, cell}: Props) => {
     return <div
         className="cell"
         style={{
-            left: x * cellSize.w,
-            top: y * cellSize.h,
-            width: cellSize.w ,
-            height: cellSize.h ,
+            left: x * cellSize.width,
+            top: y * cellSize.height,
+            width: cellSize.width ,
+            height: cellSize.height ,
             borderRight: right ? '' : borderProps,
             borderLeft: left ? '' : borderProps,
             borderTop: top ? '' : borderProps,

@@ -2,8 +2,8 @@ import {Chunk, Coordinate, MazeCell, ModifiedDirs, Orientation} from "../types/m
 import {returnRand, returnRandomInt, shuffle} from "../helpers/mazeStructure";
 
 export class MazeStructure {
-    mazeWidth: number;
-    mazeHeight: number;
+    width: number;
+    height: number;
     minStars: number;
     mazeMap: MazeCell[][];
     startCoord: Coordinate;
@@ -11,8 +11,8 @@ export class MazeStructure {
     directions: Orientation[];
     modifiedDir: ModifiedDirs;
     constructor(mazeWidth: number, mazeHeight: number, minStars: number) {
-        this.mazeWidth = mazeWidth
-        this.mazeHeight = mazeHeight
+        this.width = mazeWidth
+        this.height = mazeHeight
         this.minStars = minStars
         this.mazeMap = this.generateMap()
         this.directions = ["top", "bottom", "left", "right"]
@@ -49,10 +49,10 @@ export class MazeStructure {
     }
 
     private generateMap = (): MazeCell[][] => {
-        let mazeMap = new Array(this.mazeHeight);
-        for (let x = 0; x < this.mazeHeight; x++) {
-            mazeMap[x] = new Array(this.mazeWidth);
-            for (let y = 0; y < this.mazeWidth; ++y) {
+        let mazeMap = new Array(this.height);
+        for (let x = 0; x < this.height; x++) {
+            mazeMap[x] = new Array(this.width);
+            for (let y = 0; y < this.width; ++y) {
                 mazeMap[x][y] = {
                     walkable: {
                         top: false,
@@ -84,7 +84,7 @@ export class MazeStructure {
             x: 0,
             y: 0
         };
-        let numCells = this.mazeWidth * this.mazeHeight;
+        let numCells = this.width * this.height;
 
         // For each Cell on Map
         while (!isCompleted) {
@@ -93,7 +93,7 @@ export class MazeStructure {
 
             if (numLoops >= maxLoops) {
                 shuffle(this.directions);
-                maxLoops = Math.round(returnRand(this.mazeHeight / 8));
+                maxLoops = Math.round(returnRand(this.height / 8));
                 numLoops = 0;
             }
             numLoops++;
@@ -104,7 +104,7 @@ export class MazeStructure {
                 const nx = pos.x + this.modifiedDir[direction].x;
                 const ny = pos.y + this.modifiedDir[direction].y;
 
-                if (nx >= 0 && nx < this.mazeWidth && ny >= 0 && ny < this.mazeHeight) {
+                if (nx >= 0 && nx < this.width && ny >= 0 && ny < this.height) {
                     //Check if the tile is already visited
                     if (!this.mazeMap[nx][ny].visited) {
                         //Carve through walls from this tile to next
@@ -147,34 +147,34 @@ export class MazeStructure {
                     y: 0
                 };
                 endCoord = {
-                    x: this.mazeHeight - 1,
-                    y: this.mazeWidth - 1
+                    x: this.height - 1,
+                    y: this.width - 1
                 };
                 break;
             case 1:
                 startCoord = {
                     x: 0,
-                    y: this.mazeWidth - 1
+                    y: this.width - 1
                 };
                 endCoord = {
-                    x: this.mazeHeight - 1,
+                    x: this.height - 1,
                     y: 0
                 };
                 break;
             case 2:
                 startCoord = {
-                    x: this.mazeHeight - 1,
+                    x: this.height - 1,
                     y: 0
                 };
                 endCoord = {
                     x: 0,
-                    y: this.mazeWidth - 1
+                    y: this.width - 1
                 };
                 break;
             default:
                 startCoord = {
-                    x: this.mazeHeight - 1,
-                    y: this.mazeWidth - 1
+                    x: this.height - 1,
+                    y: this.width - 1
                 };
                 endCoord = {
                     x: 0,
@@ -188,7 +188,7 @@ export class MazeStructure {
 
     private defineBonusPlaces = (playerStartCoord: Coordinate, finishCoord: Coordinate) =>  {
         const bonuses = this.minStars
-        const chunks = returnChunks(bonuses, this.mazeWidth, this.mazeHeight )
+        const chunks = returnChunks(bonuses, this.width, this.height )
         const selectedChunks = returnSelectedChucks(bonuses, chunks)
 
         for(let i = 0; i < selectedChunks.length; i++) {
