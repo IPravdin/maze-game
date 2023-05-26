@@ -15,10 +15,13 @@ import Player from "./layouts/components/Player";
 // TODO: it will be a starting screen in v2 and v3
 // additionally in the v3 it will have a loading screen which transitions to starting menu
 
+const BONUSES = 10
+const ENEMIES = 3
+
 function App() {
     const divRef = useRef<HTMLDivElement>(null)
 
-    const [mazeStructure] = useState(new MazeData({width: 10, height: 10}, 3))
+    const [mazeStructure] = useState(new MazeData({width: 20, height: 20}, BONUSES, ENEMIES))
     const [canvaSize] = useState({
         height: 800,
         width: 800
@@ -28,7 +31,7 @@ function App() {
         width: canvaSize.width / mazeStructure.size.width
     })
 
-    const [hud] = useState(new HudData({width: canvaSize.width, height: 100}, 7))
+    const [hud] = useState(new HudData({width: canvaSize.width, height: 100}, BONUSES))
 
     const [player, setPlayer] = useState(new PlayerData({
         left: mazeStructure.startCoord.x * cellSize.width,

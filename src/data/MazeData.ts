@@ -3,16 +3,18 @@ import {returnRand, returnRandomInt, shuffle} from "../helpers/mazeStructure";
 import {SizeType} from "../types/global";
 
 export class MazeData {
-    size: SizeType
-    bonuses: number;
-    mazeMap: MazeCell[][];
-    startCoord: Coordinate;
-    endCoord: Coordinate;
-    directions: Orientation[];
-    modifiedDir: ModifiedDirs;
-    constructor(size: SizeType, minStars: number) {
+    readonly size: SizeType
+    readonly bonuses: number;
+    readonly enemies: number;
+    readonly mazeMap: MazeCell[][];
+    readonly startCoord: Coordinate;
+    readonly endCoord: Coordinate;
+    readonly directions: Orientation[];
+    readonly modifiedDir: ModifiedDirs;
+    constructor(size: SizeType, bonuses: number, enemies: number) {
         this.size = size
-        this.bonuses = minStars
+        this.bonuses = bonuses
+        this.enemies = enemies
         this.mazeMap = this.generateMap()
         this.directions = ["top", "bottom", "left", "right"]
         this.modifiedDir = {
@@ -188,6 +190,7 @@ export class MazeData {
     private defineBonusPlaces = (playerStartCoord: Coordinate, finishCoord: Coordinate) =>  {
         const bonuses = this.bonuses
         const chunks = returnChunks(bonuses, this.size.width, this.size.height )
+        console.log(chunks)
         const selectedChunks = returnSelectedChucks(bonuses, chunks)
 
         for(let i = 0; i < selectedChunks.length; i++) {
@@ -217,8 +220,17 @@ export class MazeData {
 
         return {x: xCord!, y: yCord!}
     }
+
+    private defineEnemyPlaces = () => {
+        this.mazeMap.forEach((row, x) => {
+            row.forEach((cell, y) => {
+
+            })
+        })
+    }
 }
 
+/*TODO: rework chunks to the fixed number */
 const returnChunks = (bonuses: number, mazeWidth: number, mazeHeight: number) => {
     const widthChunkSize = Math.floor(mazeWidth / bonuses)
     const heightChunkSize = Math.floor(mazeHeight / bonuses)
