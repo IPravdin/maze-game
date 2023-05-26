@@ -8,7 +8,8 @@ import {Coordinate, Orientation} from "./types/maze";
 import PlayerBonuses from "./layouts/components/PlayerBonuses";
 import {HudData} from "./data/HudData";
 import Finish from "./layouts/components/Finish";
-import {PositionType} from "./types/global";
+import {PlayerSizeType, PositionType} from "./types/global";
+import Player from "./layouts/components/Player";
 
 
 // TODO: it will be a starting screen in v2 and v3
@@ -34,7 +35,7 @@ function App() {
         top: mazeStructure.startCoord.y * cellSize.height
     }))
 
-    const [playerSize] = useState({
+    const [playerSize] = useState<PlayerSizeType>({
         width: cellSize.width - 15,
         height: cellSize.width - 15,
         borderWidth: 2.5,
@@ -144,7 +145,7 @@ function App() {
             </div>
             <div className="container" style={{ width: canvaSize.width, height: canvaSize.height }}>
                 <div className="enemy" style={{ ...playerSize, left: cellSize.width }}></div>
-                <div className="player" style={{ ...playerSize, top: player.position.top, left: player.position.left }}></div>
+                <Player position={player.position} playerSize={playerSize}/>
                 <Maze mazeMap={mazeStructure.mazeMap} cellSize={cellSize}/>
                 <MazeBonuses mazeMap={mazeStructure.mazeMap} cellSize={cellSize}/>
                 <Finish coord={mazeStructure.endCoord} cellSize={cellSize}/>
