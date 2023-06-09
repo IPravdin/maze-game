@@ -4,6 +4,7 @@ export type EnhancedCoord = Coordinate & {o: Orientation}
 export type Chunk = {x1: number, x2: number, y1: number, y2: number}
 
 export type MazeCell = {
+    coord: Coordinate,
     walkable: {
         top: boolean,
         bottom: boolean,
@@ -14,9 +15,11 @@ export type MazeCell = {
         placed: boolean,
         collected: boolean
     },
-    enemyObject: {
-        withEnemy: boolean
+    enemy: {
+        spawn: boolean,
+        movement: boolean
     },
+    startEnd: boolean,
     visited: boolean,
     priorPos: Coordinate | null
 }

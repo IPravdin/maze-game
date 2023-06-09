@@ -42,7 +42,6 @@
 
 .enemy {
   z-index: 99;
-  left: 0;
   position: var(--element-position);
   border: solid #efefef;
   background: rgb(175, 13, 47);

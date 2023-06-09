@@ -10,6 +10,7 @@ import {HudData} from "./data/HudData";
 import Finish from "./layouts/components/Finish";
 import {PlayerSizeType, PositionType} from "./types/global";
 import Player from "./layouts/components/Player";
+import Enemies from "./layouts/components/Enemies";
 
 
 // TODO: it will be a starting screen in v2 and v3
@@ -128,14 +129,6 @@ function App() {
         }
     };
 
-    // For npc movements
-    useEffect(() => {
-        const interval = setInterval(() => {
-
-        }, 10000);
-        return () => clearInterval(interval);
-    }, [])
-
     return (
         <div className="App" onKeyDown={keyDownEvent} tabIndex={0} ref={divRef}>
             {/*TODO: register all routes here*/}
@@ -148,7 +141,7 @@ function App() {
                 <PlayerBonuses bonuses={player.collectedBonuses} cellSize={hud.cellSize}/>
             </div>
             <div className="container" style={{ width: canvaSize.width, height: canvaSize.height }}>
-                <div className="enemy" style={{ ...playerSize, left: cellSize.width }}></div>
+                <Enemies mazeMap={mazeStructure.mazeMap} cellSize={cellSize} playerSize={playerSize}/>
                 <Player position={player.position} playerSize={playerSize}/>
                 <Maze mazeMap={mazeStructure.mazeMap} cellSize={cellSize}/>
                 <MazeBonuses mazeMap={mazeStructure.mazeMap} cellSize={cellSize}/>

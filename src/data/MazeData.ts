@@ -1,6 +1,6 @@
-import {Chunk, Coordinate, MazeCell, ModifiedDirs, Orientation} from "../types/maze";
+import {Coordinate, MazeCell, ModifiedDirs, Orientation} from "../types/maze";
 import {returnRand, returnRandomInt, shuffle} from "../helpers/mazeStructure";
-import {SizeType} from "../types/global";
+import {ChunkType, SizeType} from "../types/global";
 
 export class MazeData {
     readonly size: SizeType
@@ -46,6 +46,7 @@ export class MazeData {
         this.startCoord = startCord
         this.endCoord = endCord
 
+        this.defineEnemyPlaces()
         this.defineBonusPlaces(startCord, endCord)
     }
 
@@ -55,6 +56,7 @@ export class MazeData {
             mazeMap[x] = new Array(this.size.width);
             for (let y = 0; y < this.size.width; ++y) {
                 mazeMap[x][y] = {
+                    coord: {x, y},
                     walkable: {
                         top: false,
                         bottom: false,
@@ -65,7 +67,11 @@ export class MazeData {
                         placed: false,
                         collected: false
                     },
-                    enemy: false,
+                    enemy: {
+                        spawn: false,
+                        movement: false
+                    },
+                    startEnd: false,
                     visited: false,
                     priorPos: null
                 };
@@ -184,97 +190,167 @@ export class MazeData {
                 break;
         }
 
+        this.mazeMap[startCoord.x][startCoord.y].startEnd = true
+        this.mazeMap[endCoord.x][endCoord.y].startEnd = true
+
         return {startCord: startCoord, endCord: endCoord}
+    }
+
+    private defineEnemyPlaces = () => {
+        const spawnCells: MazeCell[] = this.returnSuitableSpawnCells()
+
+        for(let i = 0; i < this.enemies; i++) {
+            this.defineEnemyCell(spawnCells)
+        }
+    }
+
+    private returnSuitableSpawnCells = () => {
+        const spawnCells: MazeCell[] = []
+        this.mazeMap.forEach((row, x) => {
+            row.forEach((cell, y) => {
+                if (cell.startEnd) return
+
+                /*TODO: make radius of 3 cells that would prevent these cells to be selected for potential spawn point*/
+
+                let walkways = 0
+
+                Object.values(cell.walkable).forEach((dir) => {
+                    if (dir) {
+                        walkways++
+                }})
+
+                if (walkways > 2) {
+                    spawnCells.push(cell)
+                }
+
+            })
+        })
+
+        return spawnCells
+    }
+
+    private defineEnemyCell = (spawnCells: MazeCell[]) => {
+        const selectedIndex = returnRandomInt(0, spawnCells.length - 1)
+        const selectedCell = spawnCells[selectedIndex]
+
+        selectedCell.enemy.spawn = true
+        selectedCell.enemy.movement = true
+
+        this.defineEnemyMovementCell(selectedCell)
+    }
+
+    private defineEnemyMovementCell = (cell: MazeCell) => {
+        Object.keys(cell.walkable).forEach((key )=> {
+            // @ts-ignore
+            if (cell.walkable[key]) {
+                this.defineNextMovement(key as Orientation, cell)
+            }
+        })
+    }
+
+    private defineNextMovement = (mode: Orientation, startCell: MazeCell) => {
+        let neighbour = this.returnNextMovementCell(mode, startCell)
+        neighbour.enemy.movement = true
+
+        // Selects next cell
+        const cameFrom = this.modifiedDir[mode].o
+        const nextOrientation: Orientation | undefined =
+            Object.keys(neighbour.walkable).find((key) => key !== cameFrom && neighbour.walkable[key as Orientation]) as Orientation
+
+        if (nextOrientation) {
+            const next = this.returnNextMovementCell(nextOrientation, neighbour)
+            next.enemy.movement = true
+        }
+    }
+
+    private returnNextMovementCell = (mode: Orientation, startCell: MazeCell) => {
+        let nextCell: MazeCell
+        switch (mode) {
+            case 'top':
+                nextCell = this.mazeMap[startCell.coord.x][startCell.coord.y - 1]
+                break;
+            case 'bottom':
+                nextCell = this.mazeMap[startCell.coord.x][startCell.coord.y + 1]
+                break;
+            case 'left':
+                nextCell = this.mazeMap[startCell.coord.x - 1][startCell.coord.y]
+                break;
+            case 'right':
+                nextCell = this.mazeMap[startCell.coord.x + 1][startCell.coord.y]
+                break;
+        }
+
+        return nextCell
     }
 
     private defineBonusPlaces = (playerStartCoord: Coordinate, finishCoord: Coordinate) =>  {
         const bonuses = this.bonuses
-        const chunks = returnChunks(bonuses, this.size.width, this.size.height )
-        console.log(chunks)
-        const selectedChunks = returnSelectedChucks(bonuses, chunks)
+        const chunks: ChunkType[] = this.returnChunks(this.size)
 
-        for(let i = 0; i < selectedChunks.length; i++) {
-            const {x, y} = this.defineBonusPlace(selectedChunks[i], playerStartCoord, finishCoord)
-
-            this.mazeMap[x][y].bonus.placed = true
+        for(let i = 0; i < bonuses; i++) {
+            this.defineBonus(chunks, playerStartCoord, finishCoord)
         }
     }
 
-    private defineBonusPlace = (chunk: Chunk, playerStartCoord: Coordinate, finishCoord: Coordinate): Coordinate => {
-        let isValid = false
+    private defineBonus = (chunks: ChunkType[], playerStartCoord: Coordinate, finishCoord: Coordinate) => {
+        const selectedChunk = returnRandomInt(0, 3)
+        const {x1, x2, y1, y2} = chunks[selectedChunk]
 
-        let xCord: number
-        let yCord: number
-        while(!isValid) {
-            xCord = returnRandomInt(chunk.x1, chunk.x2)
-            yCord = returnRandomInt(chunk.y1, chunk.y2)
+        const selectedX = returnRandomInt(x1, x2)
+        const selectedY = returnRandomInt(y1, y2)
 
-            // Checks whether bonus is not on the same place as playerStartCoord and finishCoord
-            if (xCord !== playerStartCoord.x && xCord !== finishCoord.x) {
-                if (yCord !== playerStartCoord.y && yCord !== finishCoord.y) {
-                    isValid = true
-                }
-            }
-            // TODO: add check for enemies spawn point
+        const selectedCell = this.mazeMap[selectedX][selectedY]
+
+        // ** Check if place is not occupied by start and end points
+        if(selectedCell.startEnd) {
+            this.defineBonus(chunks, playerStartCoord, finishCoord)
+            return
         }
 
-        return {x: xCord!, y: yCord!}
+        // ** Check if place is not occupied by another bonus
+        if (selectedCell.bonus.placed) {
+            this.defineBonus(chunks, playerStartCoord, finishCoord)
+            return
+        }
+        // ** Check if place is not occupied by enemy spawn or movement trajectory
+        if (selectedCell.enemy.spawn || selectedCell.enemy.movement) {
+            this.defineBonus(chunks, playerStartCoord, finishCoord)
+            return
+        }
+
+        selectedCell.bonus.placed = true
     }
 
-    private defineEnemyPlaces = () => {
-        this.mazeMap.forEach((row, x) => {
-            row.forEach((cell, y) => {
+    private returnChunks = (mazeSize: SizeType) => {
+        const borderX = Math.floor(mazeSize.width / 2)
+        const borderY = Math.floor(mazeSize.height / 2)
 
-            })
-        })
+        return [
+            {
+                x1: 0,
+                y1: 0,
+                x2: borderX - 1,
+                y2: borderY - 1
+            },
+            {
+                x1: borderX,
+                y1: 0,
+                x2: mazeSize.width - 1,
+                y2: borderY - 1
+            },
+            {
+                x1: 0,
+                y1: borderY,
+                x2: borderX - 1,
+                y2: mazeSize.height - 1
+            },
+            {
+                x1: borderX,
+                y1: borderY,
+                x2: mazeSize.width - 1,
+                y2: mazeSize.height - 1
+            },
+        ]
     }
 }
 
-/*TODO: rework chunks to the fixed number */
-const returnChunks = (bonuses: number, mazeWidth: number, mazeHeight: number) => {
-    const widthChunkSize = Math.floor(mazeWidth / bonuses)
-    const heightChunkSize = Math.floor(mazeHeight / bonuses)
-
-    let chunks: Chunk[] = []
-    for (let x = 0; x < mazeWidth; x = x + widthChunkSize) {
-        for (let y = 0; y < mazeHeight; y = y + heightChunkSize) {
-            const x1Cord = x
-            const x2Cord = x + widthChunkSize - 1
-            const y1Cord = y
-            const y2Cord = y + heightChunkSize - 1
-
-            if (x2Cord < mazeWidth) {
-                if(y2Cord < mazeHeight) {
-                    chunks.push({
-                        x1: x1Cord,
-                        x2: x2Cord,
-                        y1: y1Cord,
-                        y2: y2Cord
-                    })
-                }
-            }
-        }
-    }
-
-    return chunks
-}
-
-const returnSelectedChucks = (bonuses: number, chunks: Chunk[]) => {
-    let selectedChunks: Chunk[] = []
-    let genIndexes: number[] = []
-    let i = 0
-    // Rand select chunks
-    while(i < bonuses) {
-        const index = returnRandomInt(0, chunks.length - 1)
-        const isGen = genIndexes.includes(index)
-
-        if (!isGen) {
-            genIndexes.push(index)
-            selectedChunks.push(chunks[index])
-            i++
-        }
-
-    }
-
-    return selectedChunks
-}
