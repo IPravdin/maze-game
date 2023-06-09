@@ -231,7 +231,7 @@ export class MazeData {
 
     private defineEnemyCell = (spawnCells: MazeCell[]) => {
         const selectedIndex = returnRandomInt(0, spawnCells.length - 1)
-        const selectedCell = spawnCells[selectedIndex]
+        const selectedCell = spawnCells.splice(selectedIndex, 1)[0]
 
         selectedCell.enemy.spawn = true
         selectedCell.enemy.movement = true
