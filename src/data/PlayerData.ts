@@ -2,7 +2,7 @@ import {PositionType} from "../types/global";
 import {CreatureData} from "./CreatureData";
 
 
-export class PlayerData extends CreatureData{
+export class PlayerData extends CreatureData {
     collectedBonuses: number
     stepsWalked: number
     constructor(position: PositionType) {

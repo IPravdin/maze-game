@@ -7,6 +7,7 @@ type Props = {
 }
 const Player = ({position, playerSize}: Props) => {
     const {top, left} = position
+
     return <div className="player" style={{ ...playerSize, top, left }}/>
 }
 

@@ -11,6 +11,7 @@ import Finish from "./layouts/components/Finish";
 import {PlayerSizeType, PositionType} from "./types/global";
 import Player from "./layouts/components/Player";
 import Enemies from "./layouts/components/Enemies";
+import {coordToPosition, positionToCoord} from "./helpers";
 
 
 // TODO: it will be a starting screen in v2 and v3
@@ -18,6 +19,9 @@ import Enemies from "./layouts/components/Enemies";
 
 const BONUSES = 10
 const ENEMIES = 3
+
+// in ms
+export const ENEMY_SPEED = 2000
 
 function App() {
     const divRef = useRef<HTMLDivElement>(null)
@@ -34,10 +38,7 @@ function App() {
 
     const [hud] = useState(new HudData({width: canvaSize.width, height: 100}, BONUSES))
 
-    const [player, setPlayer] = useState(new PlayerData({
-        left: mazeStructure.startCoord.x * cellSize.width,
-        top: mazeStructure.startCoord.y * cellSize.height
-    }))
+    const [player, setPlayer] = useState(new PlayerData(coordToPosition(mazeStructure.startCoord, cellSize)))
 
     const [playerSize] = useState<PlayerSizeType>({
         width: cellSize.width - 15,
@@ -52,15 +53,9 @@ function App() {
         divRef.current?.focus()
     }, [divRef])
 
-    const returnUpdatedPlayer = (mode: OrientationType, prevState: PlayerData) => {
-        const currentPosition: PositionType = {
-            left: prevState.currentPosition.left,
-            top: prevState.currentPosition.top
-        }
-        const currentCoord: CoordinateType = {
-            x: currentPosition.left / cellSize.height,
-            y: currentPosition.top / cellSize.width
-        }
+    const returnUpdatedPlayer = (mode: OrientationType, prevState: PlayerData): PlayerData => {
+        const { currentPosition } = prevState;
+        const currentCoord: CoordinateType = positionToCoord(currentPosition, cellSize);
 
         // ** Is Cell walkable
         if(!mazeStructure.mazeMap[currentCoord.x][currentCoord.y].walkable[mode]) return prevState
@@ -95,17 +90,16 @@ function App() {
         const newCell = mazeStructure.mazeMap[newCoord.x][newCoord.y]
         let collectedBonuses = prevState.collectedBonuses
 
-        if(newCell.bonus.placed && !newCell.bonus.collected) {
+        if (newCell.bonus.placed && !newCell.bonus.collected) {
             collectedBonuses++
             newCell.bonus.collected = true
-            console.log(collectedBonuses)
         }
 
         return {
             ...prevState,
             stepsWalked: ++prevState.stepsWalked,
             collectedBonuses: collectedBonuses,
-            position: {
+            currentPosition: {
                 left: newPosition.left,
                 top: newPosition.top
             }
@@ -114,8 +108,6 @@ function App() {
 
     const keyDownEvent = (event: React.KeyboardEvent<HTMLDivElement>) => {
         event.preventDefault()
-
-        console.log(event.code)
 
         if (event.code === "ArrowRight" || event.code === "KeyD") {
             setPlayer((prevState) => returnUpdatedPlayer('right', prevState));

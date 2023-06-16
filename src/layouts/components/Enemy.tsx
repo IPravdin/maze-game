@@ -3,6 +3,7 @@ import {PlayerSizeType, PositionType, SizeType} from "../../types/global";
 import {CurrMovCoordType, EnemyData} from "../../data/EnemyData";
 import {MazeEnemy} from "../../types/enemy";
 import {coordToPosition, objectsEqual, positionToCoord, returnRandomInt} from "../../helpers";
+import {ENEMY_SPEED} from "../../App";
 
 type Props = {
     cellSize: SizeType
@@ -23,7 +24,7 @@ const Enemy = ({cellSize, data, playerSize}: Props) => {
                 ...prevState,
                 ...returnNewPosition(prevState)
             }))
-        }, 1000);
+        }, ENEMY_SPEED);
         return () => clearInterval(interval);
     }, [])
 
