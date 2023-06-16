@@ -7,7 +7,7 @@ import {Coordinate} from "../types/maze";
 export class EnemyData extends CreatureData{
     /*radius: Coordinate[][]
     movement: Coordinate[]*/
-    constructor(position: PositionType) {
+    /*constructor(position: PositionType) {
         super(position)
-    }
+    }*/
 }

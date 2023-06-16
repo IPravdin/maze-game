@@ -254,8 +254,6 @@ export class MazeData {
             notSpawnRadius: this.returnNotSpawnRadius(selectedCell),
             movement: this.recordEnemyMovementCoords(selectedCell)
         })
-
-        console.log(enemies)
     }
 
     private returnNotSpawnRadius = (currentCell: MazeCell) => {

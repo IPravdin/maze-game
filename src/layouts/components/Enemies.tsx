@@ -1,28 +1,20 @@
-import React, {Fragment} from "react";
-import {MazeCell} from "../../types/maze";
+import React from "react";
 import {PlayerSizeType, SizeType} from "../../types/global";
 import Enemy from "./Enemy";
+import {MazeEnemy} from "../../types/enemy";
 
 type Props = {
-    mazeMap: MazeCell[][]
     cellSize: SizeType
     playerSize: PlayerSizeType
+    enemiesData: MazeEnemy[]
 }
 
-const Enemies = ({mazeMap, cellSize, playerSize}: Props) => {
+const Enemies = ({enemiesData, cellSize, playerSize}: Props) => {
     return (
         <div>
-            {mazeMap.map((columns, x) => {
-                return columns.map((cell, y) => {
-                    if (cell.enemy.spawn) {
-                        return <Enemy key={`enemy[${x}][${y}]`} coord={{x, y}} cellSize={cellSize} playerSize={playerSize}/>
-                    } else if (cell.enemy.movement) {
-                        return <div className='cell' style={{ ...playerSize, left: x * cellSize.width, top: y * cellSize.height, backgroundColor: "pink" }}/>
-                    } else {
-                        return <Fragment key={`enemy[${x}][${y}]`}/>
-                    }
-                })
-            })}
+            {enemiesData.map(({spawn}) =>
+                <Enemy key={`enemy[${spawn.x}][${spawn.y}]`} coord={spawn} cellSize={cellSize} playerSize={playerSize}/>
+            )}
         </div>
     )
 }

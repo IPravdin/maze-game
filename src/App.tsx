@@ -143,7 +143,7 @@ function App() {
                 <PlayerBonuses bonuses={player.collectedBonuses} cellSize={hud.cellSize}/>
             </div>
             <div className="container" style={{ width: canvaSize.width, height: canvaSize.height }}>
-                <Enemies mazeMap={mazeStructure.mazeMap} cellSize={cellSize} playerSize={playerSize}/>
+                <Enemies enemiesData={mazeStructure.enemies} cellSize={cellSize} playerSize={playerSize}/>
                 <Player position={player.position} playerSize={playerSize}/>
                 <Maze mazeMap={mazeStructure.mazeMap} cellSize={cellSize}/>
                 <MazeBonuses mazeMap={mazeStructure.mazeMap} cellSize={cellSize}/>
