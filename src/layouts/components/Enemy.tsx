@@ -25,7 +25,7 @@ const Enemy = ({cellSize, coord, playerSize}: Props) => {
                     left: prevState.position.left + cellSize.width
                 }*/
             }))
-        }, 10000);
+        }, 1000);
         return () => clearInterval(interval);
     }, [])
 

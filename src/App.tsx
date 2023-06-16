@@ -115,16 +115,18 @@ function App() {
     const keyDownEvent = (event: React.KeyboardEvent<HTMLDivElement>) => {
         event.preventDefault()
 
-        if (event.code === "ArrowRight") {
+        console.log(event.code)
+
+        if (event.code === "ArrowRight" || event.code === "KeyD") {
             setPlayer((prevState) => returnUpdatedPlayer('right', prevState));
         }
-        if (event.code === "ArrowLeft") {
+        if (event.code === "ArrowLeft" || event.code === "KeyA") {
             setPlayer((prevState) => returnUpdatedPlayer('left', prevState));
         }
-        if (event.code === "ArrowDown") {
+        if (event.code === "ArrowDown" || event.code === "KeyS") {
             setPlayer((prevState) => returnUpdatedPlayer('bottom', prevState));
         }
-        if (event.code === "ArrowUp") {
+        if (event.code === "ArrowUp" || event.code === "KeyW") {
             setPlayer((prevState) => returnUpdatedPlayer('top', prevState));
         }
     };

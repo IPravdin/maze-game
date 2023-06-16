@@ -3,11 +3,6 @@ export type Coordinate = {x: number, y: number}
 export type EnhancedCoord = Coordinate & {o: Orientation}
 export type Chunk = {x1: number, x2: number, y1: number, y2: number}
 
-export type EnemySpawnCoords = {
-    coord: Coordinate,
-    notSpawnRadius: Coordinate[][]
-}
-
 
 export type MazeCell = {
     coord: Coordinate,

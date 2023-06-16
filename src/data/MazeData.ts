@@ -1,11 +1,13 @@
-import {Coordinate, EnemySpawnCoords, MazeCell, ModifiedDirs, Orientation} from "../types/maze";
+import {Coordinate, MazeCell, ModifiedDirs, Orientation} from "../types/maze";
 import {returnRand, returnRandomInt, shuffle} from "../helpers/mazeStructure";
 import {ChunkType, SizeType} from "../types/global";
+import {MazeEnemy} from "../types/enemy";
 
 export class MazeData {
     readonly size: SizeType
     readonly bonuses: number;
-    readonly enemies: number;
+    readonly enemies: MazeEnemy[]
+    readonly enemiesAmount: number;
     readonly mazeMap: MazeCell[][];
     readonly startCoord: Coordinate;
     readonly endCoord: Coordinate;
@@ -14,7 +16,7 @@ export class MazeData {
     constructor(size: SizeType, bonuses: number, enemies: number) {
         this.size = size
         this.bonuses = bonuses
-        this.enemies = enemies
+        this.enemiesAmount = enemies
         this.mazeMap = this.generateMap()
         this.directions = ["top", "bottom", "left", "right"]
         this.modifiedDir = {
@@ -46,7 +48,7 @@ export class MazeData {
         this.startCoord = startCord
         this.endCoord = endCord
 
-        this.defineEnemyPlaces()
+        this.enemies = this.defineEnemies()
         this.defineBonusPlaces(startCord, endCord)
     }
 
@@ -196,13 +198,15 @@ export class MazeData {
         return {startCord: startCoord, endCord: endCoord}
     }
 
-    private defineEnemyPlaces = () => {
-        const spawnCells: MazeCell[] = this.returnSuitableSpawnCells()
-        const selectedCells: EnemySpawnCoords[] = []
+    private defineEnemies = () => {
+        const spawnCells: MazeCell[] = this.returnSuitableSpawnCells();
+        const enemies: MazeEnemy[] = [];
 
-        for(let i = 0; i < this.enemies; i++) {
-            this.defineEnemyCell(spawnCells, selectedCells)
+        for(let i = 0; i < this.enemiesAmount; i++) {
+            this.defineEnemy(spawnCells, enemies, i)
         }
+
+        return enemies;
     }
 
     private returnSuitableSpawnCells = () => {
@@ -228,28 +232,33 @@ export class MazeData {
         return spawnCells
     }
 
-    private defineEnemyCell = (spawnCells: MazeCell[], enemySpawnCoords: EnemySpawnCoords[]) => {
+    private defineEnemy = (spawnCells: MazeCell[], enemies: MazeEnemy[], enemyIndex: number) => {
         const selectedIndex = returnRandomInt(0, spawnCells.length - 1)
         const selectedCell = spawnCells.splice(selectedIndex, 1)[0]
 
-        const selectedCellInOtherRadius = !!enemySpawnCoords?.find((enemy) =>
+        const selectedCellInOtherRadius = !!enemies?.find((enemy) =>
             enemy.notSpawnRadius?.find((x) =>
                 x.find((cell) => selectedCell.coord.x === cell.x || selectedCell.coord.y === cell.y)))
 
 
         if (selectedCellInOtherRadius) {
-            this.defineEnemyCell(spawnCells, enemySpawnCoords)
+            this.defineEnemy(spawnCells, enemies, enemyIndex)
             return;
         }
 
         selectedCell.enemy.spawn = true
         selectedCell.enemy.movement = true
 
-        this.defineEnemyMovementCell(selectedCell)
-        this.recordEnemySpawnCoords(selectedCell, enemySpawnCoords)
+        enemies.push({
+            spawn: selectedCell.coord,
+            notSpawnRadius: this.returnNotSpawnRadius(selectedCell),
+            movement: this.recordEnemyMovementCoords(selectedCell)
+        })
+
+        console.log(enemies)
     }
 
-    private recordEnemySpawnCoords = (currentCell: MazeCell, enemySpawnCoords: EnemySpawnCoords[]) => {
+    private returnNotSpawnRadius = (currentCell: MazeCell) => {
         const radius = 2
 
         const startX = currentCell.coord.x - 2;
@@ -277,34 +286,40 @@ export class MazeData {
             }
         }
 
-        enemySpawnCoords.push({
-            coord: currentCell.coord,
-            notSpawnRadius
-        })
+        return notSpawnRadius;
     }
 
-    private defineEnemyMovementCell = (cell: MazeCell) => {
-        Object.keys(cell.walkable).forEach((key )=> {
+    private recordEnemyMovementCoords = (cell: MazeCell) => {
+        return Object.keys(cell.walkable).map((key ) => {
             // @ts-ignore
             if (cell.walkable[key]) {
-                this.defineNextMovement(key as Orientation, cell)
+                return this.defineNextMovement(key as Orientation, cell)
+            } else {
+                return []
             }
-        })
+        }).filter((array) => array.length > 0);
     }
 
     private defineNextMovement = (mode: Orientation, startCell: MazeCell) => {
-        let neighbour = this.returnNextMovementCell(mode, startCell)
-        neighbour.enemy.movement = true
+        const movements: Coordinate[] = [];
+        let neighbour = this.returnNextMovementCell(mode, startCell);
+
+        movements.push(neighbour.coord);
+        neighbour.enemy.movement = true;
+
 
         // Selects next cell
-        const cameFrom = this.modifiedDir[mode].o
+        const cameFrom = this.modifiedDir[mode].o;
         const nextOrientation: Orientation | undefined =
-            Object.keys(neighbour.walkable).find((key) => key !== cameFrom && neighbour.walkable[key as Orientation]) as Orientation
+            Object.keys(neighbour.walkable).find((key) => key !== cameFrom && neighbour.walkable[key as Orientation]) as Orientation;
 
         if (nextOrientation) {
-            const next = this.returnNextMovementCell(nextOrientation, neighbour)
-            next.enemy.movement = true
+            const next = this.returnNextMovementCell(nextOrientation, neighbour);
+            movements.push(next.coord);
+            next.enemy.movement = true;
         }
+
+        return movements;
     }
 
     private returnNextMovementCell = (mode: Orientation, startCell: MazeCell) => {
