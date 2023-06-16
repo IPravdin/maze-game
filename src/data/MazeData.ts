@@ -1,5 +1,5 @@
-import {Coordinate, MazeCell, ModifiedDirs, Orientation} from "../types/maze";
-import {returnRand, returnRandomInt, shuffle} from "../helpers/mazeStructure";
+import {CoordinateType, MazeCell, ModifiedDirs, OrientationType} from "../types/maze";
+import {returnRand, returnRandomInt, shuffle} from "../helpers";
 import {ChunkType, SizeType} from "../types/global";
 import {MazeEnemy} from "../types/enemy";
 
@@ -9,9 +9,9 @@ export class MazeData {
     readonly enemies: MazeEnemy[]
     readonly enemiesAmount: number;
     readonly mazeMap: MazeCell[][];
-    readonly startCoord: Coordinate;
-    readonly endCoord: Coordinate;
-    readonly directions: Orientation[];
+    readonly startCoord: CoordinateType;
+    readonly endCoord: CoordinateType;
+    readonly directions: OrientationType[];
     readonly modifiedDir: ModifiedDirs;
     constructor(size: SizeType, bonuses: number, enemies: number) {
         this.size = size
@@ -146,7 +146,7 @@ export class MazeData {
         }
     }
 
-    private defineStartEnd = (): { startCord: Coordinate, endCord: Coordinate } => {
+    private defineStartEnd = (): { startCord: CoordinateType, endCord: CoordinateType } => {
         let startCoord, endCoord
 
         switch (returnRand(4)) {
@@ -291,15 +291,15 @@ export class MazeData {
         return Object.keys(cell.walkable).map((key ) => {
             // @ts-ignore
             if (cell.walkable[key]) {
-                return this.defineNextMovement(key as Orientation, cell)
+                return this.defineNextMovement(key as OrientationType, cell)
             } else {
                 return []
             }
         }).filter((array) => array.length > 0);
     }
 
-    private defineNextMovement = (mode: Orientation, startCell: MazeCell) => {
-        const movements: Coordinate[] = [];
+    private defineNextMovement = (mode: OrientationType, startCell: MazeCell) => {
+        const movements: CoordinateType[] = [];
         let neighbour = this.returnNextMovementCell(mode, startCell);
 
         movements.push(neighbour.coord);
@@ -308,8 +308,8 @@ export class MazeData {
 
         // Selects next cell
         const cameFrom = this.modifiedDir[mode].o;
-        const nextOrientation: Orientation | undefined =
-            Object.keys(neighbour.walkable).find((key) => key !== cameFrom && neighbour.walkable[key as Orientation]) as Orientation;
+        const nextOrientation: OrientationType | undefined =
+            Object.keys(neighbour.walkable).find((key) => key !== cameFrom && neighbour.walkable[key as OrientationType]) as OrientationType;
 
         if (nextOrientation) {
             const next = this.returnNextMovementCell(nextOrientation, neighbour);
@@ -320,7 +320,7 @@ export class MazeData {
         return movements;
     }
 
-    private returnNextMovementCell = (mode: Orientation, startCell: MazeCell) => {
+    private returnNextMovementCell = (mode: OrientationType, startCell: MazeCell) => {
         let nextCell: MazeCell
         switch (mode) {
             case 'top':
@@ -340,7 +340,7 @@ export class MazeData {
         return nextCell
     }
 
-    private defineBonusPlaces = (playerStartCoord: Coordinate, finishCoord: Coordinate) =>  {
+    private defineBonusPlaces = (playerStartCoord: CoordinateType, finishCoord: CoordinateType) =>  {
         const bonuses = this.bonuses
         const chunks: ChunkType[] = this.returnChunks(this.size)
 
@@ -349,7 +349,7 @@ export class MazeData {
         }
     }
 
-    private defineBonus = (chunks: ChunkType[], playerStartCoord: Coordinate, finishCoord: Coordinate) => {
+    private defineBonus = (chunks: ChunkType[], playerStartCoord: CoordinateType, finishCoord: CoordinateType) => {
         const selectedChunk = returnRandomInt(0, 3)
         const {x1, x2, y1, y2} = chunks[selectedChunk]
 

@@ -1,9 +1,9 @@
 import React from "react";
 import {SizeType} from "../../types/global";
-import {Coordinate} from "../../types/maze";
+import {CoordinateType} from "../../types/maze";
 
 type Props = {
-    coord: Coordinate
+    coord: CoordinateType
     cellSize: SizeType
 }
 const Finish = ({coord, cellSize}: Props) => {

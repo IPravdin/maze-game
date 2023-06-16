@@ -12,8 +12,8 @@ type Props = {
 const Enemies = ({enemiesData, cellSize, playerSize}: Props) => {
     return (
         <div>
-            {enemiesData.map(({spawn}) =>
-                <Enemy key={`enemy[${spawn.x}][${spawn.y}]`} coord={spawn} cellSize={cellSize} playerSize={playerSize}/>
+            {enemiesData.map((enemy) =>
+                <Enemy key={`enemy[${enemy.spawn.x}][${enemy.spawn.y}]`} data={enemy} cellSize={cellSize} playerSize={playerSize}/>
             )}
         </div>
     )

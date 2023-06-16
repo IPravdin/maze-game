@@ -1,11 +1,11 @@
-export type Orientation = 'top' | 'bottom' | 'left' | 'right'
-export type Coordinate = {x: number, y: number}
-export type EnhancedCoord = Coordinate & {o: Orientation}
+export type OrientationType = 'top' | 'bottom' | 'left' | 'right'
+export type CoordinateType = {x: number, y: number}
+export type EnhancedCoord = CoordinateType & {o: OrientationType}
 export type Chunk = {x1: number, x2: number, y1: number, y2: number}
 
 
 export type MazeCell = {
-    coord: Coordinate,
+    coord: CoordinateType,
     walkable: {
         top: boolean,
         bottom: boolean,
@@ -22,7 +22,7 @@ export type MazeCell = {
     },
     startEnd: boolean,
     visited: boolean,
-    priorPos: Coordinate | null
+    priorPos: CoordinateType | null
 }
 
 export type ModifiedDirs = {

@@ -4,7 +4,7 @@ import {MazeData} from "./data/MazeData";
 import Maze from "./layouts/components/Maze";
 import MazeBonuses from "./layouts/components/MazeBonuses";
 import {PlayerData} from "./data/PlayerData";
-import {Coordinate, Orientation} from "./types/maze";
+import {CoordinateType, OrientationType} from "./types/maze";
 import PlayerBonuses from "./layouts/components/PlayerBonuses";
 import {HudData} from "./data/HudData";
 import Finish from "./layouts/components/Finish";
@@ -52,12 +52,12 @@ function App() {
         divRef.current?.focus()
     }, [divRef])
 
-    const returnUpdatedPlayer = (mode: Orientation, prevState: PlayerData) => {
+    const returnUpdatedPlayer = (mode: OrientationType, prevState: PlayerData) => {
         const currentPosition: PositionType = {
-            left: prevState.position.left,
-            top: prevState.position.top
+            left: prevState.currentPosition.left,
+            top: prevState.currentPosition.top
         }
-        const currentCoord: Coordinate = {
+        const currentCoord: CoordinateType = {
             x: currentPosition.left / cellSize.height,
             y: currentPosition.top / cellSize.width
         }
@@ -69,25 +69,25 @@ function App() {
 
         switch (mode) {
             case 'left':
-                newPosition.left = prevState.position.left - cellSize.width
+                newPosition.left = prevState.currentPosition.left - cellSize.width
                 newPosition.top = currentPosition.top
                 break;
             case 'right':
-                newPosition.left = prevState.position.left + cellSize.width
+                newPosition.left = prevState.currentPosition.left + cellSize.width
                 newPosition.top = currentPosition.top
                 break;
             case 'top':
                 newPosition.left = currentPosition.left
-                newPosition.top = prevState.position.top - cellSize.height
+                newPosition.top = prevState.currentPosition.top - cellSize.height
                 break;
             case 'bottom':
                 newPosition.left = currentPosition.left
-                newPosition.top = prevState.position.top + cellSize.height
+                newPosition.top = prevState.currentPosition.top + cellSize.height
                 break;
         }
 
         // ** Bonus collect
-        const newCoord: Coordinate = {
+        const newCoord: CoordinateType = {
             x: newPosition.left / cellSize.width,
             y: newPosition.top / cellSize.height
         }
@@ -144,7 +144,7 @@ function App() {
             </div>
             <div className="container" style={{ width: canvaSize.width, height: canvaSize.height }}>
                 <Enemies enemiesData={mazeStructure.enemies} cellSize={cellSize} playerSize={playerSize}/>
-                <Player position={player.position} playerSize={playerSize}/>
+                <Player position={player.currentPosition} playerSize={playerSize}/>
                 <Maze mazeMap={mazeStructure.mazeMap} cellSize={cellSize}/>
                 <MazeBonuses mazeMap={mazeStructure.mazeMap} cellSize={cellSize}/>
                 <Finish coord={mazeStructure.endCoord} cellSize={cellSize}/>
