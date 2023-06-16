@@ -1,7 +1,6 @@
 import {Coordinate, EnemySpawnCoords, MazeCell, ModifiedDirs, Orientation} from "../types/maze";
 import {returnRand, returnRandomInt, shuffle} from "../helpers/mazeStructure";
 import {ChunkType, SizeType} from "../types/global";
-import Cell from "../layouts/components/Cell";
 
 export class MazeData {
     readonly size: SizeType
@@ -208,8 +207,8 @@ export class MazeData {
 
     private returnSuitableSpawnCells = () => {
         const spawnCells: MazeCell[] = []
-        this.mazeMap.forEach((row, x) => {
-            row.forEach((cell, y) => {
+        this.mazeMap.forEach((row) => {
+            row.forEach((cell) => {
                 if (cell.startEnd) return
 
                 let walkways = 0
