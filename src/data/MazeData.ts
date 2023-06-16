@@ -1,6 +1,7 @@
-import {Coordinate, MazeCell, ModifiedDirs, Orientation} from "../types/maze";
+import {Coordinate, EnemySpawnCoords, MazeCell, ModifiedDirs, Orientation} from "../types/maze";
 import {returnRand, returnRandomInt, shuffle} from "../helpers/mazeStructure";
 import {ChunkType, SizeType} from "../types/global";
+import Cell from "../layouts/components/Cell";
 
 export class MazeData {
     readonly size: SizeType
@@ -51,10 +52,10 @@ export class MazeData {
     }
 
     private generateMap = (): MazeCell[][] => {
-        let mazeMap = new Array(this.size.height);
-        for (let x = 0; x < this.size.height; x++) {
-            mazeMap[x] = new Array(this.size.width);
-            for (let y = 0; y < this.size.width; ++y) {
+        let mazeMap = new Array(this.size.width);
+        for (let x = 0; x < this.size.width; x++) {
+            mazeMap[x] = new Array(this.size.height);
+            for (let y = 0; y < this.size.height; ++y) {
                 mazeMap[x][y] = {
                     coord: {x, y},
                     walkable: {
@@ -154,34 +155,34 @@ export class MazeData {
                     y: 0
                 };
                 endCoord = {
-                    x: this.size.height - 1,
-                    y: this.size.width - 1
+                    x: this.size.width - 1,
+                    y: this.size.height - 1
                 };
                 break;
             case 1:
                 startCoord = {
                     x: 0,
-                    y: this.size.width - 1
+                    y: this.size.height - 1
                 };
                 endCoord = {
-                    x: this.size.height - 1,
+                    x: this.size.width - 1,
                     y: 0
                 };
                 break;
             case 2:
                 startCoord = {
-                    x: this.size.height - 1,
+                    x: this.size.width - 1,
                     y: 0
                 };
                 endCoord = {
                     x: 0,
-                    y: this.size.width - 1
+                    y: this.size.height - 1
                 };
                 break;
             default:
                 startCoord = {
-                    x: this.size.height - 1,
-                    y: this.size.width - 1
+                    x: this.size.width - 1,
+                    y: this.size.height - 1
                 };
                 endCoord = {
                     x: 0,
@@ -198,9 +199,10 @@ export class MazeData {
 
     private defineEnemyPlaces = () => {
         const spawnCells: MazeCell[] = this.returnSuitableSpawnCells()
+        const selectedCells: EnemySpawnCoords[] = []
 
         for(let i = 0; i < this.enemies; i++) {
-            this.defineEnemyCell(spawnCells)
+            this.defineEnemyCell(spawnCells, selectedCells)
         }
     }
 
@@ -209,8 +211,6 @@ export class MazeData {
         this.mazeMap.forEach((row, x) => {
             row.forEach((cell, y) => {
                 if (cell.startEnd) return
-
-                /*TODO: make radius of 3 cells that would prevent these cells to be selected for potential spawn point*/
 
                 let walkways = 0
 
@@ -229,14 +229,59 @@ export class MazeData {
         return spawnCells
     }
 
-    private defineEnemyCell = (spawnCells: MazeCell[]) => {
+    private defineEnemyCell = (spawnCells: MazeCell[], enemySpawnCoords: EnemySpawnCoords[]) => {
         const selectedIndex = returnRandomInt(0, spawnCells.length - 1)
         const selectedCell = spawnCells.splice(selectedIndex, 1)[0]
+
+        const selectedCellInOtherRadius = !!enemySpawnCoords?.find((enemy) =>
+            enemy.notSpawnRadius?.find((x) =>
+                x.find((cell) => selectedCell.coord.x === cell.x || selectedCell.coord.y === cell.y)))
+
+
+        if (selectedCellInOtherRadius) {
+            this.defineEnemyCell(spawnCells, enemySpawnCoords)
+            return;
+        }
 
         selectedCell.enemy.spawn = true
         selectedCell.enemy.movement = true
 
         this.defineEnemyMovementCell(selectedCell)
+        this.recordEnemySpawnCoords(selectedCell, enemySpawnCoords)
+    }
+
+    private recordEnemySpawnCoords = (currentCell: MazeCell, enemySpawnCoords: EnemySpawnCoords[]) => {
+        const radius = 2
+
+        const startX = currentCell.coord.x - 2;
+        const startY = currentCell.coord.y - 2;
+        const diameterX = radius * 2 + 1;
+        const diameterY = radius * 2 + 1;
+
+        let notSpawnRadius = new Array(diameterX);
+        for (let x = 0; x < diameterX; x++) {
+            notSpawnRadius[x] = [];
+            for (let y = 0; y < diameterY; y++) {
+                const newX = startX + x;
+                const newY = startY + y;
+
+                // Checks if went out of map boundaries
+                if (
+                    newX >= 0 && newX < this.size.width
+                    && newY < this.size.height && newY >= 0
+                ) {
+                    notSpawnRadius[x].push({
+                        x: newX,
+                        y: newY
+                    })
+                }
+            }
+        }
+
+        enemySpawnCoords.push({
+            coord: currentCell.coord,
+            notSpawnRadius
+        })
     }
 
     private defineEnemyMovementCell = (cell: MazeCell) => {
