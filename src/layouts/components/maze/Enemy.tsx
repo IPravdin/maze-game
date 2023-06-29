@@ -6,12 +6,12 @@ import {coordToPosition, objectsEqual, positionToCoord, returnRandomInt} from ".
 
 type Props = {
     cellSize: SizeType
-    playerSize: PlayerSizeType
+    enemySize: PlayerSizeType
     data: MazeEnemy
     enemySpeed: number
 }
 
-const Enemy = ({ cellSize, data, playerSize, enemySpeed }: Props) => {
+const Enemy = ({ cellSize, data, enemySize, enemySpeed }: Props) => {
     const [enemy, setEnemy] = useState(new EnemyData({
         ...data,
         currentPosition: coordToPosition(data.spawn, cellSize)
@@ -80,7 +80,7 @@ const Enemy = ({ cellSize, data, playerSize, enemySpeed }: Props) => {
         return dirIndex >= 0 && posInDir >= 0
     }
 
-    return <div className="enemy" style={{ ...playerSize, left: enemy.currentPosition.left, top: enemy.currentPosition.top }}/>
+    return <div className="enemy" style={{ ...enemySize, left: enemy.currentPosition.left, top: enemy.currentPosition.top }}/>
 }
 
 export default Enemy

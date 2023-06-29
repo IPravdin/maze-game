@@ -5,12 +5,12 @@ import {MazeEnemy} from "../../../types/enemy";
 
 type Props = {
     cellSize: SizeType
-    playerSize: PlayerSizeType
+    enemySize: PlayerSizeType
     enemiesData: MazeEnemy[]
     enemySpeed: number
 }
 
-const Enemies = ({ enemiesData, cellSize, playerSize, enemySpeed }: Props) => {
+const Enemies = ({ enemiesData, cellSize, enemySize, enemySpeed }: Props) => {
     return (
         <div>
             {enemiesData.map((enemy) =>
@@ -18,7 +18,7 @@ const Enemies = ({ enemiesData, cellSize, playerSize, enemySpeed }: Props) => {
                     key={`enemy[${enemy.spawn.x}][${enemy.spawn.y}]`}
                     data={enemy}
                     cellSize={cellSize}
-                    playerSize={playerSize}
+                    enemySize={enemySize}
                     enemySpeed={enemySpeed}
                 />
             )}

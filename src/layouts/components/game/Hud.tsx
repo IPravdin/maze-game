@@ -1,6 +1,6 @@
 import React from "react";
-import Bonus from "./maze/Bonus";
-import {SizeType} from "../../types/global";
+import Bonus from "../maze/Bonus";
+import {SizeType} from "../../../types/global";
 
 const Hud = ({ bonuses, cellSize, hudSize }: { bonuses: number, cellSize: SizeType, hudSize: SizeType }) => {
     const {height, width} = cellSize

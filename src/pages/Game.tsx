@@ -1,18 +1,16 @@
 import Enemies from "../layouts/components/maze/Enemies";
 import Player from "../layouts/components/maze/Player";
-import Maze from "../layouts/components/maze/Maze";
-import MazeBonuses from "../layouts/components/maze/MazeBonuses";
-import Finish from "../layouts/components/maze/Finish";
-import React, {Fragment, useEffect, useRef, useState} from "react";
-import {CoordinateType, OrientationType} from "../types/maze";
+import React, { useEffect, useRef, useState} from "react";
 import {PlayerData} from "../data/PlayerData";
-import {coordToPosition, positionToCoord} from "../helpers";
-import {PlayerSizeType, PositionType} from "../types/global";
+import {coordToPosition} from "../helpers";
+import {PlayerSizeType} from "../types/global";
 import {HudData} from "../data/HudData";
 import {MazeData} from "../data/MazeData";
 import {EnemySpeed} from "../enums/enemy-speed";
 import GameStateDialog from "../layouts/components/game/GameStateDialog";
-import Hud from "../layouts/components/Hud";
+import Hud from "../layouts/components/game/Hud";
+import Maze from "../layouts/components/game/Maze";
+import {PlayerMoveKeys} from "../types/player";
 
 // TODO: Formula which will allow to determine how many enemies and bonuses could be without App crash
 const BONUSES = 1
@@ -30,7 +28,8 @@ const cellSize = {
 }
 
 const mazeStructure = new MazeData({width: MAZE_CELL_WIDTH, height: MAZE_CELL_HEIGHT}, BONUSES, ENEMIES)
-const playerData = new PlayerData(coordToPosition(mazeStructure.startCoord, cellSize))
+const initialPlayerData = new PlayerData(coordToPosition(mazeStructure.startCoord, cellSize))
+
 const hud = new HudData({width: MAZE_WIDTH, height: 100}, BONUSES)
 
 const playerSize: PlayerSizeType = {
@@ -43,7 +42,9 @@ const playerSize: PlayerSizeType = {
 const Game = () => {
     const divRef = useRef<HTMLDivElement>(null)
 
-    const [player, setPlayer] = useState(playerData)
+    const [player, setPlayer] = useState(initialPlayerData)
+    const [playerMove, setPlayerMove] = useState<PlayerMoveKeys | null>(null)
+
     const [enemySpeed, setEnemySpeed] = useState<EnemySpeed>(ENEMY_SPEED)
 
     const [openPause, setOpenPause] = useState(false)
@@ -55,104 +56,59 @@ const Game = () => {
         divRef.current?.focus()
     }, [divRef])
 
-    const returnUpdatedPlayer = (mode: OrientationType, prevState: PlayerData): PlayerData => {
-        const { currentPosition } = prevState;
-        const currentCoord: CoordinateType = positionToCoord(currentPosition, cellSize);
-
-        // ** Is Cell walkable
-        if(!mazeStructure.mazeMap[currentCoord.x][currentCoord.y].walkable[mode]) return prevState
-
-        let newPosition: PositionType = {left: 0, top: 0}
-
-        switch (mode) {
-            case 'left':
-                newPosition.left = prevState.currentPosition.left - cellSize.width
-                newPosition.top = currentPosition.top
-                break;
-            case 'right':
-                newPosition.left = prevState.currentPosition.left + cellSize.width
-                newPosition.top = currentPosition.top
-                break;
-            case 'top':
-                newPosition.left = currentPosition.left
-                newPosition.top = prevState.currentPosition.top - cellSize.height
-                break;
-            case 'bottom':
-                newPosition.left = currentPosition.left
-                newPosition.top = prevState.currentPosition.top + cellSize.height
-                break;
-        }
-
-        // ** Bonus collect
-        const newCoord= positionToCoord(newPosition, cellSize)
-        const newCell = mazeStructure.mazeMap[newCoord.x][newCoord.y]
-
-        let collectedBonuses = prevState.collectedBonuses
-
-        if (newCell.bonus.placed && !newCell.bonus.collected) {
-            collectedBonuses++
-            newCell.bonus.collected = true
-        }
-
-        // ** Register finish
-        if (newCell.startEnd.end) {
-            setOpenFinish(true)
-        }
-
-        return {
-            ...prevState,
-            stepsWalked: ++prevState.stepsWalked,
-            collectedBonuses: collectedBonuses,
-            currentPosition: {
-                left: newPosition.left,
-                top: newPosition.top
-            }
-        }
-    }
-
-    const keyDownEvent = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    const keyDownListener = (event: React.KeyboardEvent<HTMLDivElement>) => {
         event.preventDefault()
 
-        if (event.code === "ArrowRight" || event.code === "KeyD") {
-            setPlayer((prevState) => returnUpdatedPlayer('right', prevState));
+        if (
+            "ArrowRight" || "KeyD"
+            || "ArrowLeft" || "KeyA"
+            || "ArrowDown" || "KeyS"
+            || "ArrowUp" || "KeyW"
+        ) {
+            setPlayerMove(event.code as PlayerMoveKeys)
         }
-        if (event.code === "ArrowLeft" || event.code === "KeyA") {
-            setPlayer((prevState) => returnUpdatedPlayer('left', prevState));
-        }
-        if (event.code === "ArrowDown" || event.code === "KeyS") {
-            setPlayer((prevState) => returnUpdatedPlayer('bottom', prevState));
-        }
-        if (event.code === "ArrowUp" || event.code === "KeyW") {
-            setPlayer((prevState) => returnUpdatedPlayer('top', prevState));
-        }
-        console.log(event.code)
+
         if (event.code === "Escape") {
-            console.log('escape')
             setOpenPause(true)
         }
     };
 
     return (
-        <Fragment>
-            <div className="w-full h-full" onKeyDown={keyDownEvent} tabIndex={0} ref={divRef}>
-                <Hud
-                    bonuses={player.collectedBonuses}
-                    cellSize={cellSize}
-                    hudSize={hud.size}
-                />
-                <div className="container" style={{ width: MAZE_WIDTH, height: MAZE_HEIGHT }}>
+        <div className="w-full h-full" onKeyDown={keyDownListener} tabIndex={0} ref={divRef}>
+            <Hud
+                bonuses={player.collectedBonuses}
+                cellSize={cellSize}
+                hudSize={hud.size}
+            />
+            <Maze
+                mazeMap={mazeStructure.mazeMap}
+                finishCoord={mazeStructure.endCoord}
+                cellSize={cellSize}
+                size={{
+                    width: MAZE_WIDTH,
+                    height: MAZE_HEIGHT
+                }}
+                enemies={
                     <Enemies
                         enemiesData={mazeStructure.enemies}
                         cellSize={cellSize}
-                        playerSize={playerSize}
+                        enemySize={playerSize}
                         enemySpeed={enemySpeed}
                     />
-                    <Player position={player.currentPosition} playerSize={playerSize}/>
-                    <Maze mazeMap={mazeStructure.mazeMap} cellSize={cellSize}/>
-                    <MazeBonuses mazeMap={mazeStructure.mazeMap} cellSize={cellSize}/>
-                    <Finish coord={mazeStructure.endCoord} cellSize={cellSize}/>
-                </div>
-            </div>
+                }
+                player={
+                    <Player
+                        currentPosition={player.currentPosition}
+                        playerMove={playerMove}
+                        setPlayerMove={setPlayerMove}
+                        playerSize={playerSize}
+                        setPlayer={setPlayer}
+                        cellSize={cellSize}
+                        mazeStructure={mazeStructure}
+                        handleFinishOpen={() => setOpenFinish(true)}
+                    />
+                }
+            />
             <GameStateDialog
                 id="finish_modal"
                 title="Congrats"
@@ -175,7 +131,7 @@ const Game = () => {
                     setOpenPause(false)
                 }}
             />
-        </Fragment>
+        </div>
     )
 }
 
