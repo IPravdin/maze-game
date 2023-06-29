@@ -73,7 +73,10 @@ export class MazeData {
                         spawn: false,
                         movement: false
                     },
-                    startEnd: false,
+                    startEnd: {
+                        start: false,
+                        end: false
+                    },
                     visited: false,
                     priorPos: null
                 };
@@ -192,8 +195,8 @@ export class MazeData {
                 break;
         }
 
-        this.mazeMap[startCoord.x][startCoord.y].startEnd = true
-        this.mazeMap[endCoord.x][endCoord.y].startEnd = true
+        this.mazeMap[startCoord.x][startCoord.y].startEnd.start = true
+        this.mazeMap[endCoord.x][endCoord.y].startEnd.end = true
 
         return {startCord: startCoord, endCord: endCoord}
     }
@@ -213,7 +216,8 @@ export class MazeData {
         const spawnCells: MazeCell[] = []
         this.mazeMap.forEach((row) => {
             row.forEach((cell) => {
-                if (cell.startEnd) return
+                const startEnd = Object.values(cell.startEnd).find((pos) => pos)
+                if (startEnd) return
 
                 let walkways = 0
 
@@ -359,7 +363,8 @@ export class MazeData {
         const selectedCell = this.mazeMap[selectedX][selectedY]
 
         // ** Check if place is not occupied by start and end points
-        if(selectedCell.startEnd) {
+        const startEnd = Object.values(selectedCell.startEnd).find((pos) => pos)
+        if(startEnd) {
             this.defineBonus(chunks, playerStartCoord, finishCoord)
             return
         }

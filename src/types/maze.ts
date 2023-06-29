@@ -20,7 +20,10 @@ export type MazeCell = {
         spawn: boolean,
         movement: boolean
     },
-    startEnd: boolean,
+    startEnd: {
+        start: boolean,
+        end: boolean
+    },
     visited: boolean,
     priorPos: CoordinateType | null
 }

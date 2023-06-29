@@ -20,27 +20,27 @@ import {coordToPosition, positionToCoord} from "./helpers";
 // TODO: Formula which will allow to determine how many enemies and bonuses could be without App crash
 const BONUSES = 1
 const ENEMIES = 1
-const MAZE_SIZE = 10
+const MAZE_WIDTH = 1000
+const MAZE_CELL_WIDTH = 10
+const MAZE_HEIGHT = 200
+const MAZE_CELL_HEIGHT = 2
 
 // in ms
 export const ENEMY_SPEED = 2000
 
+const cellSize = {
+    height: MAZE_WIDTH / MAZE_CELL_WIDTH,
+    width: MAZE_HEIGHT / MAZE_CELL_HEIGHT
+}
+
+const mazeStructure = new MazeData({width: MAZE_CELL_WIDTH, height: MAZE_CELL_HEIGHT}, BONUSES, ENEMIES)
+const playerData = new PlayerData(coordToPosition(mazeStructure.startCoord, cellSize))
+const hud = new HudData({width: MAZE_WIDTH, height: 100}, BONUSES)
+
 function App() {
     const divRef = useRef<HTMLDivElement>(null)
 
-    const [mazeStructure] = useState(new MazeData({width: MAZE_SIZE, height: MAZE_SIZE}, BONUSES, ENEMIES))
-    const [canvaSize] = useState({
-        height: 800,
-        width: 800
-    })
-    const [cellSize] = useState({
-        height: canvaSize.height / mazeStructure.size.height,
-        width: canvaSize.width / mazeStructure.size.width
-    })
-
-    const [hud] = useState(new HudData({width: canvaSize.width, height: 100}, BONUSES))
-
-    const [player, setPlayer] = useState(new PlayerData(coordToPosition(mazeStructure.startCoord, cellSize)))
+    const [player, setPlayer] = useState(playerData)
 
     const [playerSize] = useState<PlayerSizeType>({
         width: cellSize.width - 15,
@@ -133,7 +133,7 @@ function App() {
             <div className="container" style={{ width: hud.size.width, height: hud.size.height }}>
                 <PlayerBonuses bonuses={player.collectedBonuses} cellSize={hud.cellSize}/>
             </div>
-            <div className="container" style={{ width: canvaSize.width, height: canvaSize.height }}>
+            <div className="container" style={{ width: MAZE_WIDTH, height: MAZE_HEIGHT }}>
                 <Enemies enemiesData={mazeStructure.enemies} cellSize={cellSize} playerSize={playerSize}/>
                 <Player position={player.currentPosition} playerSize={playerSize}/>
                 <Maze mazeMap={mazeStructure.mazeMap} cellSize={cellSize}/>
