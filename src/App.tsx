@@ -136,7 +136,7 @@ function App() {
                 <Route path="about" element={<About />} />
             </Routes>*/}
             {/*TODO: Add Menu Here*/}
-            <div style={{ width: '100%', height: '100%' }} onKeyDown={keyDownEvent} tabIndex={0} ref={divRef}>
+            <div className="w-full h-full" onKeyDown={keyDownEvent} tabIndex={0} ref={divRef}>
                 <div className="container" style={{ width: hud.size.width, height: hud.size.height }}>
                     <PlayerBonuses bonuses={player.collectedBonuses} cellSize={hud.cellSize}/>
                 </div>
