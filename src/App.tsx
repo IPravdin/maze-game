@@ -37,17 +37,18 @@ const mazeStructure = new MazeData({width: MAZE_CELL_WIDTH, height: MAZE_CELL_HE
 const playerData = new PlayerData(coordToPosition(mazeStructure.startCoord, cellSize))
 const hud = new HudData({width: MAZE_WIDTH, height: 100}, BONUSES)
 
+const playerSize: PlayerSizeType = {
+    width: cellSize.width - 15,
+    height: cellSize.width - 15,
+    borderWidth: 2.5,
+    margin: 5,
+}
+
 function App() {
     const divRef = useRef<HTMLDivElement>(null)
 
     const [player, setPlayer] = useState(playerData)
-
-    const [playerSize] = useState<PlayerSizeType>({
-        width: cellSize.width - 15,
-        height: cellSize.width - 15,
-        borderWidth: 2.5,
-        margin: 5,
-    })
+    const [finished, setFinished] = useState(false)
 
     // ** Sets focus on main div
     useEffect(() => {
@@ -94,6 +95,11 @@ function App() {
             newCell.bonus.collected = true
         }
 
+        // ** Register finish
+        if (newCell.startEnd.end) {
+            setFinished(true)
+        }
+
         return {
             ...prevState,
             stepsWalked: ++prevState.stepsWalked,
@@ -123,22 +129,24 @@ function App() {
     };
 
     return (
-        <div className="App" onKeyDown={keyDownEvent} tabIndex={0} ref={divRef}>
+        <div className="App">
             {/*TODO: register all routes here*/}
             {/*<Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="about" element={<About />} />
             </Routes>*/}
             {/*TODO: Add Menu Here*/}
-            <div className="container" style={{ width: hud.size.width, height: hud.size.height }}>
-                <PlayerBonuses bonuses={player.collectedBonuses} cellSize={hud.cellSize}/>
-            </div>
-            <div className="container" style={{ width: MAZE_WIDTH, height: MAZE_HEIGHT }}>
-                <Enemies enemiesData={mazeStructure.enemies} cellSize={cellSize} playerSize={playerSize}/>
-                <Player position={player.currentPosition} playerSize={playerSize}/>
-                <Maze mazeMap={mazeStructure.mazeMap} cellSize={cellSize}/>
-                <MazeBonuses mazeMap={mazeStructure.mazeMap} cellSize={cellSize}/>
-                <Finish coord={mazeStructure.endCoord} cellSize={cellSize}/>
+            <div style={{ width: '100%', height: '100%' }} onKeyDown={keyDownEvent} tabIndex={0} ref={divRef}>
+                <div className="container" style={{ width: hud.size.width, height: hud.size.height }}>
+                    <PlayerBonuses bonuses={player.collectedBonuses} cellSize={hud.cellSize}/>
+                </div>
+                <div className="container" style={{ width: MAZE_WIDTH, height: MAZE_HEIGHT }}>
+                    <Enemies enemiesData={mazeStructure.enemies} cellSize={cellSize} playerSize={playerSize}/>
+                    <Player position={player.currentPosition} playerSize={playerSize}/>
+                    <Maze mazeMap={mazeStructure.mazeMap} cellSize={cellSize}/>
+                    <MazeBonuses mazeMap={mazeStructure.mazeMap} cellSize={cellSize}/>
+                    <Finish coord={mazeStructure.endCoord} cellSize={cellSize}/>
+                </div>
             </div>
         </div>
     );
