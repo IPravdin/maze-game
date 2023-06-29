@@ -7,7 +7,7 @@ type Props = {
     mazeMap: MazeCell[][],
     cellSize: SizeType
 }
-const Maze = ({mazeMap, cellSize}: Props) => {
+const Map = ({mazeMap, cellSize}: Props) => {
     return (
         <div>
             {mazeMap.map((columns, x) => {
@@ -20,4 +20,4 @@ const Maze = ({mazeMap, cellSize}: Props) => {
     )
 }
 
-export default Maze
+export default Map
