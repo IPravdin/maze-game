@@ -26,7 +26,7 @@ const MAZE_HEIGHT = 200
 const MAZE_CELL_HEIGHT = 2
 
 // in ms
-export const ENEMY_SPEED = 2000
+export const ENEMY_MOVE_INTERVAL = 1000
 
 const cellSize = {
     height: MAZE_WIDTH / MAZE_CELL_WIDTH,

@@ -306,19 +306,24 @@ export class MazeData {
         const movements: CoordinateType[] = [];
         let neighbour = this.returnNextMovementCell(mode, startCell);
 
-        movements.push(neighbour.coord);
-        neighbour.enemy.movement = true;
+        if (!neighbour.startEnd.end && !neighbour.startEnd.start) {
+            movements.push(neighbour.coord);
+            neighbour.enemy.movement = true;
 
+            // Selects next cell
+            const cameFrom = this.modifiedDir[mode].o;
+            const nextOrientation: OrientationType | undefined =
+                Object.keys(neighbour.walkable).find((key) => key !== cameFrom && neighbour.walkable[key as OrientationType]) as OrientationType;
 
-        // Selects next cell
-        const cameFrom = this.modifiedDir[mode].o;
-        const nextOrientation: OrientationType | undefined =
-            Object.keys(neighbour.walkable).find((key) => key !== cameFrom && neighbour.walkable[key as OrientationType]) as OrientationType;
+            if (nextOrientation) {
+                const next = this.returnNextMovementCell(nextOrientation, neighbour);
 
-        if (nextOrientation) {
-            const next = this.returnNextMovementCell(nextOrientation, neighbour);
-            movements.push(next.coord);
-            next.enemy.movement = true;
+                // Prevent enemy movement on startEnd
+                if (!next.startEnd.end && !next.startEnd.start) {
+                    movements.push(next.coord);
+                    next.enemy.movement = true;
+                }
+            }
         }
 
         return movements;
