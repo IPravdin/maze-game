@@ -12,6 +12,8 @@ import {PlayerSizeType, PositionType} from "./types/global";
 import Player from "./layouts/components/Player";
 import Enemies from "./layouts/components/Enemies";
 import {coordToPosition, positionToCoord} from "./helpers";
+import Dialog from "./layouts/components/Dialog";
+import {Route, Routes} from "react-router-dom";
 
 
 // TODO: it will be a starting screen in v2 and v3
@@ -98,6 +100,8 @@ function App() {
         // ** Register finish
         if (newCell.startEnd.end) {
             setFinished(true)
+            // @ts-ignore
+            window["finish_modal"].showModal()
         }
 
         return {
@@ -148,6 +152,7 @@ function App() {
                     <Finish coord={mazeStructure.endCoord} cellSize={cellSize}/>
                 </div>
             </div>
+            <Dialog id="finish_modal" title="Congrats" text="That's fast"/>
         </div>
     );
 }
