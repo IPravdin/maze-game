@@ -17,8 +17,10 @@ import {coordToPosition, positionToCoord} from "./helpers";
 // TODO: it will be a starting screen in v2 and v3
 // additionally in the v3 it will have a loading screen which transitions to starting menu
 
-const BONUSES = 10
-const ENEMIES = 3
+// TODO: Formula which will allow to determine how many enemies and bonuses could be without App crash
+const BONUSES = 1
+const ENEMIES = 1
+const MAZE_SIZE = 10
 
 // in ms
 export const ENEMY_SPEED = 2000
@@ -26,7 +28,7 @@ export const ENEMY_SPEED = 2000
 function App() {
     const divRef = useRef<HTMLDivElement>(null)
 
-    const [mazeStructure] = useState(new MazeData({width: 20, height: 20}, BONUSES, ENEMIES))
+    const [mazeStructure] = useState(new MazeData({width: MAZE_SIZE, height: MAZE_SIZE}, BONUSES, ENEMIES))
     const [canvaSize] = useState({
         height: 800,
         width: 800
@@ -82,12 +84,9 @@ function App() {
         }
 
         // ** Bonus collect
-        const newCoord: CoordinateType = {
-            x: newPosition.left / cellSize.width,
-            y: newPosition.top / cellSize.height
-        }
-
+        const newCoord= positionToCoord(newPosition, cellSize)
         const newCell = mazeStructure.mazeMap[newCoord.x][newCoord.y]
+
         let collectedBonuses = prevState.collectedBonuses
 
         if (newCell.bonus.placed && !newCell.bonus.collected) {

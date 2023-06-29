@@ -26,14 +26,14 @@ export const objectsEqual = (obj1: Object, obj2: Object) => {
 
 export const coordToPosition = (coord: CoordinateType, cellSize: SizeType): PositionType => {
     return {
-        left: coord.x * cellSize.width,
-        top: coord.y * cellSize.height
+        left: +(coord.x * cellSize.width).toFixed(),
+        top: +(coord.y * cellSize.height).toFixed()
     }
 }
 
 export const positionToCoord = (position: PositionType, cellSize: SizeType): CoordinateType => {
     return {
-        x: position.left / cellSize.width,
-        y: position.top / cellSize.height
+        x: +(position.left / cellSize.width).toFixed(),
+        y: +(position.top / cellSize.height).toFixed()
     }
 }
