@@ -1,4 +1,3 @@
-import PlayerBonuses from "../layouts/components/maze/PlayerBonuses";
 import Enemies from "../layouts/components/maze/Enemies";
 import Player from "../layouts/components/maze/Player";
 import Maze from "../layouts/components/maze/Maze";
@@ -13,6 +12,7 @@ import {HudData} from "../data/HudData";
 import {MazeData} from "../data/MazeData";
 import {EnemySpeed} from "../enums/enemy-speed";
 import GameStateDialog from "../layouts/components/game/GameStateDialog";
+import Hud from "../layouts/components/Hud";
 
 // TODO: Formula which will allow to determine how many enemies and bonuses could be without App crash
 const BONUSES = 1
@@ -132,14 +132,14 @@ const Game = () => {
         }
     };
 
-    //TODO: pause mode with ?pause param in router
-
     return (
         <Fragment>
             <div className="w-full h-full" onKeyDown={keyDownEvent} tabIndex={0} ref={divRef}>
-                <div className="container" style={{ width: hud.size.width, height: hud.size.height }}>
-                    <PlayerBonuses bonuses={player.collectedBonuses} cellSize={hud.cellSize}/>
-                </div>
+                <Hud
+                    bonuses={player.collectedBonuses}
+                    cellSize={cellSize}
+                    hudSize={hud.size}
+                />
                 <div className="container" style={{ width: MAZE_WIDTH, height: MAZE_HEIGHT }}>
                     <Enemies
                         enemiesData={mazeStructure.enemies}

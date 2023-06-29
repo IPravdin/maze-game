@@ -1,10 +1,11 @@
 import Cell from "./Cell";
 import React from "react";
 import {MazeCell} from "../../../types/maze";
+import {SizeType} from "../../../types/global";
 
 type Props = {
     mazeMap: MazeCell[][],
-    cellSize: {height: number, width: number}
+    cellSize: SizeType
 }
 const Maze = ({mazeMap, cellSize}: Props) => {
     return (
