@@ -1,17 +1,17 @@
 import React, {useEffect, useState} from "react";
-import {PlayerSizeType, PositionType, SizeType} from "../../types/global";
-import {CurrMovCoordType, EnemyData} from "../../data/EnemyData";
-import {MazeEnemy} from "../../types/enemy";
-import {coordToPosition, objectsEqual, positionToCoord, returnRandomInt} from "../../helpers";
-import {ENEMY_MOVE_INTERVAL} from "../../pages/Game";
+import {PlayerSizeType, PositionType, SizeType} from "../../../types/global";
+import {CurrMovCoordType, EnemyData} from "../../../data/EnemyData";
+import {MazeEnemy} from "../../../types/enemy";
+import {coordToPosition, objectsEqual, positionToCoord, returnRandomInt} from "../../../helpers";
 
 type Props = {
     cellSize: SizeType
     playerSize: PlayerSizeType
     data: MazeEnemy
+    enemySpeed: number
 }
 
-const Enemy = ({cellSize, data, playerSize}: Props) => {
+const Enemy = ({ cellSize, data, playerSize, enemySpeed }: Props) => {
     const [enemy, setEnemy] = useState(new EnemyData({
         ...data,
         currentPosition: coordToPosition(data.spawn, cellSize)
@@ -19,14 +19,16 @@ const Enemy = ({cellSize, data, playerSize}: Props) => {
 
     // For npc movements
     useEffect(() => {
-        const interval = setInterval(() => {
-            setEnemy((prevState) => ({
-                ...prevState,
-                ...returnNewPosition(prevState)
-            }))
-        }, ENEMY_MOVE_INTERVAL);
-        return () => clearInterval(interval);
-    }, [])
+        if (enemySpeed) {
+            const interval = setInterval(() => {
+                setEnemy((prevState) => ({
+                    ...prevState,
+                    ...returnNewPosition(prevState)
+                }))
+            }, enemySpeed);
+            return () => clearInterval(interval);
+        }
+    }, [enemySpeed])
 
     const returnNewPosition = ({ currentPosition, spawn, movement, currMovCoord }: EnemyData): { currentPosition: PositionType, currMovCoord: CurrMovCoordType } => {
         const currentCoord = positionToCoord(currentPosition, cellSize);

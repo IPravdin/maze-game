@@ -1,10 +1,9 @@
-import PlayerBonuses from "../layouts/components/PlayerBonuses";
-import Enemies from "../layouts/components/Enemies";
-import Player from "../layouts/components/Player";
-import Maze from "../layouts/components/Maze";
-import MazeBonuses from "../layouts/components/MazeBonuses";
-import Finish from "../layouts/components/Finish";
-import Dialog from "../layouts/components/Dialog";
+import PlayerBonuses from "../layouts/components/maze/PlayerBonuses";
+import Enemies from "../layouts/components/maze/Enemies";
+import Player from "../layouts/components/maze/Player";
+import Maze from "../layouts/components/maze/Maze";
+import MazeBonuses from "../layouts/components/maze/MazeBonuses";
+import Finish from "../layouts/components/maze/Finish";
 import React, {Fragment, useEffect, useRef, useState} from "react";
 import {CoordinateType, OrientationType} from "../types/maze";
 import {PlayerData} from "../data/PlayerData";
@@ -12,6 +11,8 @@ import {coordToPosition, positionToCoord} from "../helpers";
 import {PlayerSizeType, PositionType} from "../types/global";
 import {HudData} from "../data/HudData";
 import {MazeData} from "../data/MazeData";
+import {EnemySpeed} from "../enums/enemy-speed";
+import GameStateDialog from "../layouts/components/game/GameStateDialog";
 
 // TODO: Formula which will allow to determine how many enemies and bonuses could be without App crash
 const BONUSES = 1
@@ -21,8 +22,7 @@ const MAZE_CELL_WIDTH = 10
 const MAZE_HEIGHT = 200
 const MAZE_CELL_HEIGHT = 2
 
-// in ms
-export const ENEMY_MOVE_INTERVAL = 1000
+export const ENEMY_SPEED: EnemySpeed = EnemySpeed.slow
 
 const cellSize = {
     height: MAZE_WIDTH / MAZE_CELL_WIDTH,
@@ -44,7 +44,10 @@ const Game = () => {
     const divRef = useRef<HTMLDivElement>(null)
 
     const [player, setPlayer] = useState(playerData)
-    const [finished, setFinished] = useState(false)
+    const [enemySpeed, setEnemySpeed] = useState<EnemySpeed>(ENEMY_SPEED)
+
+    const [openPause, setOpenPause] = useState(false)
+    const [openFinish, setOpenFinish] = useState(false)
 
     // ** Sets focus on main div
     useEffect(() => {
@@ -93,9 +96,7 @@ const Game = () => {
 
         // ** Register finish
         if (newCell.startEnd.end) {
-            setFinished(true)
-            // @ts-ignore
-            window["finish_modal"].showModal()
+            setOpenFinish(true)
         }
 
         return {
@@ -124,7 +125,13 @@ const Game = () => {
         if (event.code === "ArrowUp" || event.code === "KeyW") {
             setPlayer((prevState) => returnUpdatedPlayer('top', prevState));
         }
+        console.log(event.code)
+        if (event.code === "Escape") {
+            console.log('escape')
+            setOpenPause(true)
+        }
     };
+
     //TODO: pause mode with ?pause param in router
 
     return (
@@ -134,16 +141,42 @@ const Game = () => {
                     <PlayerBonuses bonuses={player.collectedBonuses} cellSize={hud.cellSize}/>
                 </div>
                 <div className="container" style={{ width: MAZE_WIDTH, height: MAZE_HEIGHT }}>
-                    <Enemies enemiesData={mazeStructure.enemies} cellSize={cellSize} playerSize={playerSize}/>
+                    <Enemies
+                        enemiesData={mazeStructure.enemies}
+                        cellSize={cellSize}
+                        playerSize={playerSize}
+                        enemySpeed={enemySpeed}
+                    />
                     <Player position={player.currentPosition} playerSize={playerSize}/>
                     <Maze mazeMap={mazeStructure.mazeMap} cellSize={cellSize}/>
                     <MazeBonuses mazeMap={mazeStructure.mazeMap} cellSize={cellSize}/>
                     <Finish coord={mazeStructure.endCoord} cellSize={cellSize}/>
                 </div>
             </div>
-            <Dialog id="finish_modal" title="Congrats" text="That's fast"/>
+            <GameStateDialog
+                id="finish_modal"
+                title="Congrats"
+                text="That's fast"
+                open={openFinish}
+                onOpen={() => setEnemySpeed(EnemySpeed.stop)}
+                onClose={() => {
+                    setEnemySpeed(ENEMY_SPEED)
+                    setOpenFinish(false)
+                }}
+            />
+            <GameStateDialog
+                id="pause_modal"
+                title="Pause"
+                text="Close modal to continue"
+                open={openPause}
+                onOpen={() => setEnemySpeed(EnemySpeed.stop)}
+                onClose={() => {
+                    setEnemySpeed(ENEMY_SPEED)
+                    setOpenPause(false)
+                }}
+            />
         </Fragment>
     )
 }
 
-export default Game
+export default Game;

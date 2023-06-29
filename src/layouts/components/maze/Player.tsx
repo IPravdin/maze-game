@@ -1,5 +1,5 @@
 import React from "react";
-import {PlayerSizeType, PositionType} from "../../types/global";
+import {PlayerSizeType, PositionType} from "../../../types/global";
 
 type Props = {
     position: PositionType,

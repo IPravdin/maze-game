@@ -1,6 +1,6 @@
 import Cell from "./Cell";
 import React from "react";
-import {MazeCell} from "../../types/maze";
+import {MazeCell} from "../../../types/maze";
 
 type Props = {
     mazeMap: MazeCell[][],
