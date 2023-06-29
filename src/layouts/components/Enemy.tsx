@@ -3,7 +3,7 @@ import {PlayerSizeType, PositionType, SizeType} from "../../types/global";
 import {CurrMovCoordType, EnemyData} from "../../data/EnemyData";
 import {MazeEnemy} from "../../types/enemy";
 import {coordToPosition, objectsEqual, positionToCoord, returnRandomInt} from "../../helpers";
-import {ENEMY_MOVE_INTERVAL} from "../../App";
+import {ENEMY_MOVE_INTERVAL} from "../../pages/Game";
 
 type Props = {
     cellSize: SizeType
