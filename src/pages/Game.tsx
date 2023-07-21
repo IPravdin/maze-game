@@ -45,7 +45,7 @@ const Game = () => {
         }
 
         if (event.code === "Escape") {
-            dispatch(keyboardActions.pause);
+            dispatch(keyboardActions.pause());
         }
     };
 
