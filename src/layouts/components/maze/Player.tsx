@@ -5,6 +5,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "../../../store";
 import {keyboardActions} from "../../../store/slices/keyboard";
 import {playerActions} from "../../../store/slices/player";
+import Spinner from "../Spinner";
 
 const Player = () => {
     const dispatch: AppDispatch = useDispatch();
@@ -31,9 +32,11 @@ const Player = () => {
         }
 
         dispatch(keyboardActions.playerMove(null));
-    }, [keyboard.playerMoveDir])
+    }, [keyboard.playerMoveDir]);
 
     const movePlayer = (mode: OrientationType): void => {
+        if (!player.data) return;
+
         const { currentPosition } = player.data;
         const { cellSize } = maze.params;
         const currentCoord: CoordinateType = positionToCoord(currentPosition, cellSize);
@@ -56,6 +59,10 @@ const Player = () => {
         if (newCell.startEnd.end) {
             handleFinishOpen()
         }*/
+    }
+
+    if (!player.data) {
+        return <Spinner />
     }
 
     return (

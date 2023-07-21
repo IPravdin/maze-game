@@ -3,9 +3,9 @@ import {MazeData} from "../../data/MazeData";
 import {CoordinateType} from "../../types/maze";
 import {SizeType} from "../../types/global";
 
-export const mazeInitialState = () => {
+const mazeInitialState = () => {
     const bonuses = 10;
-    const enemies = 4;
+    const enemies = 3;
     const fieldSize: SizeType = { width: 800, height: 800 };
     const mazeCells: SizeType = { width: 20, height: 20 };
 

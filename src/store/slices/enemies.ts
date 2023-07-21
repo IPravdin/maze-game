@@ -1,9 +1,9 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {coordToPosition} from "../../helpers";
-import { mazeInitialState } from "./maze";
-import {PlayerSizeType, PositionType, SizeType} from "../../types/global";
-import {CurrMovCoordType, EnemyData} from "../../data/EnemyData";
+import {EnemySizeType, PlayerSizeType, PositionType, SizeType} from "../../types/global";
+import {CurrMovCoordType, EnemyData, EnemyDataJson} from "../../data/EnemyData";
 import {EnemySpeed} from "../../enums/enemy-speed";
+import {MazeEnemy} from "../../types/enemy";
+import {coordToPosition} from "../../helpers";
 
 const getEnemySize = (cellSize: SizeType): PlayerSizeType => {
     return {
@@ -14,30 +14,36 @@ const getEnemySize = (cellSize: SizeType): PlayerSizeType => {
     }
 }
 
-const enemiesInitialState = () => {
-    const { params, data} = mazeInitialState();
-
-    const size = getEnemySize(params.cellSize);
-    const defaultSpeed = EnemySpeed.slow;
-    const enemies = data.enemies.map((enemy) => new EnemyData({
-        ...enemy,
-        currentPosition: coordToPosition(enemy.spawn, params.cellSize)
-    }).toJson())
-
-    return {
-        params: {
-            size,
-            defaultSpeed,
-            speed: defaultSpeed
-        },
-        data: enemies
-    }
+const initialState: EnemiesState = {
+    params: {
+        size: { width: 0, height: 0, borderWidth: 0, margin: 0},
+        defaultSpeed: EnemySpeed.stop,
+        speed: EnemySpeed.stop,
+    },
+    data: null
 }
 
 const enemiesSlice = createSlice({
     name: 'enemies',
-    initialState: enemiesInitialState(),
+    initialState,
     reducers: {
+        setState(state, action: PayloadAction<{ cellSize: SizeType, mazeEnemies: MazeEnemy[] }>) {
+            const { cellSize, mazeEnemies } = action.payload;
+            const defaultSpeed = EnemySpeed.medium;
+
+            state.params = {
+                size: getEnemySize(cellSize),
+                defaultSpeed: defaultSpeed,
+                speed: defaultSpeed,
+            };
+
+            state.data = mazeEnemies.map((enemy) => new EnemyData(
+                {
+                    ...enemy,
+                    currentPosition: coordToPosition(enemy.spawn, cellSize)
+                }).toJson()
+            );
+        },
         freezeEnemies(state) {
             state.params.speed = EnemySpeed.stop;
         },
@@ -48,6 +54,8 @@ const enemiesSlice = createSlice({
             state.params.defaultSpeed = action.payload;
         },
         setNewPosition(state, action: PayloadAction<{ id: number, currentPosition: PositionType, currMovCoord: CurrMovCoordType }>) {
+            if (!state.data) return;
+
             const { id, currentPosition, currMovCoord} = action.payload;
             state.data[id].currentPosition = currentPosition;
             state.data[id].currMovCoord = currMovCoord;
@@ -55,5 +63,13 @@ const enemiesSlice = createSlice({
     },
 })
 
+type EnemiesState = {
+    params: {
+        size: EnemySizeType,
+        defaultSpeed: EnemySpeed,
+        speed: EnemySpeed
+    },
+    data: EnemyDataJson[] | null
+}
 export const enemiesActions = enemiesSlice.actions;
 export const enemiesReducer = enemiesSlice.reducer;

@@ -1,10 +1,11 @@
 import Map from "../maze/Map";
 import MapBonuses from "../maze/MapBonuses";
 import Finish from "../maze/Finish";
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
 import {useSelector} from "react-redux";
 import {RootState} from "../../../store";
 import Enemies from "../maze/Enemies";
+import Spinner from "../Spinner";
 
 interface Props {
     player?: ReactNode,
@@ -14,6 +15,10 @@ const Maze = ({ player }: Props) => {
     const enemies = useSelector((state: RootState) => state.enemies);
 
     const cellSize = maze.params.cellSize;
+
+    if (!enemies.data) {
+        return <Spinner />
+    }
 
     return (
         <div className="container" style={{ ...maze.params.fieldSize  }}>

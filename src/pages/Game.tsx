@@ -8,10 +8,14 @@ import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState } from "../store";
 import {keyboardActions} from "../store/slices/keyboard";
 import {enemiesActions} from "../store/slices/enemies";
+import {initialMazeFetch} from "../store/slices/initial-maze-fetch";
+import Spinner from "../layouts/components/Spinner";
 
 const Game = () => {
     const dispatch: AppDispatch = useDispatch();
     const keyboard = useSelector((state: RootState) => state.keyboard);
+    const player = useSelector((state: RootState) => state.player);
+    const enemies = useSelector((state: RootState) => state.enemies);
 
     const divRef = useRef<HTMLDivElement>(null)
 
@@ -22,6 +26,11 @@ const Game = () => {
         if (!divRef) return
         divRef.current?.focus()
     }, [divRef])
+
+    // ** Maintains same start data for Reducers
+    useEffect(() => {
+        dispatch(initialMazeFetch());
+    }, [dispatch]);
 
     const keyDownListener = (event: React.KeyboardEvent<HTMLDivElement>) => {
         event.preventDefault()
@@ -39,6 +48,10 @@ const Game = () => {
             dispatch(keyboardActions.pause);
         }
     };
+
+    if (!player.data && !enemies.data) {
+        return <Spinner />
+    }
 
     return (
         <div className="w-full h-full" onKeyDown={keyDownListener} tabIndex={0} ref={divRef}>

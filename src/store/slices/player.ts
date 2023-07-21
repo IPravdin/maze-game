@@ -1,8 +1,6 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {PlayerData} from "../../data/PlayerData";
+import {PlayerData, PlayerDataJsonType} from "../../data/PlayerData";
 import {coordToPosition} from "../../helpers";
-import { mazeInitialState } from "./maze";
-import {AppThunk} from "../index";
 import {CoordinateType, OrientationType} from "../../types/maze";
 import {PlayerSizeType, SizeType} from "../../types/global";
 
@@ -15,28 +13,20 @@ const getPlayerSize = (cellSize: SizeType): PlayerSizeType => {
     }
 }
 
-const playerInitialState = () => {
-    const { data, params} = mazeInitialState();
-
-    const startCoord = data.startCoord;
-    const cellSize = params.cellSize;
-    const playerSize = getPlayerSize(cellSize);
-
-    return {
-        params: {
-            startCoord,
-            cellSize,
-            playerSize
-        },
-        data: new PlayerData(coordToPosition(startCoord, cellSize)).toJson()
-    }
+const initialState: PlayerState = {
+    params: {
+        startCoord: { x: 0, y: 0},
+        cellSize: { width: 0, height: 0},
+        playerSize: { width: 0, height: 0, borderWidth: 0, margin: 0 }
+    },
+    data: null
 }
 
 const playerSlice = createSlice({
     name: 'player',
-    initialState: playerInitialState(),
+    initialState,
     reducers: {
-        setParams(state, action: PayloadAction<{ startCoord: CoordinateType, cellSize: SizeType }>) {
+        setState(state, action: PayloadAction<{ startCoord: CoordinateType, cellSize: SizeType }>) {
             const { startCoord, cellSize } = action.payload;
 
             state.params = {
@@ -44,17 +34,22 @@ const playerSlice = createSlice({
                 cellSize,
                 playerSize: getPlayerSize(cellSize)
             };
-        },
-        generate(state) {
-            state.data = new PlayerData(coordToPosition(state.params.startCoord, state.params.cellSize)).toJson()
+
+            state.data = new PlayerData(coordToPosition(startCoord, cellSize)).toJson();
         },
         collectBonus(state) {
+            if (!state.data) return;
+
             state.data.collectedBonuses++;
         },
         recordStep(state) {
+            if (!state.data) return;
+
             state.data.stepsWalked++;
         },
         move(state, actions: PayloadAction<OrientationType>) {
+            if (!state.data) return;
+
             switch (actions.payload) {
                 case 'left':
                     state.data.currentPosition.left -= state.params.cellSize.width;
@@ -73,15 +68,14 @@ const playerSlice = createSlice({
     },
 })
 
-export const fetchMazeSliceData = (): AppThunk => (dispatch, getState) => {
-    const state = getState();
-    const dataFromMaze = state.maze;
-
-    dispatch(playerActions.setParams({
-        startCoord: dataFromMaze.data.startCoord,
-        cellSize: dataFromMaze.params.cellSize
-    }));
-};
+type PlayerState = {
+    params: {
+        startCoord: CoordinateType,
+        cellSize: SizeType,
+        playerSize: PlayerSizeType
+    },
+    data: PlayerDataJsonType | null
+}
 
 export const playerActions = playerSlice.actions;
 export const playerReducer = playerSlice.reducer;

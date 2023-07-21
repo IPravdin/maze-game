@@ -2,9 +2,14 @@ import React from "react";
 import Enemy from "./Enemy";
 import {useSelector} from "react-redux";
 import {RootState} from "../../../store";
+import Spinner from "../Spinner";
 
 const Enemies = () => {
     const enemies = useSelector((state: RootState) => state.enemies);
+
+    if (!enemies.data) {
+        return <Spinner />
+    }
 
     return (
         <div>

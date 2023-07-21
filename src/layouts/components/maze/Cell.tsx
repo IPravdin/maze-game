@@ -1,13 +1,14 @@
-import React from "react";
+import React, {ReactNode} from "react";
 import {CoordinateType, MazeCell} from "../../../types/maze";
 import {SizeType} from "../../../types/global";
 
 type Props = {
     coord: CoordinateType
     cell: MazeCell,
-    cellSize: SizeType
+    cellSize: SizeType,
+    children?: ReactNode
 }
-const Cell = ({coord, cellSize, cell}: Props) => {
+const Cell = ({coord, cellSize, cell, children}: Props) => {
     const {top, bottom, left, right} = cell.walkable
 
     const borderWidth = 2
@@ -25,7 +26,7 @@ const Cell = ({coord, cellSize, cell}: Props) => {
             borderTop: top ? '' : borderProps,
             borderBottom: bottom ? '': borderProps
         }}
-    />
+    >{children}</div>
 }
 
 export default Cell

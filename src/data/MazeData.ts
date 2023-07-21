@@ -53,7 +53,7 @@ export class MazeData {
     }
 
     toJson = () => {
-        const data = {
+        return {
             size: this.size,
             enemies: this.enemies,
             mazeMap: this.mazeMap,
@@ -62,8 +62,6 @@ export class MazeData {
             directions: this.directions,
             modifiedDir: this.modifiedDir
         }
-        console.log(data)
-        return data
     }
 
     private generateMap = (): MazeCell[][] => {
@@ -230,7 +228,7 @@ export class MazeData {
         const spawnCells: MazeCell[] = []
         this.mazeMap.forEach((row) => {
             row.forEach((cell) => {
-                const startEnd = Object.values(cell.startEnd).find((pos) => pos)
+                const startEnd = Object.values(cell.startEnd).find((pos) => pos);
                 if (startEnd) return
 
                 let walkways = 0
@@ -255,7 +253,7 @@ export class MazeData {
         const selectedCell = spawnCells.splice(selectedIndex, 1)[0]
         const selectedCellInOtherRadius = !!enemies?.find((enemy) =>
             enemy.notSpawnRadius?.find((x) =>
-                x.find((cell) => selectedCell.coord?.x === cell.x || selectedCell.coord?.y === cell.y)))
+                x.find((cell) => selectedCell.coord.x === cell.x || selectedCell.coord.y === cell.y)))
 
 
         if (selectedCellInOtherRadius) {

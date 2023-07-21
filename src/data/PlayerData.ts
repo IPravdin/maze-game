@@ -1,6 +1,12 @@
 import {PositionType} from "../types/global";
 import {CreatureData} from "./CreatureData";
 
+export type PlayerDataJsonType = {
+    collectedBonuses: number,
+    stepsWalked: number,
+    currentPosition: PositionType,
+    alive: boolean
+}
 
 export class PlayerData extends CreatureData {
     collectedBonuses: number
