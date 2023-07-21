@@ -2,27 +2,23 @@ import Map from "../maze/Map";
 import MapBonuses from "../maze/MapBonuses";
 import Finish from "../maze/Finish";
 import { ReactNode } from "react";
-import { CoordinateType, MazeCell } from "../../../types/maze";
-import { SizeType } from "../../../types/global";
+import {useSelector} from "react-redux";
+import {RootState} from "../../../store";
+import Enemies from "../maze/Enemies";
 
 interface Props {
-    size: SizeType,
-    mazeMap: MazeCell[][],
-    finishCoord: CoordinateType,
-    cellSize: SizeType,
-
-    enemies?: ReactNode,
     player?: ReactNode,
 }
-const Maze = ({ enemies, mazeMap, finishCoord, size, cellSize, player }: Props) => {
+const Maze = ({ player }: Props) => {
+    const maze = useSelector((state: RootState) => state.maze);
 
     return (
-        <div className="container" style={{ ...size }}>
-            {enemies}
+        <div className="container" style={{ ...maze.params.fieldSize  }}>
+            <Enemies />
             {player}
-            <Map mazeMap={mazeMap} cellSize={cellSize}/>
-            <MapBonuses mazeMap={mazeMap} cellSize={cellSize}/>
-            <Finish coord={finishCoord} cellSize={cellSize}/>
+            <Map mazeMap={maze.data.mazeMap} cellSize={maze.params.cellSize}/>
+            <MapBonuses mazeMap={maze.data.mazeMap} cellSize={maze.params.cellSize}/>
+            <Finish coord={maze.data.endCoord} cellSize={maze.params.cellSize}/>
         </div>
     )
 }

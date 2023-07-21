@@ -1,101 +1,67 @@
-import React, { Dispatch, SetStateAction, useEffect } from "react";
-import { PlayerSizeType, PositionType, SizeType } from "../../../types/global";
+import React, { useEffect } from "react";
 import { CoordinateType, OrientationType } from "../../../types/maze";
-import { PlayerData } from "../../../data/PlayerData";
 import { positionToCoord } from "../../../helpers";
-import { PlayerMoveKeys } from "../../../types/player";
-import { MazeData } from "../../../data/MazeData";
+import {useDispatch, useSelector} from "react-redux";
+import {AppDispatch, RootState} from "../../../store";
+import {keyboardActions} from "../../../store/slices/keyboard";
+import {playerActions} from "../../../store/slices/player";
 
-interface Props {
-    playerMove: PlayerMoveKeys | null,
-    setPlayerMove: Dispatch<SetStateAction<PlayerMoveKeys | null>>,
-    playerSize: PlayerSizeType,
-    setPlayer: Dispatch<SetStateAction<PlayerData>>,
-    currentPosition: PositionType,
-    cellSize: SizeType,
-    mazeStructure: MazeData,
-    handleFinishOpen: () => void
-}
-const Player = ({playerSize, currentPosition, playerMove, setPlayerMove, setPlayer, cellSize, mazeStructure, handleFinishOpen}: Props) => {
+const Player = () => {
+    const dispatch: AppDispatch = useDispatch();
+    const keyboard = useSelector((state: RootState) => state.keyboard);
+    const player = useSelector((state: RootState) => state.player);
+    const maze = useSelector((state: RootState) => state.maze);
 
     useEffect(() => {
-        if (!playerMove) return
+        const { playerMoveDir } = keyboard;
 
-        if (playerMove === "ArrowRight" || playerMove === "KeyD") {
-            setPlayer((prevState) => returnUpdatedPlayer('right', prevState));
+        if (!playerMoveDir) return;
+
+        if (playerMoveDir === "ArrowRight" || playerMoveDir === "KeyD") {
+            movePlayer('right');
         }
-        if (playerMove === "ArrowLeft" || playerMove === "KeyA") {
-            setPlayer((prevState) => returnUpdatedPlayer('left', prevState));
+        if (playerMoveDir === "ArrowLeft" || playerMoveDir === "KeyA") {
+            movePlayer('left');
         }
-        if (playerMove === "ArrowDown" || playerMove === "KeyS") {
-            setPlayer((prevState) => returnUpdatedPlayer('bottom', prevState));
+        if (playerMoveDir === "ArrowDown" || playerMoveDir === "KeyS") {
+            movePlayer('bottom');
         }
-        if (playerMove === "ArrowUp" || playerMove === "KeyW") {
-            setPlayer((prevState) => returnUpdatedPlayer('top', prevState));
+        if (playerMoveDir === "ArrowUp" || playerMoveDir === "KeyW") {
+            movePlayer('top');
         }
 
-        setPlayerMove(null)
-    }, [playerMove])
+        dispatch(keyboardActions.playerMove(null));
+    }, [keyboard.playerMoveDir])
 
-    const returnUpdatedPlayer = (mode: OrientationType, prevState: PlayerData): PlayerData => {
-        const { currentPosition } = prevState;
+    const movePlayer = (mode: OrientationType): void => {
+        const { currentPosition } = player.data;
+        const { cellSize } = maze.params;
         const currentCoord: CoordinateType = positionToCoord(currentPosition, cellSize);
 
         // ** Is Cell walkable
-        if(!mazeStructure.mazeMap[currentCoord.x][currentCoord.y].walkable[mode]) return prevState
-
-        let newPosition: PositionType = {left: 0, top: 0}
-
-        switch (mode) {
-            case 'left':
-                newPosition.left = prevState.currentPosition.left - cellSize.width
-                newPosition.top = currentPosition.top
-                break;
-            case 'right':
-                newPosition.left = prevState.currentPosition.left + cellSize.width
-                newPosition.top = currentPosition.top
-                break;
-            case 'top':
-                newPosition.left = currentPosition.left
-                newPosition.top = prevState.currentPosition.top - cellSize.height
-                break;
-            case 'bottom':
-                newPosition.left = currentPosition.left
-                newPosition.top = prevState.currentPosition.top + cellSize.height
-                break;
-        }
+        if(!maze.data.mazeMap[currentCoord.x][currentCoord.y].walkable[mode]) return;
+        dispatch(playerActions.move(mode));
+        dispatch(playerActions.recordStep());
 
         // ** Bonus collect
-        const newCoord= positionToCoord(newPosition, cellSize)
+        /*const newCoord= positionToCoord(newPosition, cellSize)
         const newCell = mazeStructure.mazeMap[newCoord.x][newCoord.y]
 
-        let collectedBonuses = prevState.collectedBonuses
-
         if (newCell.bonus.placed && !newCell.bonus.collected) {
-            collectedBonuses++
-            newCell.bonus.collected = true
+            dispatch(playerActions.collectBonus());
+            dispatch(mazeActions.setBonusCollected(newCoord));
         }
 
         // ** Register finish
         if (newCell.startEnd.end) {
             handleFinishOpen()
-        }
-
-        return {
-            ...prevState,
-            stepsWalked: ++prevState.stepsWalked,
-            collectedBonuses: collectedBonuses,
-            currentPosition: {
-                left: newPosition.left,
-                top: newPosition.top
-            }
-        }
+        }*/
     }
 
     return (
         <div
             className="player"
-            style={{ ...playerSize, top: currentPosition.top, left: currentPosition.left }}
+            style={{ ...player.params.playerSize, top: player.data.currentPosition.top, left: player.data.currentPosition.left }}
         />
     )
 }

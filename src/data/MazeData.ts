@@ -5,9 +5,9 @@ import {MazeEnemy} from "../types/enemy";
 
 export class MazeData {
     readonly size: SizeType
-    readonly bonuses: number;
+    private readonly bonuses: number;
     readonly enemies: MazeEnemy[]
-    readonly enemiesAmount: number;
+    private readonly enemiesAmount: number;
     readonly mazeMap: MazeCell[][];
     readonly startCoord: CoordinateType;
     readonly endCoord: CoordinateType;
@@ -239,10 +239,9 @@ export class MazeData {
     private defineEnemy = (spawnCells: MazeCell[], enemies: MazeEnemy[], enemyIndex: number) => {
         const selectedIndex = returnRandomInt(0, spawnCells.length - 1)
         const selectedCell = spawnCells.splice(selectedIndex, 1)[0]
-
         const selectedCellInOtherRadius = !!enemies?.find((enemy) =>
             enemy.notSpawnRadius?.find((x) =>
-                x.find((cell) => selectedCell.coord.x === cell.x || selectedCell.coord.y === cell.y)))
+                x.find((cell) => selectedCell.coord?.x === cell.x || selectedCell.coord?.y === cell.y)))
 
 
         if (selectedCellInOtherRadius) {
