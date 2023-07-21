@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
 import { SizeType } from "../../../types/global";
-import {CurrMovCoordType, EnemyData, EnemyDataJson} from "../../../data/EnemyData";
+import {CurrMovCoordType, EnemyDataJson} from "../../../data/EnemyData";
 import {coordToPosition, objectsEqual, positionToCoord, returnRandomInt} from "../../../helpers";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "../../../store";
@@ -35,7 +35,8 @@ const Enemy = ({ id, speed, size, data }: Props) => {
         // ** Enemy on Spawn
         if (objectsEqual(spawn, currentCoord)) {
             const dirIndex = returnRandomInt(0, movement.length - 1);
-            dispatch(enemiesActions.setNewPosition({id,
+            dispatch(enemiesActions.setNewPosition({
+                id,
                 currentPosition: coordToPosition(movement[dirIndex][0], cellSize),
                 currMovCoord: { dirIndex, posInDir: 0, prevPosInDir: -1 }
             }))
@@ -47,23 +48,27 @@ const Enemy = ({ id, speed, size, data }: Props) => {
 
             if (movement[dirIndex].length > 1 ) {
                 if (posInDir === 0 && prevPosInDir < 0) {
-                    dispatch(enemiesActions.setNewPosition({id,
+                    dispatch(enemiesActions.setNewPosition({
+                        id,
                         currentPosition: coordToPosition(movement[dirIndex][posInDir + 1], cellSize),
                         currMovCoord: {dirIndex, posInDir: posInDir + 1, prevPosInDir: posInDir }
                     }))
                 } else if (posInDir === 1) {
-                    dispatch(enemiesActions.setNewPosition({id,
+                    dispatch(enemiesActions.setNewPosition({
+                        id,
                         currentPosition: coordToPosition(movement[dirIndex][posInDir - 1], cellSize),
                         currMovCoord: {dirIndex, posInDir: posInDir - 1, prevPosInDir: posInDir }
                     }))
                 } else if (posInDir === 0 && prevPosInDir > 0) {
-                    dispatch(enemiesActions.setNewPosition({id,
+                    dispatch(enemiesActions.setNewPosition({
+                        id,
                         currentPosition: coordToPosition(spawn, cellSize),
                         currMovCoord: { dirIndex: -1, posInDir: -1, prevPosInDir: -1 }
                     }))
                 }
             } else {
-                dispatch(enemiesActions.setNewPosition({id,
+                dispatch(enemiesActions.setNewPosition({
+                    id,
                     currentPosition: coordToPosition(spawn, cellSize),
                     currMovCoord: { dirIndex: -1, posInDir: -1, prevPosInDir: -1 }
                 }))

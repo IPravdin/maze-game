@@ -25,7 +25,7 @@ const Game = () => {
     useEffect(() => {
         if (!divRef) return
         divRef.current?.focus()
-    }, [divRef])
+    }, [divRef, player.data, enemies.data])
 
     // ** Maintains same start data for Reducers
     useEffect(() => {
