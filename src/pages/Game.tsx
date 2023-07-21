@@ -14,11 +14,11 @@ import {PlayerMoveKeys} from "../types/player";
 
 // TODO: Formula which will allow to determine how many enemies and bonuses could be without App crash
 const BONUSES = 1
-const ENEMIES = 1
-const MAZE_WIDTH = 1000
+const ENEMIES = 3
+const MAZE_WIDTH = 800
 const MAZE_CELL_WIDTH = 10
-const MAZE_HEIGHT = 200
-const MAZE_CELL_HEIGHT = 2
+const MAZE_HEIGHT = 800
+const MAZE_CELL_HEIGHT = 10
 
 export const ENEMY_SPEED: EnemySpeed = EnemySpeed.slow
 
