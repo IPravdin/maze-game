@@ -18,7 +18,7 @@ const enemiesInitialState = () => {
     const { params, data} = mazeInitialState();
 
     const size = getEnemySize(params.cellSize);
-    const defaultSpeed = EnemySpeed.medium;
+    const defaultSpeed = EnemySpeed.slow;
     const enemies = data.enemies.map((enemy) => new EnemyData({
         ...enemy,
         currentPosition: coordToPosition(enemy.spawn, params.cellSize)

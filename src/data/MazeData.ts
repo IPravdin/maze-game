@@ -53,7 +53,7 @@ export class MazeData {
     }
 
     toJson = () => {
-        return {
+        const data = {
             size: this.size,
             enemies: this.enemies,
             mazeMap: this.mazeMap,
@@ -62,6 +62,8 @@ export class MazeData {
             directions: this.directions,
             modifiedDir: this.modifiedDir
         }
+        console.log(data)
+        return data
     }
 
     private generateMap = (): MazeCell[][] => {

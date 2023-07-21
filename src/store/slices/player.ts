@@ -69,7 +69,6 @@ const playerSlice = createSlice({
                     state.data.currentPosition.top += state.params.cellSize.height;
                     break;
             }
-            console.log(state.data.currentPosition)
         },
     },
 })

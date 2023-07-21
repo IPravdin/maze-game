@@ -1,6 +1,6 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { SizeType } from "../../../types/global";
-import {CurrMovCoordType, EnemyData} from "../../../data/EnemyData";
+import {CurrMovCoordType, EnemyData, EnemyDataJson} from "../../../data/EnemyData";
 import {coordToPosition, objectsEqual, positionToCoord, returnRandomInt} from "../../../helpers";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "../../../store";
@@ -10,28 +10,26 @@ import {enemiesActions} from "../../../store/slices/enemies";
 type Props = {
     id: number,
     speed: EnemySpeed,
-    size: SizeType
+    size: SizeType,
+    data: EnemyDataJson
 }
 
-const Enemy = ({ id, speed, size }: Props) => {
+const Enemy = ({ id, speed, size, data }: Props) => {
     const dispatch: AppDispatch = useDispatch();
     const maze = useSelector((state: RootState) => state.maze);
     const { cellSize } = maze.params;
 
-    const enemies = useSelector((state: RootState) => state.enemies);
-    const data = enemies.data[id];
-
     // For npc movements
-    /*useEffect(() => {
+    useEffect(() => {
         if (speed) {
             const interval = setInterval(() => {
                 moveEnemy(id, data);
             }, speed);
             return () => clearInterval(interval);
         }
-    }, [speed])*/
+    }, [speed])
 
-    const moveEnemy = (id: number, { currentPosition, spawn, movement, currMovCoord }: EnemyData): void => {
+    const moveEnemy = (id: number, { currentPosition, spawn, movement, currMovCoord }: EnemyDataJson): void => {
         const currentCoord = positionToCoord(currentPosition, cellSize);
 
         // ** Enemy on Spawn
