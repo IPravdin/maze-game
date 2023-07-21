@@ -11,4 +11,13 @@ export class PlayerData extends CreatureData {
         this.collectedBonuses = 0
         this.stepsWalked = 0
     }
+
+    toJson = () => {
+        return {
+            collectedBonuses: this.collectedBonuses,
+            stepsWalked: this.stepsWalked,
+            currentPosition: this.currentPosition,
+            alive: this.alive
+        }
+    }
 }

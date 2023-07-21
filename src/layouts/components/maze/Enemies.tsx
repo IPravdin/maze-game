@@ -12,7 +12,6 @@ const Enemies = () => {
                 <Enemy
                     key={`enemy[${enemy.spawn.x}][${enemy.spawn.y}]`}
                     id={index}
-                    data={enemy}
                     speed={enemies.params.speed}
                     size={enemies.params.size}
                 />

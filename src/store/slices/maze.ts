@@ -10,7 +10,7 @@ export const mazeInitialState = () => {
     const mazeCells: SizeType = { width: 20, height: 20 };
 
     return {
-        data: new MazeData({ width: mazeCells.width, height: mazeCells.height }, bonuses, enemies),
+        data: new MazeData({ width: mazeCells.width, height: mazeCells.height }, bonuses, enemies).toJson(),
         params: {
             fieldSize,
             mazeCells,
@@ -32,7 +32,7 @@ const mazeSlice = createSlice({
             const { bonuses, enemies, mazeCells } = state.params;
             const { width, height} = mazeCells;
 
-            state.data = new MazeData({ width, height }, bonuses, enemies);
+            state.data = new MazeData({ width, height }, bonuses, enemies).toJson();
         },
         setBonusCollected(state, action : PayloadAction<CoordinateType>) {
             state.data.mazeMap[action.payload.x][action.payload.y].bonus.collected = true;

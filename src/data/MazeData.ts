@@ -52,6 +52,18 @@ export class MazeData {
         this.defineBonusPlaces(startCord, endCord)
     }
 
+    toJson = () => {
+        return {
+            size: this.size,
+            enemies: this.enemies,
+            mazeMap: this.mazeMap,
+            startCoord: this.startCoord,
+            endCoord: this.endCoord,
+            directions: this.directions,
+            modifiedDir: this.modifiedDir
+        }
+    }
+
     private generateMap = (): MazeCell[][] => {
         let mazeMap = new Array(this.size.width);
         for (let x = 0; x < this.size.width; x++) {

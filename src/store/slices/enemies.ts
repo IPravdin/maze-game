@@ -22,7 +22,7 @@ const enemiesInitialState = () => {
     const enemies = data.enemies.map((enemy) => new EnemyData({
         ...enemy,
         currentPosition: coordToPosition(enemy.spawn, params.cellSize)
-    }))
+    }).toJson())
 
     return {
         params: {
@@ -47,10 +47,10 @@ const enemiesSlice = createSlice({
         setDefaultSpeed(state, action: PayloadAction<EnemySpeed>) {
             state.params.defaultSpeed = action.payload;
         },
-        setNewPosition(state, action: PayloadAction<{ id: number, newPosition: PositionType, newMovCoord: CurrMovCoordType }>) {
-            const { id, newMovCoord, newPosition} = action.payload;
-            state.data[id].currentPosition = newPosition;
-            state.data[id].currMovCoord = newMovCoord;
+        setNewPosition(state, action: PayloadAction<{ id: number, currentPosition: PositionType, currMovCoord: CurrMovCoordType }>) {
+            const { id, currentPosition, currMovCoord} = action.payload;
+            state.data[id].currentPosition = currentPosition;
+            state.data[id].currMovCoord = currMovCoord;
         }
     },
 })

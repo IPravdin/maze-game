@@ -28,7 +28,7 @@ const playerInitialState = () => {
             cellSize,
             playerSize
         },
-        data: new PlayerData(coordToPosition(startCoord, cellSize))
+        data: new PlayerData(coordToPosition(startCoord, cellSize)).toJson()
     }
 }
 
@@ -46,7 +46,7 @@ const playerSlice = createSlice({
             };
         },
         generate(state) {
-            state.data = new PlayerData(coordToPosition(state.params.startCoord, state.params.cellSize))
+            state.data = new PlayerData(coordToPosition(state.params.startCoord, state.params.cellSize)).toJson()
         },
         collectBonus(state) {
             state.data.collectedBonuses++;
@@ -55,7 +55,6 @@ const playerSlice = createSlice({
             state.data.stepsWalked++;
         },
         move(state, actions: PayloadAction<OrientationType>) {
-            console.log(state.data.currentPosition)
             switch (actions.payload) {
                 case 'left':
                     state.data.currentPosition.left -= state.params.cellSize.width;
