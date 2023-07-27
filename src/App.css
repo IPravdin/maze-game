@@ -70,6 +70,15 @@
   color: #61dafb;
 }
 
+.enemy-spawn {
+  position: var(--element-position);
+  background: rgb(77, 241, 20);
+}
+.enemy-move {
+  position: var(--element-position);
+  background: rgb(178, 64, 91);
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

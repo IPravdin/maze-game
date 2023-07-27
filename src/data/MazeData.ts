@@ -5,9 +5,9 @@ import {MazeEnemy} from "../types/enemy";
 
 export class MazeData {
     readonly size: SizeType
-    readonly bonuses: number;
+    private readonly bonuses: number;
     readonly enemies: MazeEnemy[]
-    readonly enemiesAmount: number;
+    private readonly enemiesAmount: number;
     readonly mazeMap: MazeCell[][];
     readonly startCoord: CoordinateType;
     readonly endCoord: CoordinateType;
@@ -50,6 +50,18 @@ export class MazeData {
 
         this.enemies = this.defineEnemies()
         this.defineBonusPlaces(startCord, endCord)
+    }
+
+    toJson = () => {
+        return {
+            size: this.size,
+            enemies: this.enemies,
+            mazeMap: this.mazeMap,
+            startCoord: this.startCoord,
+            endCoord: this.endCoord,
+            directions: this.directions,
+            modifiedDir: this.modifiedDir
+        }
     }
 
     private generateMap = (): MazeCell[][] => {
@@ -216,7 +228,7 @@ export class MazeData {
         const spawnCells: MazeCell[] = []
         this.mazeMap.forEach((row) => {
             row.forEach((cell) => {
-                const startEnd = Object.values(cell.startEnd).find((pos) => pos)
+                const startEnd = Object.values(cell.startEnd).find((pos) => pos);
                 if (startEnd) return
 
                 let walkways = 0
@@ -239,7 +251,6 @@ export class MazeData {
     private defineEnemy = (spawnCells: MazeCell[], enemies: MazeEnemy[], enemyIndex: number) => {
         const selectedIndex = returnRandomInt(0, spawnCells.length - 1)
         const selectedCell = spawnCells.splice(selectedIndex, 1)[0]
-
         const selectedCellInOtherRadius = !!enemies?.find((enemy) =>
             enemy.notSpawnRadius?.find((x) =>
                 x.find((cell) => selectedCell.coord.x === cell.x || selectedCell.coord.y === cell.y)))

@@ -1,17 +1,23 @@
 import React, {useEffect, useState} from "react";
-import {PlayerSizeType, PositionType, SizeType} from "../../../types/global";
+import {PositionType} from "../../../types/global";
 import {CurrMovCoordType, EnemyData} from "../../../data/EnemyData";
-import {MazeEnemy} from "../../../types/enemy";
 import {coordToPosition, objectsEqual, positionToCoord, returnRandomInt} from "../../../helpers";
+import {useDispatch, useSelector} from "react-redux";
+import {AppDispatch, RootState} from "../../../store";
+import {MazeEnemy} from "../../../types/enemy";
+import {enemiesActions} from "../../../store/slices/enemies";
 
 type Props = {
-    cellSize: SizeType
-    enemySize: PlayerSizeType
+    id: number,
     data: MazeEnemy
-    enemySpeed: number
 }
 
-const Enemy = ({ cellSize, data, enemySize, enemySpeed }: Props) => {
+const Enemy = ({ id, data }: Props) => {
+    const dispatch: AppDispatch = useDispatch();
+    const maze = useSelector((state: RootState) => state.maze);
+    const { speed, size} = useSelector((state: RootState) => state.enemies.params);
+    const { cellSize } = maze.params;
+
     const [enemy, setEnemy] = useState(new EnemyData({
         ...data,
         currentPosition: coordToPosition(data.spawn, cellSize)
@@ -19,25 +25,27 @@ const Enemy = ({ cellSize, data, enemySize, enemySpeed }: Props) => {
 
     // For npc movements
     useEffect(() => {
-        if (enemySpeed) {
+        if (speed) {
             const interval = setInterval(() => {
                 setEnemy((prevState) => ({
                     ...prevState,
-                    ...returnNewPosition(prevState)
+                    ...returnNewPosition(id, prevState)
                 }))
-            }, enemySpeed);
+            }, speed);
             return () => clearInterval(interval);
         }
-    }, [enemySpeed])
+    }, [speed])
 
-    const returnNewPosition = ({ currentPosition, spawn, movement, currMovCoord }: EnemyData): { currentPosition: PositionType, currMovCoord: CurrMovCoordType } => {
+    const returnNewPosition = (id: number, { currentPosition, spawn, movement, currMovCoord }: EnemyData): { currentPosition: PositionType, currMovCoord: CurrMovCoordType } => {
         const currentCoord = positionToCoord(currentPosition, cellSize);
 
         // ** Enemy on Spawn
         if (objectsEqual(spawn, currentCoord)) {
             const dirIndex = returnRandomInt(0, movement.length - 1);
+            const newCoord = movement[dirIndex][0];
+            dispatch(enemiesActions.recordCoord({id, newCoord}))
             return {
-                currentPosition: coordToPosition(movement[dirIndex][0], cellSize),
+                currentPosition: coordToPosition(newCoord, cellSize),
                 currMovCoord: { dirIndex, posInDir: 0, prevPosInDir: -1 }
             }
         }
@@ -48,24 +56,32 @@ const Enemy = ({ cellSize, data, enemySize, enemySpeed }: Props) => {
 
             if (movement[dirIndex].length > 1 ) {
                 if (posInDir === 0 && prevPosInDir < 0) {
+                    const newCoord = movement[dirIndex][posInDir + 1];
+                    dispatch(enemiesActions.recordCoord({id, newCoord}));
                     return {
-                        currentPosition: coordToPosition(movement[dirIndex][posInDir + 1], cellSize),
+                        currentPosition: coordToPosition(newCoord, cellSize),
                         currMovCoord: {dirIndex, posInDir: posInDir + 1, prevPosInDir: posInDir }
                     }
                 } else if (posInDir === 1) {
+                    const newCoord = movement[dirIndex][posInDir - 1];
+                    dispatch(enemiesActions.recordCoord({id, newCoord}));
                     return {
-                        currentPosition: coordToPosition(movement[dirIndex][posInDir - 1], cellSize),
+                        currentPosition: coordToPosition(newCoord, cellSize),
                         currMovCoord: {dirIndex, posInDir: posInDir - 1, prevPosInDir: posInDir }
                     }
                 } else if (posInDir === 0 && prevPosInDir > 0) {
+                    const newCoord = spawn;
+                    dispatch(enemiesActions.recordCoord({id, newCoord}));
                     return {
-                        currentPosition: coordToPosition(spawn, cellSize),
+                        currentPosition: coordToPosition(newCoord, cellSize),
                         currMovCoord: { dirIndex: -1, posInDir: -1, prevPosInDir: -1 }
                     }
                 }
             } else {
+                const newCoord = spawn;
+                dispatch(enemiesActions.recordCoord({id, newCoord}));
                 return {
-                    currentPosition: coordToPosition(spawn, cellSize),
+                    currentPosition: coordToPosition(newCoord, cellSize),
                     currMovCoord: { dirIndex: -1, posInDir: -1, prevPosInDir: -1 }
                 }
             }
@@ -80,7 +96,7 @@ const Enemy = ({ cellSize, data, enemySize, enemySpeed }: Props) => {
         return dirIndex >= 0 && posInDir >= 0
     }
 
-    return <div className="enemy" style={{ ...enemySize, left: enemy.currentPosition.left, top: enemy.currentPosition.top }}/>
+    return <div className="enemy" style={{ ...size, left: enemy.currentPosition.left, top: enemy.currentPosition.top }}/>
 }
 
 export default Enemy

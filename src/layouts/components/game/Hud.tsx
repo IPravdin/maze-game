@@ -1,17 +1,35 @@
 import React from "react";
 import Bonus from "../maze/Bonus";
-import {SizeType} from "../../../types/global";
+import {useSelector} from "react-redux";
+import {RootState} from "../../../store";
+import Spinner from "../Spinner";
 
-const Hud = ({ bonuses, cellSize, hudSize }: { bonuses: number, cellSize: SizeType, hudSize: SizeType }) => {
-    const {height, width} = cellSize
+const Hud = () => {
+    const maze = useSelector((state: RootState) => state.maze);
+    const player = useSelector((state: RootState) => state.player);
+    const { cellSize, fieldSize } = maze.params;
+
+    if (!player.data) {
+        return <Spinner />
+    }
+
+
     const bonusesArray = []
-
-    for (let i = 0; i < bonuses; i++) {
-        bonusesArray[i] = <Bonus key={i} position={{left: i * width, top: 0}} size={{width, height}} />
+    for (let i = 0; i < player.data.collectedBonuses; i++) {
+        bonusesArray.push(
+            <Bonus
+                key={i}
+                position={{ left: i * cellSize.width, top: 0 }}
+                size={{
+                    width: cellSize.width,
+                    height: cellSize.height,
+                }}
+            />
+        )
     }
 
     return (
-        <div className="container" style={{ width: hudSize.width, height: hudSize.height }}>
+        <div className="container" style={{ width: fieldSize.width, height: 100 }}>
             {bonusesArray?.map((bonus) => bonus)}
         </div>
     )

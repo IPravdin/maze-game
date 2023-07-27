@@ -1,25 +1,18 @@
 import React from "react";
-import {PlayerSizeType, SizeType} from "../../../types/global";
 import Enemy from "./Enemy";
-import {MazeEnemy} from "../../../types/enemy";
+import {useSelector} from "react-redux";
+import {RootState} from "../../../store";
 
-type Props = {
-    cellSize: SizeType
-    enemySize: PlayerSizeType
-    enemiesData: MazeEnemy[]
-    enemySpeed: number
-}
+const Enemies = () => {
+    const mazeEnemies = useSelector((state: RootState) => state.maze.data.enemies);
 
-const Enemies = ({ enemiesData, cellSize, enemySize, enemySpeed }: Props) => {
     return (
         <div>
-            {enemiesData.map((enemy) =>
+            {mazeEnemies.map((enemy, index) =>
                 <Enemy
                     key={`enemy[${enemy.spawn.x}][${enemy.spawn.y}]`}
+                    id={index}
                     data={enemy}
-                    cellSize={cellSize}
-                    enemySize={enemySize}
-                    enemySpeed={enemySpeed}
                 />
             )}
         </div>

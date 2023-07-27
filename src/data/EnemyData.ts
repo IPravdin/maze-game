@@ -9,6 +9,15 @@ export type CurrMovCoordType = {
     prevPosInDir: number
 }
 
+export type EnemyDataJson = {
+    spawn: CoordinateType,
+    notSpawnRadius: CoordinateType[][],
+    movement: CoordinateType[][],
+    currMovCoord: CurrMovCoordType,
+    currentPosition: PositionType,
+    alive: boolean
+}
+
 type Props = MazeEnemy & {
     currentPosition: PositionType;
 }
@@ -30,4 +39,13 @@ export class EnemyData extends CreatureData{
             prevPosInDir: -1
         }
     }
+
+    toJson = (): EnemyDataJson => ({
+        spawn: this.spawn,
+        notSpawnRadius: this.notSpawnRadius,
+        movement: this.movement,
+        currMovCoord: this.currMovCoord,
+        currentPosition: this.currentPosition,
+        alive: this.alive
+    })
 }
