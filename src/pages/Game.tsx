@@ -34,17 +34,22 @@ const Game = () => {
     const keyDownListener = (event: React.KeyboardEvent<HTMLDivElement>) => {
         event.preventDefault()
 
-        if (
-            "ArrowRight" || "KeyD"
-            || "ArrowLeft" || "KeyA"
-            || "ArrowDown" || "KeyS"
-            || "ArrowUp" || "KeyW"
-        ) {
-            dispatch(keyboardActions.playerMove(event.code as PlayerMoveKeys));
-        }
-
         if (event.code === "Escape") {
             dispatch(keyboardActions.pause());
+        }
+
+        if (!keyboard.pause) {
+            if (event.code === "ArrowRight"
+                || event.code === "KeyD"
+                || event.code === "ArrowLeft"
+                || event.code === "KeyA"
+                || event.code === "ArrowDown"
+                || event.code === "KeyS"
+                || event.code === "ArrowUp"
+                || event.code === "KeyW"
+            ) {
+                dispatch(keyboardActions.playerMove(event.code as PlayerMoveKeys));
+            }
         }
     };
 

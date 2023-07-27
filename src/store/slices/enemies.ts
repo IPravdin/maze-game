@@ -5,11 +5,15 @@ import {MazeEnemy} from "../../types/enemy";
 import {CoordinateType} from "../../types/maze";
 
 const getEnemySize = (cellSize: SizeType): PlayerSizeType => {
+    const borderWidth = 2.5;
+    const margin = 5;
+    const sum = borderWidth * 2 + margin;
+
     return {
-        width: cellSize.width - 15,
-        height: cellSize.width - 15,
-        borderWidth: 2.5,
-        margin: 5,
+        width: cellSize.width - sum,
+        height: cellSize.height - sum,
+        borderWidth,
+        margin,
     }
 }
 

@@ -1,15 +1,19 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {PlayerData, PlayerDataJsonType} from "../../data/PlayerData";
 import {coordToPosition} from "../../helpers";
-import {CoordinateType, OrientationType} from "../../types/maze";
-import {PlayerSizeType, SizeType} from "../../types/global";
+import {CoordinateType} from "../../types/maze";
+import {PlayerSizeType, PositionType, SizeType} from "../../types/global";
 
 const getPlayerSize = (cellSize: SizeType): PlayerSizeType => {
+    const borderWidth = 2.5;
+    const margin = 5;
+    const sum = borderWidth * 2 + margin;
+
     return {
-        width: cellSize.width - 15,
-        height: cellSize.width - 15,
-        borderWidth: 2.5,
-        margin: 5,
+        width: cellSize.width - sum,
+        height: cellSize.height - sum,
+        borderWidth,
+        margin,
     }
 }
 
@@ -47,23 +51,10 @@ const playerSlice = createSlice({
 
             state.data.stepsWalked++;
         },
-        move(state, actions: PayloadAction<OrientationType>) {
+        move(state, actions: PayloadAction<PositionType>) {
             if (!state.data) return;
 
-            switch (actions.payload) {
-                case 'left':
-                    state.data.currentPosition.left -= state.params.cellSize.width;
-                    break;
-                case 'right':
-                    state.data.currentPosition.left += state.params.cellSize.width;
-                    break;
-                case 'top':
-                    state.data.currentPosition.top -= state.params.cellSize.height;
-                    break;
-                case 'bottom':
-                    state.data.currentPosition.top += state.params.cellSize.height;
-                    break;
-            }
+            state.data.currentPosition = actions.payload;
         },
     },
 })

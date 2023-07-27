@@ -6,6 +6,33 @@ import {AppDispatch, RootState} from "../../../store";
 import {keyboardActions} from "../../../store/slices/keyboard";
 import {playerActions} from "../../../store/slices/player";
 import Spinner from "../Spinner";
+import {mazeActions} from "../../../store/slices/maze";
+import {PositionType, SizeType} from "../../../types/global";
+
+const returnNewPosition = (mode: OrientationType, currentPosition: PositionType, cellSize: SizeType) => {
+    let newPosition: PositionType = {left: 0, top: 0};
+
+    switch (mode) {
+        case 'left':
+            newPosition.left = currentPosition.left - cellSize.width
+            newPosition.top = currentPosition.top
+            break;
+        case 'right':
+            newPosition.left = currentPosition.left + cellSize.width
+            newPosition.top = currentPosition.top
+            break;
+        case 'top':
+            newPosition.left = currentPosition.left
+            newPosition.top = currentPosition.top - cellSize.height
+            break;
+        case 'bottom':
+            newPosition.left = currentPosition.left
+            newPosition.top = currentPosition.top + cellSize.height
+            break;
+    }
+
+    return newPosition;
+}
 
 const Player = () => {
     const dispatch: AppDispatch = useDispatch();
@@ -42,13 +69,15 @@ const Player = () => {
         const currentCoord: CoordinateType = positionToCoord(currentPosition, cellSize);
 
         // ** Is Cell walkable
-        if(!maze.data.mazeMap[currentCoord.x][currentCoord.y].walkable[mode]) return;
-        dispatch(playerActions.move(mode));
+        if (!maze.data.mazeMap[currentCoord.x][currentCoord.y].walkable[mode]) return;
+
+        const newPosition = returnNewPosition(mode, currentPosition, cellSize);
+        dispatch(playerActions.move(newPosition));
         dispatch(playerActions.recordStep());
 
         // ** Bonus collect
-        /*const newCoord= positionToCoord(newPosition, cellSize)
-        const newCell = mazeStructure.mazeMap[newCoord.x][newCoord.y]
+        const newCoord= positionToCoord(newPosition, cellSize);
+        const newCell = maze.data.mazeMap[newCoord.x][newCoord.y];
 
         if (newCell.bonus.placed && !newCell.bonus.collected) {
             dispatch(playerActions.collectBonus());
@@ -56,7 +85,7 @@ const Player = () => {
         }
 
         // ** Register finish
-        if (newCell.startEnd.end) {
+       /* if (newCell.startEnd.end) {
             handleFinishOpen()
         }*/
     }
