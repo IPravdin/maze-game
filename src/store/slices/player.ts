@@ -56,6 +56,11 @@ const playerSlice = createSlice({
 
             state.data.currentPosition = actions.payload;
         },
+        kill(state) {
+            if (!state.data) return;
+
+            state.data.alive = false;
+        }
     },
 })
 

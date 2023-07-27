@@ -5,9 +5,9 @@ import {SizeType} from "../../types/global";
 
 const mazeInitialState = () => {
     const bonuses = 10;
-    const enemies = 4;
+    const enemies = 1;
     const fieldSize: SizeType = { width: 800, height: 800 };
-    const mazeCells: SizeType = { width: 20, height: 20 };
+    const mazeCells: SizeType = { width: 5, height: 5 };
 
     return {
         data: new MazeData({ width: mazeCells.width, height: mazeCells.height }, bonuses, enemies).toJson(),

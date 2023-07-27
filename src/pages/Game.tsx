@@ -1,5 +1,5 @@
 import Player from "../layouts/components/maze/Player";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import GameStateDialog from "../layouts/components/game/GameStateDialog";
 import Hud from "../layouts/components/game/Hud";
 import Maze from "../layouts/components/game/Maze";
@@ -7,18 +7,20 @@ import {PlayerMoveKeys} from "../types/player";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState } from "../store";
 import {keyboardActions} from "../store/slices/keyboard";
-import {enemiesActions} from "../store/slices/enemies";
 import {initialMazeFetch} from "../store/slices/initial-maze-fetch";
 import Spinner from "../layouts/components/Spinner";
+import {coordToPosition, objectsEqual} from "../helpers";
+import {PlayerDataJsonType} from "../data/PlayerData";
+import {playerActions} from "../store/slices/player";
 
 const Game = () => {
     const dispatch: AppDispatch = useDispatch();
     const keyboard = useSelector((state: RootState) => state.keyboard);
     const player = useSelector((state: RootState) => state.player);
+    const enemies = useSelector((state: RootState) => state.enemies);
+    const cellSize = useSelector((state: RootState) => state.maze.params.cellSize);
 
     const divRef = useRef<HTMLDivElement>(null)
-
-    const [openFinish, setOpenFinish] = useState(false)
 
     // ** Sets focus on main div
     useEffect(() => {
@@ -31,14 +33,27 @@ const Game = () => {
         dispatch(initialMazeFetch());
     }, [dispatch]);
 
+    // ** Kills Player
+    useEffect(() => {
+        if (!enemies.data.enemiesCurCoords) return;
+        if (!player.data) return;
+        if (!player.data?.alive) return;
+
+        const clashed: boolean = !!enemies.data.enemiesCurCoords.find((enemyCoord) => objectsEqual(coordToPosition(enemyCoord, cellSize), (player.data as PlayerDataJsonType).currentPosition)) ?? false;
+        if (clashed) {
+            dispatch(playerActions.kill());
+            dispatch(keyboardActions.froze('lost'));
+        }
+    }, [player.data?.currentPosition, enemies.data.enemiesCurCoords])
+
     const keyDownListener = (event: React.KeyboardEvent<HTMLDivElement>) => {
         event.preventDefault()
 
         if (event.code === "Escape") {
-            dispatch(keyboardActions.pause());
+            dispatch(keyboardActions.froze('pause'));
         }
 
-        if (!keyboard.pause) {
+        if (!keyboard.frozen && player.data?.alive) {
             if (event.code === "ArrowRight"
                 || event.code === "KeyD"
                 || event.code === "ArrowLeft"
@@ -62,26 +77,25 @@ const Game = () => {
             <Hud />
             <Maze player={<Player/>}/>
             <GameStateDialog
+                open={keyboard.frozenMode === 'won'}
                 id="finish_modal"
                 title="Congrats"
                 text="That's fast"
-                open={openFinish}
-                onOpen={() => dispatch(enemiesActions.freezeEnemies())}
-                onClose={() => {
-                    dispatch(enemiesActions.unfreezeEnemies())
-                    setOpenFinish(false)
-                }}
+                onClose={() => dispatch(keyboardActions.unfroze())}
             />
             <GameStateDialog
-                open={keyboard.pause}
+                open={keyboard.frozenMode === 'lost'}
+                id="lost_modal"
+                title="Looser"
+                text="Total Looser"
+                onClose={() => dispatch(keyboardActions.unfroze())}
+            />
+            <GameStateDialog
+                open={keyboard.frozenMode === 'pause'}
                 id="pause_modal"
                 title="Pause"
                 text="Close modal to continue"
-                onOpen={() => dispatch(enemiesActions.freezeEnemies())}
-                onClose={() => {
-                    dispatch(enemiesActions.unfreezeEnemies())
-                    dispatch(keyboardActions.pause)
-                }}
+                onClose={() => dispatch(keyboardActions.unfroze())}
             />
         </div>
     )

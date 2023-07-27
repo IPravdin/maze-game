@@ -5,14 +5,14 @@ interface Props {
     title: string,
     text: string,
     open: boolean,
-    onOpen: () => void,
-    onClose: () => void
+    onOpen?: () => void,
+    onClose?: () => void
 }
 const GameStateDialog = ({ id, title, text, open, onOpen, onClose }: Props) => {
     useEffect(() => {
         if (!open) return
 
-        onOpen()
+        if(onOpen) onOpen();
 
         // @ts-ignore
         window[id].showModal()

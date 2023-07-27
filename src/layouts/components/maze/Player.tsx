@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { CoordinateType, OrientationType } from "../../../types/maze";
-import { positionToCoord } from "../../../helpers";
+import {positionToCoord} from "../../../helpers";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "../../../store";
 import {keyboardActions} from "../../../store/slices/keyboard";
@@ -85,21 +85,21 @@ const Player = () => {
         }
 
         // ** Register finish
-       /* if (newCell.startEnd.end) {
-            handleFinishOpen()
-        }*/
+        if (newCell.startEnd.end) {
+            dispatch(keyboardActions.froze('won'))
+        }
     }
 
     if (!player.data) {
-        return <Spinner />
+        return <Spinner />;
     }
 
     return (
         <div
-            className="player"
+            className={player.data.alive ? "player" : "player-dead"}
             style={{ ...player.params.playerSize, top: player.data.currentPosition.top, left: player.data.currentPosition.left }}
         />
-    )
+    );
 }
 
 export default Player

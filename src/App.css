@@ -40,6 +40,14 @@
   background: rgb(254, 211, 22);
 }
 
+.player-dead {
+  z-index: 99;
+  left: 0;
+  position: var(--element-position);
+  border: solid #efefef;
+  background: rgb(31, 26, 3);
+}
+
 .enemy {
   z-index: 99;
   position: var(--element-position);
