@@ -15,7 +15,6 @@ const Game = () => {
     const dispatch: AppDispatch = useDispatch();
     const keyboard = useSelector((state: RootState) => state.keyboard);
     const player = useSelector((state: RootState) => state.player);
-    const enemies = useSelector((state: RootState) => state.enemies);
 
     const divRef = useRef<HTMLDivElement>(null)
 
@@ -25,7 +24,7 @@ const Game = () => {
     useEffect(() => {
         if (!divRef) return
         divRef.current?.focus()
-    }, [divRef, player.data, enemies.data])
+    }, [divRef, player.data])
 
     // ** Maintains same start data for Reducers
     useEffect(() => {
@@ -49,7 +48,7 @@ const Game = () => {
         }
     };
 
-    if (!player.data && !enemies.data) {
+    if (!player.data) {
         return <Spinner />
     }
 

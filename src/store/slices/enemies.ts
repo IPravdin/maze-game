@@ -1,9 +1,8 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {EnemySizeType, PlayerSizeType, PositionType, SizeType} from "../../types/global";
-import {CurrMovCoordType, EnemyData, EnemyDataJson} from "../../data/EnemyData";
+import {EnemySizeType, PlayerSizeType, SizeType} from "../../types/global";
 import {EnemySpeed} from "../../enums/enemy-speed";
 import {MazeEnemy} from "../../types/enemy";
-import {coordToPosition} from "../../helpers";
+import {CoordinateType} from "../../types/maze";
 
 const getEnemySize = (cellSize: SizeType): PlayerSizeType => {
     return {
@@ -20,7 +19,9 @@ const initialState: EnemiesState = {
         defaultSpeed: EnemySpeed.stop,
         speed: EnemySpeed.stop,
     },
-    data: null
+    data: {
+        enemiesCurCoords: null
+    }
 }
 
 const enemiesSlice = createSlice({
@@ -37,12 +38,7 @@ const enemiesSlice = createSlice({
                 speed: defaultSpeed,
             };
 
-            state.data = mazeEnemies.map((enemy) => new EnemyData(
-                {
-                    ...enemy,
-                    currentPosition: coordToPosition(enemy.spawn, cellSize)
-                }).toJson()
-            );
+            state.data.enemiesCurCoords = mazeEnemies.map((enemy) => enemy.spawn);
         },
         freezeEnemies(state) {
             state.params.speed = EnemySpeed.stop;
@@ -53,12 +49,11 @@ const enemiesSlice = createSlice({
         setDefaultSpeed(state, action: PayloadAction<EnemySpeed>) {
             state.params.defaultSpeed = action.payload;
         },
-        setNewPosition(state, action: PayloadAction<{ id: number, currentPosition: PositionType, currMovCoord: CurrMovCoordType }>) {
-            if (!state.data) return;
+        recordCoord(state, action: PayloadAction<{ id: number, newCoord: CoordinateType }>) {
+            if (!state.data.enemiesCurCoords) return;
+            const { id, newCoord} = action.payload;
 
-            const { id, currentPosition, currMovCoord} = action.payload;
-            state.data[id].currentPosition = currentPosition;
-            state.data[id].currMovCoord = currMovCoord;
+            state.data.enemiesCurCoords[id] = newCoord;
         }
     },
 })
@@ -69,7 +64,9 @@ type EnemiesState = {
         defaultSpeed: EnemySpeed,
         speed: EnemySpeed
     },
-    data: EnemyDataJson[] | null
+    data: {
+        enemiesCurCoords: CoordinateType[] | null
+    }
 }
 export const enemiesActions = enemiesSlice.actions;
 export const enemiesReducer = enemiesSlice.reducer;

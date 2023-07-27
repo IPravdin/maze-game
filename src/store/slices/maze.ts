@@ -5,7 +5,7 @@ import {SizeType} from "../../types/global";
 
 const mazeInitialState = () => {
     const bonuses = 10;
-    const enemies = 1;
+    const enemies = 5;
     const fieldSize: SizeType = { width: 800, height: 800 };
     const mazeCells: SizeType = { width: 20, height: 20 };
 
