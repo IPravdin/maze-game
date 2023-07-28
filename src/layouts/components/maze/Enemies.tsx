@@ -7,7 +7,7 @@ const Enemies = () => {
     const mazeEnemies = useSelector((state: RootState) => state.maze.data.enemies);
 
     return (
-        <div>
+        <>
             {mazeEnemies.map((enemy, index) =>
                 <Enemy
                     key={`enemy[${enemy.spawn.x}][${enemy.spawn.y}]`}
@@ -15,7 +15,7 @@ const Enemies = () => {
                     data={enemy}
                 />
             )}
-        </div>
+        </>
     )
 }
 

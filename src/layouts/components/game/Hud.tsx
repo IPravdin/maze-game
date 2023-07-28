@@ -7,7 +7,12 @@ import Spinner from "../Spinner";
 const Hud = () => {
     const maze = useSelector((state: RootState) => state.maze);
     const player = useSelector((state: RootState) => state.player);
-    const { cellSize, fieldSize } = maze.params;
+    const { fieldSize } = maze.params;
+
+    const bonusSize = {
+        width: fieldSize.width / maze.params.bonuses,
+        height: fieldSize.width / maze.params.bonuses
+    }
 
     if (!player.data) {
         return <Spinner />
@@ -19,10 +24,10 @@ const Hud = () => {
         bonusesArray.push(
             <Bonus
                 key={i}
-                position={{ left: i * cellSize.width, top: 0 }}
+                position={{ left: i * bonusSize.width, top: 0 }}
                 size={{
-                    width: cellSize.width,
-                    height: cellSize.height,
+                    width: bonusSize.width,
+                    height: bonusSize.height,
                 }}
             />
         )

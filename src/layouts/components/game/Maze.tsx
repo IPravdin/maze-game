@@ -13,7 +13,7 @@ const Maze = ({ player }: Props) => {
     const maze = useSelector((state: RootState) => state.maze);
 
     return (
-        <div className="container" style={{ ...maze.params.fieldSize  }}>
+        <div className="container overflow-auto" style={{ ...maze.params.fieldSize  }}>
             <Enemies />
             {player}
             <Map mazeMap={maze.data.mazeMap} cellSize={maze.params.cellSize}/>
