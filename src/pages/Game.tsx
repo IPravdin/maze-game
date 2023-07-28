@@ -12,6 +12,7 @@ import Spinner from "../layouts/components/Spinner";
 import {coordToPosition, objectsEqual} from "../helpers";
 import {PlayerDataJsonType} from "../data/PlayerData";
 import {playerActions} from "../store/slices/player";
+import Pause from "../layouts/menu/Pause";
 
 const Game = () => {
     const dispatch: AppDispatch = useDispatch();
@@ -80,22 +81,25 @@ const Game = () => {
                 open={keyboard.frozenMode === 'won'}
                 id="finish_modal"
                 title="Congrats"
-                text="That's fast"
+                content={<p className="py-4">That's fast</p>}
                 onClose={() => dispatch(keyboardActions.unfroze())}
+                btnSuccess="Next level"
             />
             <GameStateDialog
                 open={keyboard.frozenMode === 'lost'}
                 id="lost_modal"
                 title="Looser"
-                text="Total Looser"
+                content={<p className="py-4">Total Looser</p>}
                 onClose={() => dispatch(keyboardActions.unfroze())}
+                btnSuccess="Start again"
             />
             <GameStateDialog
                 open={keyboard.frozenMode === 'pause'}
                 id="pause_modal"
                 title="Pause"
-                text="Close modal to continue"
+                content={<Pause />}
                 onClose={() => dispatch(keyboardActions.unfroze())}
+                btnSuccess="Continue"
             />
         </div>
     )

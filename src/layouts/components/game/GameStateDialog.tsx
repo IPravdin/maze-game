@@ -1,14 +1,18 @@
-import {useEffect} from "react";
+import {ReactNode, useEffect} from "react";
 
 interface Props {
     id: string,
-    title: string,
-    text: string,
+    title?: string,
+    content?: ReactNode,
     open: boolean,
     onOpen?: () => void,
-    onClose?: () => void
+    onClose?: () => void,
+    btnError?: string,
+    onErrorClick?: () => void,
+    btnSuccess?: string,
+    onSuccessClick?: () => void,
 }
-const GameStateDialog = ({ id, title, text, open, onOpen, onClose }: Props) => {
+const GameStateDialog = ({ id, title, content, open, onOpen, onClose, btnError, btnSuccess, onErrorClick, onSuccessClick }: Props) => {
     useEffect(() => {
         if (!open) return
 
@@ -21,10 +25,11 @@ const GameStateDialog = ({ id, title, text, open, onOpen, onClose }: Props) => {
     return (
         <dialog id={id} className="modal" onClose={onClose}>
             <form method="dialog" className="modal-box">
-                <h3 className="font-bold text-lg">{title}</h3>
-                <p className="py-4">{text}</p>
+                {title && <h3 className="font-bold text-lg">{title}</h3>}
+                {content}
                 <div className="modal-action">
-                    <button className="btn">Continue</button>
+                    {btnError && <button className="btn btn-error" onClick={onErrorClick}>{btnError}</button>}
+                    {btnSuccess && <button className="btn btn-success" onClick={onSuccessClick}>{btnSuccess}</button>}
                 </div>
             </form>
         </dialog>
