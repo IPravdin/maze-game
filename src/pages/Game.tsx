@@ -6,7 +6,7 @@ import Maze from "../layouts/components/game/Maze";
 import {PlayerMoveKeys} from "../types/player";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState } from "../store";
-import {keyboardActions} from "../store/slices/keyboard";
+import {gameplayActions} from "../store/slices/game";
 import {mazeFetch} from "../store/slices/maze-fetch";
 import Spinner from "../layouts/components/Spinner";
 import { objectsEqual, positionToCoord} from "../helpers";
@@ -17,7 +17,7 @@ import {mazeActions} from "../store/slices/maze";
 
 const Game = () => {
     const dispatch: AppDispatch = useDispatch();
-    const keyboard = useSelector((state: RootState) => state.keyboard);
+    const gameplay = useSelector((state: RootState) => state.gameplay);
     const player = useSelector((state: RootState) => state.player);
     const enemies = useSelector((state: RootState) => state.enemies);
     const maze = useSelector((state: RootState) => state.maze);
@@ -47,18 +47,18 @@ const Game = () => {
                 objectsEqual(enemyCoord, positionToCoord((player.data as PlayerDataJsonType).currentPosition, cellSize)));
         if (clashed) {
             dispatch(playerActions.kill());
-            dispatch(keyboardActions.froze('lost'));
+            dispatch(gameplayActions.froze('lost'));
         }
     }, [player.data?.currentPosition, enemies.data.enemiesCurCoords])
 
     const keyDownListener = (event: React.KeyboardEvent<HTMLDivElement>) => {
         event.preventDefault()
 
-        if (event.code === "Escape") {
-            dispatch(keyboardActions.froze('pause'));
+        if (gameplay.frozenMode === 'none' && event.code === "Escape") {
+            dispatch(gameplayActions.froze('pause'));
         }
 
-        if (!keyboard.frozen && player.data?.alive) {
+        if (!gameplay.frozen && player.data?.alive) {
             if (event.code === "ArrowRight"
                 || event.code === "KeyD"
                 || event.code === "ArrowLeft"
@@ -68,7 +68,7 @@ const Game = () => {
                 || event.code === "ArrowUp"
                 || event.code === "KeyW"
             ) {
-                dispatch(keyboardActions.playerMove(event.code as PlayerMoveKeys));
+                dispatch(gameplayActions.playerMove(event.code as PlayerMoveKeys));
             }
         }
     };
@@ -82,34 +82,39 @@ const Game = () => {
             <Hud />
             <Maze player={<Player/>}/>
             <GameStateDialog
-                open={keyboard.frozenMode === 'won'}
+                open={gameplay.frozenMode === 'won'}
                 id="finish_modal"
                 title="Congrats"
-                content={<p className="py-4">That's fast</p>}
+                content={
+                    <>
+                        <p>You've collected {player.data.collectedBonuses} out of {maze.params.bonuses}.</p>
+                        <p>For this you stepped {player.data.stepsWalked} times</p>
+                    </>
+                }
                 onClose={() => {
                     dispatch(mazeActions.generateNext());
-                    dispatch(keyboardActions.unfroze());
+                    dispatch(gameplayActions.unfroze());
                 }}
                 btnSuccess="Next level"
             />
             <GameStateDialog
-                open={keyboard.frozenMode === 'lost'}
+                open={gameplay.frozenMode === 'lost'}
                 id="lost_modal"
                 title="Looser"
-                content={<p className="py-4">Total Looser</p>}
+                content={<p className="py-4">Ups... Do you wanna try again?</p>}
                 onClose={() => {
                     dispatch(mazeActions.generate());
-                    dispatch(keyboardActions.unfroze());
-                    dispatch(playerActions.revive())
+                    dispatch(gameplayActions.unfroze());
+                    dispatch(playerActions.revive());
                 }}
-                btnSuccess="Start again"
+                btnSuccess="One more try"
             />
             <GameStateDialog
-                open={keyboard.frozenMode === 'pause'}
+                open={gameplay.frozenMode === 'pause'}
                 id="pause_modal"
                 title="Pause"
                 content={<Pause />}
-                onClose={() => dispatch(keyboardActions.unfroze())}
+                onClose={() => dispatch(gameplayActions.unfroze())}
                 btnSuccess="Continue"
             />
         </div>

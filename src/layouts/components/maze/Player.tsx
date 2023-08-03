@@ -3,7 +3,7 @@ import { CoordinateType, OrientationType } from "../../../types/maze";
 import {positionToCoord} from "../../../helpers";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "../../../store";
-import {keyboardActions} from "../../../store/slices/keyboard";
+import {gameplayActions} from "../../../store/slices/game";
 import {playerActions} from "../../../store/slices/player";
 import Spinner from "../Spinner";
 import {mazeActions} from "../../../store/slices/maze";
@@ -36,12 +36,12 @@ const returnNewPosition = (mode: OrientationType, currentPosition: PositionType,
 
 const Player = () => {
     const dispatch: AppDispatch = useDispatch();
-    const keyboard = useSelector((state: RootState) => state.keyboard);
+    const gameplay = useSelector((state: RootState) => state.gameplay);
     const player = useSelector((state: RootState) => state.player);
     const maze = useSelector((state: RootState) => state.maze);
 
     useEffect(() => {
-        const { playerMoveDir } = keyboard;
+        const { playerMoveDir } = gameplay;
 
         if (!playerMoveDir) return;
 
@@ -58,8 +58,8 @@ const Player = () => {
             movePlayer('top');
         }
 
-        dispatch(keyboardActions.playerMove(null));
-    }, [keyboard.playerMoveDir]);
+        dispatch(gameplayActions.playerMove(null));
+    }, [gameplay.playerMoveDir]);
 
     const movePlayer = (mode: OrientationType): void => {
         if (!player.data) return;
@@ -86,7 +86,7 @@ const Player = () => {
 
         // ** Register finish
         if (newCell.startEnd.end) {
-            dispatch(keyboardActions.froze('won'))
+            dispatch(gameplayActions.froze('won'))
         }
     }
 

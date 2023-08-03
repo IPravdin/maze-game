@@ -5,8 +5,8 @@ import {SizeType} from "../../types/global";
 
 const mazeInitialState = () => {
     const bonuses = 1;
-    const enemies = 1;
-    const fieldSize: SizeType = { width: 800, height: 800 };
+    const enemies = 0;
+    const fieldSize: SizeType = { width: 700, height: 700 };
     const mazeCells: SizeType = { width: 4, height: 4 };
 
     return {
@@ -36,7 +36,7 @@ const mazeSlice = createSlice({
         generateNext(state) {
             state.params.mazeCells.height++;
             state.params.mazeCells.width++;
-            /*state.params.enemies++;*/
+            state.params.enemies = state.params.enemies + 0.5;
             state.params.bonuses++;
             state.params.cellSize.height = state.params.fieldSize.height / state.params.mazeCells.height;
             state.params.cellSize.width = state.params.fieldSize.width / state.params.mazeCells.width;

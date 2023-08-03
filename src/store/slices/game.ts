@@ -3,14 +3,14 @@ import {PlayerMoveKeys} from "../../types/player";
 
 type FrozenModeType = 'won' | 'lost' | 'pause' | 'none';
 
-const keyboardInitialState: { frozen: boolean, playerMoveDir: PlayerMoveKeys | null, frozenMode: FrozenModeType} = {
+const gameplayInitialState: { frozen: boolean, playerMoveDir: PlayerMoveKeys | null, frozenMode: FrozenModeType} = {
     frozen: false,
     frozenMode: 'none',
     playerMoveDir: null,
 };
-const keyboardSlice = createSlice({
-    name: 'keyboard',
-    initialState: keyboardInitialState,
+const gameplaySlice = createSlice({
+    name: 'gameplay',
+    initialState: gameplayInitialState,
     reducers: {
         froze(state, action: PayloadAction<FrozenModeType>) {
             state.frozen = true;
@@ -26,6 +26,6 @@ const keyboardSlice = createSlice({
     }
 })
 
-export const keyboardActions = keyboardSlice.actions;
-export const keyboardReducer = keyboardSlice.reducer;
+export const gameplayActions = gameplaySlice.actions;
+export const gameplayReducer = gameplaySlice.reducer;
 

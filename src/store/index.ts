@@ -1,14 +1,14 @@
 import {Action, configureStore, ThunkAction} from '@reduxjs/toolkit'
 import {mazeReducer} from "./slices/maze";
 import {playerReducer} from "./slices/player";
-import {keyboardReducer} from "./slices/keyboard";
+import {gameplayReducer} from "./slices/game";
 import {enemiesReducer} from "./slices/enemies";
 
 const store = configureStore({
     reducer: {
         maze: mazeReducer,
         player: playerReducer,
-        keyboard: keyboardReducer,
+        gameplay: gameplayReducer,
         enemies: enemiesReducer
     }
 })

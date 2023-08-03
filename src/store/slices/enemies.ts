@@ -3,7 +3,7 @@ import {EnemySizeType, PlayerSizeType, SizeType} from "../../types/global";
 import {EnemySpeed} from "../../enums/enemy-speed";
 import {MazeEnemy} from "../../types/enemy";
 import {CoordinateType} from "../../types/maze";
-import {keyboardActions} from "./keyboard";
+import {gameplayActions} from "./game";
 
 const getEnemySize = (cellSize: SizeType): PlayerSizeType => {
     const borderWidth = 2.5;
@@ -63,10 +63,10 @@ const enemiesSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(keyboardActions.froze, (state) => {
+            .addCase(gameplayActions.froze, (state) => {
                 state.params.speed = EnemySpeed.stop;
             })
-            .addCase(keyboardActions.unfroze, (state) => {
+            .addCase(gameplayActions.unfroze, (state) => {
                 state.params.speed = state.params.defaultSpeed;
             })
 
