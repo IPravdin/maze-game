@@ -3,10 +3,17 @@ import {PlayerMoveKeys} from "../../types/player";
 
 type FrozenModeType = 'won' | 'lost' | 'pause' | 'none';
 
-const gameplayInitialState: { frozen: boolean, playerMoveDir: PlayerMoveKeys | null, frozenMode: FrozenModeType} = {
+type StateType = {
+    frozen: boolean,
+    playerMoveDir: PlayerMoveKeys | null,
+    frozenMode: FrozenModeType,
+    playerDeath: number
+}
+const gameplayInitialState: StateType = {
     frozen: false,
     frozenMode: 'none',
     playerMoveDir: null,
+    playerDeath: 0
 };
 const gameplaySlice = createSlice({
     name: 'gameplay',
@@ -23,6 +30,9 @@ const gameplaySlice = createSlice({
         playerMove(state, action: PayloadAction<PlayerMoveKeys | null>) {
             state.playerMoveDir = action.payload;
         },
+        recordDeath(state) {
+            state.playerDeath++;
+        }
     }
 })
 

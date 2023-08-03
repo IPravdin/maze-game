@@ -1,7 +1,7 @@
 import {Action, configureStore, ThunkAction} from '@reduxjs/toolkit'
 import {mazeReducer} from "./slices/maze";
 import {playerReducer} from "./slices/player";
-import {gameplayReducer} from "./slices/game";
+import {gameplayReducer} from "./slices/gameplay";
 import {enemiesReducer} from "./slices/enemies";
 
 const store = configureStore({

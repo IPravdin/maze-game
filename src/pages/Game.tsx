@@ -6,7 +6,7 @@ import Maze from "../layouts/components/game/Maze";
 import {PlayerMoveKeys} from "../types/player";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState } from "../store";
-import {gameplayActions} from "../store/slices/game";
+import {gameplayActions} from "../store/slices/gameplay";
 import {mazeFetch} from "../store/slices/maze-fetch";
 import Spinner from "../layouts/components/Spinner";
 import { objectsEqual, positionToCoord} from "../helpers";
@@ -47,6 +47,7 @@ const Game = () => {
                 objectsEqual(enemyCoord, positionToCoord((player.data as PlayerDataJsonType).currentPosition, cellSize)));
         if (clashed) {
             dispatch(playerActions.kill());
+            dispatch(gameplayActions.recordDeath());
             dispatch(gameplayActions.froze('lost'));
         }
     }, [player.data?.currentPosition, enemies.data.enemiesCurCoords])

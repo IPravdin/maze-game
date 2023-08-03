@@ -3,7 +3,7 @@ import { CoordinateType, OrientationType } from "../../../types/maze";
 import {positionToCoord} from "../../../helpers";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "../../../store";
-import {gameplayActions} from "../../../store/slices/game";
+import {gameplayActions} from "../../../store/slices/gameplay";
 import {playerActions} from "../../../store/slices/player";
 import Spinner from "../Spinner";
 import {mazeActions} from "../../../store/slices/maze";

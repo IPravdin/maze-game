@@ -3,7 +3,7 @@ import {EnemySizeType, PlayerSizeType, SizeType} from "../../types/global";
 import {EnemySpeed} from "../../enums/enemy-speed";
 import {MazeEnemy} from "../../types/enemy";
 import {CoordinateType} from "../../types/maze";
-import {gameplayActions} from "./game";
+import {gameplayActions} from "./gameplay";
 
 const getEnemySize = (cellSize: SizeType): PlayerSizeType => {
     const borderWidth = 2.5;
