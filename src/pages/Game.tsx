@@ -9,7 +9,7 @@ import {AppDispatch, RootState } from "../store";
 import {keyboardActions} from "../store/slices/keyboard";
 import {mazeFetch} from "../store/slices/maze-fetch";
 import Spinner from "../layouts/components/Spinner";
-import {coordToPosition, objectsEqual} from "../helpers";
+import { objectsEqual, positionToCoord} from "../helpers";
 import {PlayerDataJsonType} from "../data/PlayerData";
 import {playerActions} from "../store/slices/player";
 import Pause from "../layouts/menu/Pause";
@@ -42,7 +42,9 @@ const Game = () => {
         if (!player.data) return;
         if (!player.data?.alive) return;
 
-        const clashed: boolean = !!enemies.data.enemiesCurCoords.find((enemyCoord) => objectsEqual(coordToPosition(enemyCoord, cellSize), (player.data as PlayerDataJsonType).currentPosition)) ?? false;
+        const clashed =
+            enemies.data.enemiesCurCoords.find((enemyCoord) =>
+                objectsEqual(enemyCoord, positionToCoord((player.data as PlayerDataJsonType).currentPosition, cellSize)));
         if (clashed) {
             dispatch(playerActions.kill());
             dispatch(keyboardActions.froze('lost'));
