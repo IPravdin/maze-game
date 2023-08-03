@@ -4,10 +4,10 @@ import {CoordinateType} from "../../types/maze";
 import {SizeType} from "../../types/global";
 
 const mazeInitialState = () => {
-    const bonuses = 10;
+    const bonuses = 1;
     const enemies = 1;
     const fieldSize: SizeType = { width: 800, height: 800 };
-    const mazeCells: SizeType = { width: 5, height: 5 };
+    const mazeCells: SizeType = { width: 4, height: 4 };
 
     return {
         data: new MazeData({ width: mazeCells.width, height: mazeCells.height }, bonuses, enemies).toJson(),
@@ -30,21 +30,20 @@ const mazeSlice = createSlice({
     reducers: {
         generate(state) {
             const { bonuses, enemies, mazeCells } = state.params;
-            const { width, height} = mazeCells;
 
-            state.data = new MazeData({ width, height }, bonuses, enemies).toJson();
+            state.data = new MazeData(mazeCells, bonuses, enemies).toJson();
         },
-        setBonusCollected(state, action : PayloadAction<CoordinateType>) {
-            state.data.mazeMap[action.payload.x][action.payload.y].bonus.collected = true;
-        },
+        generateNext(state) {
+            state.params.mazeCells.height++;
+            state.params.mazeCells.width++;
+            /*state.params.enemies++;*/
+            state.params.bonuses++;
+            state.params.cellSize.height = state.params.fieldSize.height / state.params.mazeCells.height;
+            state.params.cellSize.width = state.params.fieldSize.width / state.params.mazeCells.width;
 
-        setFieldSize(state, action: PayloadAction<SizeType>) {
-            state.params.fieldSize = action.payload;
+            const { bonuses, enemies, mazeCells } = state.params;
 
-            state.params.cellSize = {
-                width: state.params.fieldSize.width / state.params.mazeCells.width,
-                height: state.params.fieldSize.height / state.params.mazeCells.height
-            };
+            state.data = new MazeData(mazeCells, bonuses, enemies).toJson();
         },
         setMazeCells(state, action: PayloadAction<SizeType>) {
             state.params.mazeCells = action.payload;
@@ -53,6 +52,18 @@ const mazeSlice = createSlice({
                 width: state.params.fieldSize.width / state.params.mazeCells.width,
                 height: state.params.fieldSize.height / state.params.mazeCells.height
             };
+        },
+        setFieldSize(state, action: PayloadAction<SizeType>) {
+            state.params.fieldSize = action.payload;
+
+            state.params.cellSize = {
+                width: state.params.fieldSize.width / state.params.mazeCells.width,
+                height: state.params.fieldSize.height / state.params.mazeCells.height
+            };
+        },
+
+        setBonusCollected(state, action : PayloadAction<CoordinateType>) {
+            state.data.mazeMap[action.payload.x][action.payload.y].bonus.collected = true;
         },
 
         setBonuses(state, action: PayloadAction<number>) {

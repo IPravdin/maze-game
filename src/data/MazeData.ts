@@ -249,7 +249,9 @@ export class MazeData {
     }
 
     private defineEnemy = (spawnCells: MazeCell[], enemies: MazeEnemy[], enemyIndex: number) => {
-        const selectedIndex = returnRandomInt(0, spawnCells.length - 1)
+        if (!spawnCells.length) return;
+
+        const selectedIndex = returnRandomInt(0, spawnCells.length - 1);
         const selectedCell = spawnCells.splice(selectedIndex, 1)[0]
         const selectedCellInOtherRadius = !!enemies?.find((enemy) =>
             enemy.notSpawnRadius?.find((x) =>
@@ -264,16 +266,15 @@ export class MazeData {
         selectedCell.enemy.spawn = true
         selectedCell.enemy.movement = true
 
+        const notSpawnRad = this.size.width > 10 ? 2 : 1;
         enemies.push({
             spawn: selectedCell.coord,
-            notSpawnRadius: this.returnNotSpawnRadius(selectedCell),
+            notSpawnRadius: this.returnNotSpawnRadius(selectedCell, notSpawnRad),
             movement: this.recordEnemyMovementCoords(selectedCell)
         })
     }
 
-    private returnNotSpawnRadius = (currentCell: MazeCell) => {
-        const radius = 2
-
+    private returnNotSpawnRadius = (currentCell: MazeCell, radius: number) => {
         const startX = currentCell.coord.x - 2;
         const startY = currentCell.coord.y - 2;
         const diameterX = radius * 2 + 1;

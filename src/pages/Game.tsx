@@ -7,18 +7,20 @@ import {PlayerMoveKeys} from "../types/player";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState } from "../store";
 import {keyboardActions} from "../store/slices/keyboard";
-import {initialMazeFetch} from "../store/slices/initial-maze-fetch";
+import {mazeFetch} from "../store/slices/maze-fetch";
 import Spinner from "../layouts/components/Spinner";
 import {coordToPosition, objectsEqual} from "../helpers";
 import {PlayerDataJsonType} from "../data/PlayerData";
 import {playerActions} from "../store/slices/player";
 import Pause from "../layouts/menu/Pause";
+import {mazeActions} from "../store/slices/maze";
 
 const Game = () => {
     const dispatch: AppDispatch = useDispatch();
     const keyboard = useSelector((state: RootState) => state.keyboard);
     const player = useSelector((state: RootState) => state.player);
     const enemies = useSelector((state: RootState) => state.enemies);
+    const maze = useSelector((state: RootState) => state.maze);
     const cellSize = useSelector((state: RootState) => state.maze.params.cellSize);
 
     const divRef = useRef<HTMLDivElement>(null)
@@ -31,8 +33,8 @@ const Game = () => {
 
     // ** Maintains same start data for Reducers
     useEffect(() => {
-        dispatch(initialMazeFetch());
-    }, [dispatch]);
+        dispatch(mazeFetch());
+    }, [dispatch, maze.params, maze.data.startCoord, maze.data.enemies]);
 
     // ** Kills Player
     useEffect(() => {
@@ -82,7 +84,10 @@ const Game = () => {
                 id="finish_modal"
                 title="Congrats"
                 content={<p className="py-4">That's fast</p>}
-                onClose={() => dispatch(keyboardActions.unfroze())}
+                onClose={() => {
+                    dispatch(mazeActions.generateNext());
+                    dispatch(keyboardActions.unfroze());
+                }}
                 btnSuccess="Next level"
             />
             <GameStateDialog
@@ -90,7 +95,11 @@ const Game = () => {
                 id="lost_modal"
                 title="Looser"
                 content={<p className="py-4">Total Looser</p>}
-                onClose={() => dispatch(keyboardActions.unfroze())}
+                onClose={() => {
+                    dispatch(mazeActions.generate());
+                    dispatch(keyboardActions.unfroze());
+                    dispatch(playerActions.revive())
+                }}
                 btnSuccess="Start again"
             />
             <GameStateDialog

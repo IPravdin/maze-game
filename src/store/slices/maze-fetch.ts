@@ -2,7 +2,7 @@ import {AppThunk} from "../index";
 import {playerActions} from "./player";
 import {enemiesActions} from "./enemies";
 
-export const initialMazeFetch = (): AppThunk => (dispatch, getState) => {
+export const mazeFetch = (): AppThunk => (dispatch, getState) => {
     const state = getState();
     const maze = state.maze;
 

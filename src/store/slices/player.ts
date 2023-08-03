@@ -60,6 +60,11 @@ const playerSlice = createSlice({
             if (!state.data) return;
 
             state.data.alive = false;
+        },
+        revive(state) {
+            if (!state.data) return;
+
+            state.data.alive = true;
         }
     },
 })
