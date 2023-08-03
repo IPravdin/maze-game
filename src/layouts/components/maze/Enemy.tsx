@@ -96,7 +96,27 @@ const Enemy = ({ id, data }: Props) => {
         return dirIndex >= 0 && posInDir >= 0
     }
 
-    return <div className="enemy" style={{ ...size, left: enemy.currentPosition.left, top: enemy.currentPosition.top }}/>
+    return (
+        <div>
+            <div key={id + ' spawn'} className='enemy-move' style={{
+                left: enemy.spawn.x * cellSize.width,
+                top: enemy.spawn.y * cellSize.height,
+                width: cellSize.width,
+                height: cellSize.height
+            }}/>
+            {enemy.movement.map((movement, index2) => (
+                movement.map((side, index3) => (
+                    <div key={id + index2 + index3} className='enemy-move' style={{
+                        left: side.x * cellSize.width,
+                        top: side.y * cellSize.height,
+                        width: cellSize.width,
+                        height: cellSize.height
+                    }}/>
+                ))
+            ))}
+            <div className="enemy" style={{ ...size, left: enemy.currentPosition.left, top: enemy.currentPosition.top }}/>
+        </div>
+    );
 }
 
 export default Enemy
