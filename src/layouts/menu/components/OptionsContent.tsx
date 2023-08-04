@@ -1,8 +1,9 @@
 import MenuView from "./MenuView";
 import {Dispatch, SetStateAction} from "react";
+import {MenuStateType} from "../MenuV2";
 
 
-const OptionsContent = ({ setOptions }: { setOptions: Dispatch<SetStateAction<boolean>>}) => {
+const OptionsContent = ({ setMenuState }: { setMenuState: Dispatch<SetStateAction<MenuStateType>>}) => {
     return (
         <MenuView
             title="Options"
@@ -13,7 +14,7 @@ const OptionsContent = ({ setOptions }: { setOptions: Dispatch<SetStateAction<bo
             }
             cardActions={
                 <>
-                    <button className="btn btn-success" onClick={() => setOptions(false)}>
+                    <button className="btn btn-success" onClick={() => setMenuState('menu')}>
                         Back
                     </button>
                 </>

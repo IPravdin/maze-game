@@ -1,16 +1,26 @@
 import {useState} from "react";
 import MenuContent from "./components/MenuContent";
 import OptionsContent from "./components/OptionsContent";
+import CreditsContent from "./components/CreditsContent";
 
-
+export type MenuStateType = 'options' | 'menu' | 'credits';
 const MenuV2 = () => {
-    const [optionsView, setOptionsView] = useState(false);
+    const [menuState, setMenuState] = useState<MenuStateType>('menu');
 
-    if (optionsView)
+    if (menuState === 'options')
         return (
             <div className="w-full h-full flex justify-center items-center">
                 <div className="w-96">
-                    <OptionsContent setOptions={setOptionsView} />
+                    <OptionsContent setMenuState={setMenuState} />
+                </div>
+            </div>
+        );
+
+    if (menuState === 'credits')
+        return (
+            <div className="w-full h-full flex justify-center items-center">
+                <div className="w-96">
+                    <CreditsContent setMenuState={setMenuState} />
                 </div>
             </div>
         );
@@ -18,7 +28,7 @@ const MenuV2 = () => {
     return (
         <div className="w-full h-full flex justify-center items-center">
             <div className="w-96">
-                <MenuContent setOptions={setOptionsView} />
+                <MenuContent setMenuState={setMenuState} />
             </div>
         </div>
     );
