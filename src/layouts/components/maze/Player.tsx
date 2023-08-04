@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, {useEffect, useState} from "react";
 import { CoordinateType, OrientationType } from "../../../types/maze";
 import {positionToCoord} from "../../../helpers";
 import {useDispatch, useSelector} from "react-redux";
@@ -40,6 +40,8 @@ const Player = () => {
     const player = useSelector((state: RootState) => state.player);
     const maze = useSelector((state: RootState) => state.maze);
 
+    const [sprite, setSprite] = useState("url('/player/player-b.png')");
+
     useEffect(() => {
         const { playerMoveDir } = gameplay;
 
@@ -47,15 +49,19 @@ const Player = () => {
 
         if (playerMoveDir === "ArrowRight" || playerMoveDir === "KeyD") {
             movePlayer('right');
+            setSprite("url('/player/player-r.png')");
         }
         if (playerMoveDir === "ArrowLeft" || playerMoveDir === "KeyA") {
             movePlayer('left');
+            setSprite("url('/player/player-l.png')");
         }
         if (playerMoveDir === "ArrowDown" || playerMoveDir === "KeyS") {
             movePlayer('bottom');
+            setSprite("url('/player/player-b.png')");
         }
         if (playerMoveDir === "ArrowUp" || playerMoveDir === "KeyW") {
             movePlayer('top');
+            setSprite("url('/player/player-t.png')");
         }
 
         dispatch(gameplayActions.playerMove(null));
@@ -101,7 +107,7 @@ const Player = () => {
                 ...player.params.playerSize,
                 top: player.data.currentPosition.top,
                 left: player.data.currentPosition.left,
-                backgroundImage: player.data.alive ? "url('/player/player.png')" : "url('/player/player-dead.png')"
+                backgroundImage: player.data.alive ? sprite : "url('/player/player-dead.png')"
             }}
         />
     );
