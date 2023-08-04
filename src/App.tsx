@@ -8,8 +8,6 @@ import routerLinks from "./router-links";
 // additionally in the v3 it will have a loading screen which transitions to starting menu
 
 function App() {
-
-
     return (
         <div className="App">
             <Routes>

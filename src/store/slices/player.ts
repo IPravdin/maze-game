@@ -4,14 +4,7 @@ import {coordToPosition} from "../../helpers";
 import {CoordinateType, OrientationType} from "../../types/maze";
 import {CreatureSizeType, PositionType, SizeType} from "../../types/global";
 import getCreatureSize, {initialCreatureSize} from "./get-creature-size";
-
-enum PlayerSpriteEnum {
-    top = "url('/player/player-top.png')",
-    bottom = "url('/player/player-bottom.png')",
-    left = "url('/player/player-left.png')",
-    right = "url('/player/player-right.png')",
-    dead = "url('/player/player-dead.png')"
-}
+import {PlayerSpriteEnum} from "../../enums/player-sprite";
 
 const initialState: PlayerState = {
     params: {
