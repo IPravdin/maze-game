@@ -1,13 +1,22 @@
-import {PositionType, SizeType} from "../../../types/global";
+import {CreatureSizeType, PositionType, SizeType} from "../../../types/global";
 
 type Props = {
-    size: SizeType
-    position: PositionType
+    position: PositionType,
+    size: CreatureSizeType | SizeType
 }
-const Bonus = ({ size, position }: Props) => {
-    const {height, width} = size
-    const {top, left} = position
-    return <div className='bonus' style={{ left, top, width, height }}/>
+const Bonus = ({ position, size }: Props) => {
+    const {top, left} = position;
+    return (
+        <div
+            className='absolute z-10 bg-cover bg-no-repeat'
+            style={{
+                ...size,
+                backgroundImage: "url('/bonus.png')",
+                left,
+                top,
+            }}
+        />
+    );
 }
 
 export default Bonus

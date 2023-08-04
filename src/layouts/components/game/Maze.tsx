@@ -13,11 +13,11 @@ const Maze = ({ player }: Props) => {
     const maze = useSelector((state: RootState) => state.maze);
 
     return (
-        <div className="container overflow-auto" style={{ ...maze.params.fieldSize  }}>
+        <div className="relative bg-[#472d3c] box-border mx-auto my-10 overflow-auto" style={{ ...maze.params.fieldSize  }}>
+            <Map mazeMap={maze.data.mazeMap} cellSize={maze.params.cellSize}/>
             <Enemies />
             {player}
-            <Map mazeMap={maze.data.mazeMap} cellSize={maze.params.cellSize}/>
-            <MapBonuses mazeMap={maze.data.mazeMap} cellSize={maze.params.cellSize}/>
+            <MapBonuses />
             <Finish coord={maze.data.endCoord} cellSize={maze.params.cellSize}/>
         </div>
     )

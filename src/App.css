@@ -26,65 +26,8 @@
   color: white;
 }
 
-.container {
-  box-sizing: border-box;
-  margin: 40px auto;
-  position: var(--container-position);
-  background: rgb(86, 5, 247);
-}
-.player {
-  z-index: 99;
-  left: 0;
-  position: var(--element-position);
-  border: solid #efefef;
-  background: rgb(254, 211, 22);
-}
-
-.player-dead {
-  z-index: 99;
-  left: 0;
-  position: var(--element-position);
-  border: solid #efefef;
-  background: rgb(31, 26, 3);
-}
-
-.enemy {
-  z-index: 99;
-  position: var(--element-position);
-  border: solid #efefef;
-  background: rgb(175, 13, 47);
-}
-
-.bonus {
-  z-index: 99;
-  position: var(--element-position);
-  background-image: url("/src/assets/star.png");
-  background-position: center;
-  background-size: contain;
-  background-repeat: no-repeat;
-}
-
-.cell {
-  box-sizing: border-box;
-  position: var(--element-position);
-}
-
-.finish {
-  position: var(--element-position);
-  background: black;
-}
-
 .App-link {
   color: #61dafb;
-}
-
-.enemy-spawn {
-  position: var(--element-position);
-  background: rgb(77, 241, 20);
-}
-.enemy-move {
-  position: var(--element-position);
-  background: rgb(178, 64, 91);
 }
 
 @keyframes App-logo-spin {

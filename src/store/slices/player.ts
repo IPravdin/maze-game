@@ -1,27 +1,24 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {PlayerData, PlayerDataJsonType} from "../../data/PlayerData";
 import {coordToPosition} from "../../helpers";
-import {CoordinateType} from "../../types/maze";
-import {PlayerSizeType, PositionType, SizeType} from "../../types/global";
+import {CoordinateType, OrientationType} from "../../types/maze";
+import {CreatureSizeType, PositionType, SizeType} from "../../types/global";
+import getCreatureSize, {initialCreatureSize} from "./get-creature-size";
 
-const getPlayerSize = (cellSize: SizeType): PlayerSizeType => {
-    const borderWidth = 2.5;
-    const margin = 5;
-    const sum = borderWidth * 2 + margin;
-
-    return {
-        width: cellSize.width - sum,
-        height: cellSize.height - sum,
-        borderWidth,
-        margin,
-    }
+enum PlayerSpriteEnum {
+    top = "url('/player/player-top.png')",
+    bottom = "url('/player/player-bottom.png')",
+    left = "url('/player/player-left.png')",
+    right = "url('/player/player-right.png')",
+    dead = "url('/player/player-dead.png')"
 }
 
 const initialState: PlayerState = {
     params: {
         startCoord: { x: 0, y: 0},
         cellSize: { width: 0, height: 0},
-        playerSize: { width: 0, height: 0, borderWidth: 0, margin: 0 }
+        playerSize: initialCreatureSize,
+        sprite: PlayerSpriteEnum.bottom
     },
     data: null
 }
@@ -36,7 +33,8 @@ const playerSlice = createSlice({
             state.params = {
                 startCoord,
                 cellSize,
-                playerSize: getPlayerSize(cellSize)
+                playerSize: getCreatureSize(cellSize),
+                sprite: PlayerSpriteEnum.bottom
             };
 
             state.data = new PlayerData(coordToPosition(startCoord, cellSize)).toJson();
@@ -60,11 +58,16 @@ const playerSlice = createSlice({
             if (!state.data) return;
 
             state.data.alive = false;
+            state.params.sprite = PlayerSpriteEnum.dead;
         },
         revive(state) {
             if (!state.data) return;
 
             state.data.alive = true;
+            state.params.sprite = PlayerSpriteEnum.bottom;
+        },
+        changeSprite(state, actions: PayloadAction<OrientationType>) {
+            state.params.sprite = PlayerSpriteEnum[actions.payload];
         }
     },
 })
@@ -73,7 +76,8 @@ type PlayerState = {
     params: {
         startCoord: CoordinateType,
         cellSize: SizeType,
-        playerSize: PlayerSizeType
+        playerSize: CreatureSizeType,
+        sprite: PlayerSpriteEnum
     },
     data: PlayerDataJsonType | null
 }

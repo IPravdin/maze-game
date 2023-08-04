@@ -7,13 +7,32 @@ type Props = {
     cellSize: SizeType
 }
 const Finish = ({coord, cellSize}: Props) => {
+    const style = {
+        width: cellSize.width,
+        height: cellSize.height,
+        left: coord.x * cellSize.width,
+        top: coord.y * cellSize.height,
+
+    };
+
     return (
-        <div className="finish" style={{
-            width: cellSize.width,
-            height: cellSize.height,
-            left: coord.x * cellSize.width,
-            top: coord.y * cellSize.height
-        }}/>
+        <div>
+            <div
+                className="absolute bg-cover bg-no-repeat"
+                style={{
+                    ...style,
+                    backgroundImage: "url('/cells/finish-cell-bg.png')"
+                }}
+            />
+            <div
+                className="absolute bg-cover bg-no-repeat animate-ping"
+                style={{
+                    ...style,
+                    backgroundImage: "url('/cells/finish-animation.png')"
+                }}
+            />
+        </div>
+
     )
 }
 

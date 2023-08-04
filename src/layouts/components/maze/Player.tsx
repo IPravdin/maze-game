@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, {useEffect} from "react";
 import { CoordinateType, OrientationType } from "../../../types/maze";
 import {positionToCoord} from "../../../helpers";
 import {useDispatch, useSelector} from "react-redux";
@@ -46,16 +46,24 @@ const Player = () => {
         if (!playerMoveDir) return;
 
         if (playerMoveDir === "ArrowRight" || playerMoveDir === "KeyD") {
-            movePlayer('right');
+            const mode = 'right';
+            movePlayer(mode);
+            dispatch(playerActions.changeSprite(mode));
         }
         if (playerMoveDir === "ArrowLeft" || playerMoveDir === "KeyA") {
-            movePlayer('left');
+            const mode = 'left';
+            movePlayer(mode);
+            dispatch(playerActions.changeSprite(mode));
         }
         if (playerMoveDir === "ArrowDown" || playerMoveDir === "KeyS") {
-            movePlayer('bottom');
+            const mode = 'bottom';
+            movePlayer(mode);
+            dispatch(playerActions.changeSprite(mode));
         }
         if (playerMoveDir === "ArrowUp" || playerMoveDir === "KeyW") {
-            movePlayer('top');
+            const mode = 'top';
+            movePlayer(mode);
+            dispatch(playerActions.changeSprite(mode));
         }
 
         dispatch(gameplayActions.playerMove(null));
@@ -96,8 +104,13 @@ const Player = () => {
 
     return (
         <div
-            className={player.data.alive ? "player" : "player-dead"}
-            style={{ ...player.params.playerSize, top: player.data.currentPosition.top, left: player.data.currentPosition.left }}
+            className="absolute z-50 bg-cover bg-no-repeat"
+            style={{
+                ...player.params.playerSize,
+                top: player.data.currentPosition.top,
+                left: player.data.currentPosition.left,
+                backgroundImage: player.params.sprite
+            }}
         />
     );
 }

@@ -27,16 +27,13 @@ const Hud = () => {
             <Bonus
                 key={i}
                 position={{ left: i * bonusSize.width, top: 0 }}
-                size={{
-                    width: bonusSize.width,
-                    height: bonusSize.height,
-                }}
+                size={bonusSize}
             />
         )
     }
 
     return (
-        <div className="container" style={{ width: fieldSize.width, height: HEIGHT }}>
+        <div className="relative bg-[#472d3c] box-border mx-auto my-10" style={{ width: fieldSize.width, height: HEIGHT }}>
             {bonusesArray?.map((bonus) => bonus)}
         </div>
     )
