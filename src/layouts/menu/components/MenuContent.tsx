@@ -2,9 +2,10 @@ import MenuView from "./MenuView";
 import {Dispatch, SetStateAction} from "react";
 import routerLinks from "../../../router-links";
 import {Link} from "react-router-dom";
+import {MenuStateType} from "../MenuV2";
 
 
-const MenuContent = ({ setOptions }: { setOptions: Dispatch<SetStateAction<boolean>>}) => {
+const MenuContent = ({ setMenuState }: { setMenuState: Dispatch<SetStateAction<MenuStateType>>}) => {
     return (
         <MenuView
             title="Menu"
@@ -13,7 +14,8 @@ const MenuContent = ({ setOptions }: { setOptions: Dispatch<SetStateAction<boole
                     <Link className="w-full" to={routerLinks.game}>
                         <button className="btn w-full">Start</button>
                     </Link>
-                    <button className="btn" onClick={() => setOptions(true)}>Options</button>
+                    <button className="btn" onClick={() => setMenuState('options')}>Options</button>
+                    <button className="btn" onClick={() => setMenuState('credits')}>Credits</button>
                 </>
             }
         />

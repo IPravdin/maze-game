@@ -4,16 +4,27 @@ import MenuView from "./components/MenuView";
 import routerLinks from "../../router-links";
 import {useNavigate} from "react-router-dom";
 import GameStateDialog from "../components/game/GameStateDialog";
+import {MenuStateType} from "./MenuV2";
+import CreditsContent from "./components/CreditsContent";
 
 
 const Pause = () => {
     const navigate = useNavigate();
-    const [optionsView, setOptionsView] = useState(false);
+    const [menuState, setMenuState] = useState<MenuStateType>('menu');
     const [confirmLeave, setConfirmLeave] = useState(false);
 
-    if (optionsView)
+    if (menuState === 'options')
         return (
-            <OptionsContent setOptions={setOptionsView} />
+            <OptionsContent setMenuState={setMenuState} />
+        );
+
+    if (menuState === 'credits')
+        return (
+            <div className="w-full h-full flex justify-center items-center">
+                <div className="w-96">
+                    <CreditsContent setMenuState={setMenuState} />
+                </div>
+            </div>
         );
 
     return (
@@ -22,7 +33,8 @@ const Pause = () => {
                 content={
                     <>
                         <button className="btn w-full" onClick={() => setConfirmLeave(true)}>Back to Menu</button>
-                        <button className="btn" onClick={() => setOptionsView(true)}>Options</button>
+                        <button className="btn" onClick={() => setMenuState('options')}>Options</button>
+                        <button className="btn" onClick={() => setMenuState('credits')}>Credits</button>
                     </>
                 }
             />
