@@ -29,7 +29,6 @@ const gameplaySlice = createSlice({
         },
         playerMove(state, action: PayloadAction<PlayerMoveKeys | null>) {
             state.playerMoveDir = action.payload;
-            console.log('playerMoveDir', state.playerMoveDir)
         },
         recordDeath(state) {
             state.playerDeath++;
