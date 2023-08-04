@@ -160,7 +160,7 @@ const Enemy = ({ id, data }: Props) => {
                 ))
             ))}
             <div
-                className="absolute z-50 bg-cover bg-no-repeat"
+                className="absolute z-50 bg-cover bg-no-repeat bg-[url('/src/assets/default-view/enemy-b.png')]"
                 style={{
                     ...size,
                     left: enemy.currentPosition.left,
