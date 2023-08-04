@@ -20,8 +20,8 @@ const gameplaySlice = createSlice({
     initialState: gameplayInitialState,
     reducers: {
         froze(state, action: PayloadAction<FrozenModeType>) {
-            state.frozen = true;
             state.frozenMode = action.payload;
+            state.frozen = true;
         },
         unfroze(state) {
             state.frozen = false;

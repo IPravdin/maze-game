@@ -96,8 +96,13 @@ const Player = () => {
 
     return (
         <div
-            className={player.data.alive ? "player" : "player-dead"}
-            style={{ ...player.params.playerSize, top: player.data.currentPosition.top, left: player.data.currentPosition.left }}
+            className="absolute z-50 bg-cover bg-no-repeat"
+            style={{
+                ...player.params.playerSize,
+                top: player.data.currentPosition.top,
+                left: player.data.currentPosition.left,
+                backgroundImage: player.data.alive ? "url('/player/player.png')" : "url('/player/player-dead.png')"
+            }}
         />
     );
 }

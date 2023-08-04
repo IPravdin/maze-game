@@ -96,25 +96,45 @@ const Enemy = ({ id, data }: Props) => {
         return dirIndex >= 0 && posInDir >= 0
     }
 
+    const movStyle = {
+        width: cellSize.width,
+        height: cellSize.height,
+        backgroundImage: "url('/cells/enemy-movement.png')"
+    }
+
     return (
         <div>
-            <div key={id + ' spawn'} className='enemy-move' style={{
-                left: enemy.spawn.x * cellSize.width,
-                top: enemy.spawn.y * cellSize.height,
-                width: cellSize.width,
-                height: cellSize.height
-            }}/>
+            <div
+                key={id + ' spawn'}
+                className='absolute bg-cover bg-no-repeat'
+                style={{
+                    left: enemy.spawn.x * cellSize.width,
+                    top: enemy.spawn.y * cellSize.height,
+                    ...movStyle
+                }}
+            />
             {enemy.movement.map((movement, index2) => (
                 movement.map((side, index3) => (
-                    <div key={id + index2 + index3} className='enemy-move' style={{
-                        left: side.x * cellSize.width,
-                        top: side.y * cellSize.height,
-                        width: cellSize.width,
-                        height: cellSize.height
-                    }}/>
+                    <div
+                        key={id + index2 + index3}
+                        className='absolute bg-cover bg-no-repeat'
+                        style={{
+                            left: side.x * cellSize.width,
+                            top: side.y * cellSize.height,
+                            ...movStyle
+                        }}
+                    />
                 ))
             ))}
-            <div className="enemy" style={{ ...size, left: enemy.currentPosition.left, top: enemy.currentPosition.top }}/>
+            <div
+                className="absolute z-50 bg-cover bg-no-repeat"
+                style={{
+                    ...size,
+                    left: enemy.currentPosition.left,
+                    top: enemy.currentPosition.top,
+                    backgroundImage: "url('/enemy.png')"
+                }}
+            />
         </div>
     );
 }

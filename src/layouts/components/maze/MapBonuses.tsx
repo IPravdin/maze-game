@@ -1,28 +1,29 @@
 import React, {Fragment} from "react";
-import {MazeCell} from "../../../types/maze";
 import Bonus from "./Bonus";
-import {SizeType} from "../../../types/global";
+import getCreatureSize from "../../../store/slices/get-creature-size";
+import {useSelector} from "react-redux";
+import {RootState} from "../../../store";
 
-type Props = {
-    mazeMap: MazeCell[][],
-    cellSize: SizeType
-}
+const MazeBonuses = () => {
+    const maze = useSelector((state: RootState) => state.maze);
+    const size = getCreatureSize(maze.params.cellSize);
 
-const MazeBonuses = ({mazeMap, cellSize}: Props) => {
     return (
         <div>
-            {mazeMap.map((columns, x) => {
+            {maze.data.mazeMap.map((columns, x) => {
                 return columns.map((cell, y) => {
                     const bonus = cell.bonus
                         if (bonus.placed && !bonus.collected) {
-                            return <Bonus
-                                key={`cell[${x}][${y}]`}
-                                position={{
-                                    left: x * cellSize.width,
-                                    top: y * cellSize.height
-                                }}
-                                size={cellSize}
-                            />
+                            return (
+                                <Bonus
+                                    key={`cell[${x}][${y}]`}
+                                    position={{
+                                        left: x * maze.params.cellSize.width,
+                                        top: y * maze.params.cellSize.height
+                                    }}
+                                    size={size}
+                                />
+                            )
                         }
                         return <Fragment key={`cell[${x}][${y}]`}></Fragment>
                     }

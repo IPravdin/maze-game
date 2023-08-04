@@ -1,26 +1,14 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {EnemySizeType, PlayerSizeType, SizeType} from "../../types/global";
+import {CreatureSizeType, SizeType} from "../../types/global";
 import {EnemySpeed} from "../../enums/enemy-speed";
 import {MazeEnemy} from "../../types/enemy";
 import {CoordinateType} from "../../types/maze";
 import {gameplayActions} from "./gameplay";
-
-const getEnemySize = (cellSize: SizeType): PlayerSizeType => {
-    const borderWidth = 2.5;
-    const margin = 5;
-    const sum = borderWidth * 2 + margin;
-
-    return {
-        width: cellSize.width - sum,
-        height: cellSize.height - sum,
-        borderWidth,
-        margin,
-    }
-}
+import getCreatureSize, {initialCreatureSize} from "./get-creature-size";
 
 const initialState: EnemiesState = {
     params: {
-        size: { width: 0, height: 0, borderWidth: 0, margin: 0},
+        size: initialCreatureSize,
         defaultSpeed: EnemySpeed.stop,
         speed: EnemySpeed.stop,
     },
@@ -38,7 +26,7 @@ const enemiesSlice = createSlice({
             const defaultSpeed = EnemySpeed.medium;
 
             state.params = {
-                size: getEnemySize(cellSize),
+                size: getCreatureSize(cellSize),
                 defaultSpeed: defaultSpeed,
                 speed: defaultSpeed,
             };
@@ -75,7 +63,7 @@ const enemiesSlice = createSlice({
 
 type EnemiesState = {
     params: {
-        size: EnemySizeType,
+        size: CreatureSizeType,
         defaultSpeed: EnemySpeed,
         speed: EnemySpeed
     },
