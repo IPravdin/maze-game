@@ -16,6 +16,7 @@ const MazeBonuses = () => {
                         if (bonus.placed && !bonus.collected) {
                             return (
                                 <Bonus
+                                    pulse
                                     key={`cell[${x}][${y}]`}
                                     position={{
                                         left: x * maze.params.cellSize.width,

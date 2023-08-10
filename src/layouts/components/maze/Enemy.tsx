@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react";
-import {PositionType} from "../../../types/global";
+import {PositionType} from "../../../utils/types/global";
 import {CurrMovCoordType, EnemyData} from "../../../data/EnemyData";
-import {coordToPosition, objectsEqual, positionToCoord, returnRandomInt} from "../../../helpers";
+import {coordToPosition, objectsEqual, positionToCoord, returnRandomInt} from "../../../utils/helpers";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "../../../store";
-import {MazeEnemy} from "../../../types/enemy";
+import {MazeEnemy} from "../../../utils/types/enemy";
 import {enemiesActions} from "../../../store/slices/enemies";
 
 type Props = {

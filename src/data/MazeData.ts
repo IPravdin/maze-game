@@ -1,7 +1,7 @@
-import {CoordinateType, MazeCell, ModifiedDirs, OrientationType} from "../types/maze";
-import {returnRand, returnRandomInt, shuffle} from "../helpers";
-import {ChunkType, SizeType} from "../types/global";
-import {MazeEnemy} from "../types/enemy";
+import {CoordinateType, MazeCell, ModifiedDirs, OrientationType} from "../utils/types/maze";
+import {returnRand, returnRandomInt, shuffle} from "../utils/helpers";
+import {ChunkType, SizeType} from "../utils/types/global";
+import {MazeEnemy} from "../utils/types/enemy";
 
 export class MazeData {
     readonly size: SizeType

@@ -1,4 +1,4 @@
-import {PositionType} from "../types/global";
+import {PositionType} from "../utils/types/global";
 import {CreatureData} from "./CreatureData";
 
 export type PlayerDataJsonType = {

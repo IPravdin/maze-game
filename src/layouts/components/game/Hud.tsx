@@ -13,7 +13,7 @@ const Hud = () => {
     const width = fieldSize.width / maze.params.bonuses;
     const bonusSize = {
         width: width > HEIGHT ? HEIGHT : width,
-        height: HEIGHT
+        height: width > HEIGHT ? HEIGHT : width
     }
 
     if (!player.data) {

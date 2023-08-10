@@ -1,4 +1,4 @@
-import {PositionType} from "../types/global";
+import {PositionType} from "../utils/types/global";
 
 
 export class CreatureData {

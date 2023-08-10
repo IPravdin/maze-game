@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {PlayerMoveKeys} from "../../types/player";
+import {PlayerMoveKeys} from "../../utils/types/player";
 
 type FrozenModeType = 'won' | 'lost' | 'pause' | 'none';
 

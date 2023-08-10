@@ -1,7 +1,7 @@
-import {PositionType} from "../types/global";
+import {PositionType} from "../utils/types/global";
 import {CreatureData} from "./CreatureData";
-import {CoordinateType} from "../types/maze";
-import {MazeEnemy} from "../types/enemy";
+import {CoordinateType} from "../utils/types/maze";
+import {MazeEnemy} from "../utils/types/enemy";
 
 export type CurrMovCoordType = {
     dirIndex: number,

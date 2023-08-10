@@ -1,13 +1,14 @@
 import React, {useEffect} from "react";
-import { CoordinateType, OrientationType } from "../../../types/maze";
-import {positionToCoord} from "../../../helpers";
+import { CoordinateType, OrientationType } from "../../../utils/types/maze";
+import {positionToCoord} from "../../../utils/helpers";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "../../../store";
 import {gameplayActions} from "../../../store/slices/gameplay";
 import {playerActions} from "../../../store/slices/player";
 import Spinner from "../Spinner";
 import {mazeActions} from "../../../store/slices/maze";
-import {PositionType, SizeType} from "../../../types/global";
+import {PositionType, SizeType} from "../../../utils/types/global";
+import {useSoundPlayer} from "../../../utils/hooks/useSoundPlayer";
 
 const returnNewPosition = (mode: OrientationType, currentPosition: PositionType, cellSize: SizeType) => {
     let newPosition: PositionType = {left: 0, top: 0};
@@ -39,6 +40,8 @@ const Player = () => {
     const gameplay = useSelector((state: RootState) => state.gameplay);
     const player = useSelector((state: RootState) => state.player);
     const maze = useSelector((state: RootState) => state.maze);
+
+    const soundPlayer = useSoundPlayer();
 
     useEffect(() => {
         const { playerMoveDir } = gameplay;
@@ -82,6 +85,7 @@ const Player = () => {
         const newPosition = returnNewPosition(mode, currentPosition, cellSize);
         dispatch(playerActions.move(newPosition));
         dispatch(playerActions.recordStep());
+        soundPlayer.play('step');
 
         // ** Bonus collect
         const newCoord= positionToCoord(newPosition, cellSize);
@@ -90,11 +94,13 @@ const Player = () => {
         if (newCell.bonus.placed && !newCell.bonus.collected) {
             dispatch(playerActions.collectBonus());
             dispatch(mazeActions.setBonusCollected(newCoord));
+            soundPlayer.play('collectCoin');
         }
 
         // ** Register finish
         if (newCell.startEnd.end) {
-            dispatch(gameplayActions.froze('won'))
+            dispatch(gameplayActions.froze('won'));
+            soundPlayer.play('teleport');
         }
     }
 

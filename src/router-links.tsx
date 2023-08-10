@@ -1,5 +1,6 @@
 const routerLinks = {
-    menu: '/',
+    titleScreen: '/',
+    menu: '/menu',
     game: '/game',
 }
 

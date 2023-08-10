@@ -1,4 +1,4 @@
-import {SizeType} from "../types/global";
+import {SizeType} from "../utils/types/global";
 
 
 export class HudData {

@@ -1,10 +1,10 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {PlayerData, PlayerDataJsonType} from "../../data/PlayerData";
-import {coordToPosition} from "../../helpers";
-import {CoordinateType, OrientationType} from "../../types/maze";
-import {CreatureSizeType, PositionType, SizeType} from "../../types/global";
+import {coordToPosition} from "../../utils/helpers";
+import {CoordinateType, OrientationType} from "../../utils/types/maze";
+import {CreatureSizeType, PositionType, SizeType} from "../../utils/types/global";
 import getCreatureSize, {initialCreatureSize} from "./get-creature-size";
-import {PlayerSpriteEnum} from "../../enums/player-sprite";
+import {PlayerSpriteEnum} from "../../utils/enums/player-sprite";
 
 const initialState: PlayerState = {
     params: {

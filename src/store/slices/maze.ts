@@ -1,7 +1,7 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {MazeData} from "../../data/MazeData";
-import {CoordinateType} from "../../types/maze";
-import {SizeType} from "../../types/global";
+import {CoordinateType} from "../../utils/types/maze";
+import {SizeType} from "../../utils/types/global";
 
 const mazeInitialState = () => {
     const bonuses = 1;

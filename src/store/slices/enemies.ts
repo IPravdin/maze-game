@@ -1,8 +1,8 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {CreatureSizeType, SizeType} from "../../types/global";
-import {EnemySpeed} from "../../enums/enemy-speed";
-import {MazeEnemy} from "../../types/enemy";
-import {CoordinateType} from "../../types/maze";
+import {CreatureSizeType, SizeType} from "../../utils/types/global";
+import {EnemySpeed} from "../../utils/enums/enemy-speed";
+import {MazeEnemy} from "../../utils/types/enemy";
+import {CoordinateType} from "../../utils/types/maze";
 import {gameplayActions} from "./gameplay";
 import getCreatureSize, {initialCreatureSize} from "./get-creature-size";
 

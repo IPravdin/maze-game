@@ -1,19 +1,20 @@
 import Player from "../layouts/components/maze/Player";
-import React, { useEffect, useRef } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import GameStateDialog from "../layouts/components/game/GameStateDialog";
 import Hud from "../layouts/components/game/Hud";
 import Maze from "../layouts/components/game/Maze";
-import {PlayerMoveKeys} from "../types/player";
+import {PlayerMoveKeys} from "../utils/types/player";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState } from "../store";
 import {gameplayActions} from "../store/slices/gameplay";
 import {mazeFetch} from "../store/slices/maze-fetch";
 import Spinner from "../layouts/components/Spinner";
-import { objectsEqual, positionToCoord} from "../helpers";
+import { objectsEqual, positionToCoord} from "../utils/helpers";
 import {PlayerDataJsonType} from "../data/PlayerData";
 import {playerActions} from "../store/slices/player";
 import Pause from "../layouts/menu/Pause";
 import {mazeActions} from "../store/slices/maze";
+import {useSoundPlayer} from "../utils/hooks/useSoundPlayer";
 
 const Game = () => {
     const dispatch: AppDispatch = useDispatch();
@@ -23,7 +24,13 @@ const Game = () => {
     const maze = useSelector((state: RootState) => state.maze);
     const cellSize = useSelector((state: RootState) => state.maze.params.cellSize);
 
-    const divRef = useRef<HTMLDivElement>(null)
+    const divRef = useRef<HTMLDivElement>(null);
+    const soundPlayer = useSoundPlayer();
+    const [enemySoundTriggered, setEnemySoundTriggered] = useState(false);
+
+    useEffect(() => {
+        soundPlayer.play('main');
+    }, [soundPlayer])
 
     // ** Sets focus on main div
     useEffect(() => {
@@ -49,8 +56,35 @@ const Game = () => {
             dispatch(playerActions.kill());
             dispatch(gameplayActions.recordDeath());
             dispatch(gameplayActions.froze('lost'));
+            soundPlayer.play('death');
         }
-    }, [player.data?.currentPosition, enemies.data.enemiesCurCoords])
+    }, [player.data?.currentPosition, enemies.data.enemiesCurCoords]);
+
+    // ** Trigger ghost sound
+    useEffect(() => {
+        if (!enemies.data.enemiesCurCoords) return;
+        if (!player.data) return;
+
+        const playerPos = positionToCoord((player.data as PlayerDataJsonType).currentPosition, cellSize);
+
+        maze.data.enemies.forEach((enemy) => {
+            return enemy.movement.forEach((side) => {
+                return side.forEach((cell) => {
+                    if (objectsEqual(playerPos, cell)) {
+                        return setEnemySoundTriggered( (prevState) => !prevState);
+                    }
+                })
+            })
+        });
+
+    }, [player.data?.currentPosition]);
+
+    // ** Produce Enemy Sound
+    useEffect(() => {
+        if (enemySoundTriggered) {
+            soundPlayer.play('enemy');
+        }
+    }, [enemySoundTriggered, soundPlayer])
 
     const keyDownListener = (event: React.KeyboardEvent<HTMLDivElement>) => {
         event.preventDefault()

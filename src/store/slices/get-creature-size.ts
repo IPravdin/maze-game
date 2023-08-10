@@ -1,4 +1,4 @@
-import {CreatureSizeType, SizeType} from "../../types/global";
+import {CreatureSizeType, SizeType} from "../../utils/types/global";
 
 export const initialCreatureSize = { width: 0, height: 0, marginTop: 0, marginBottom: 0, marginLeft: 0, marginRight: 0, };
 const getCreatureSize = (cellSize: SizeType): CreatureSizeType => {

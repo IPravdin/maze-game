@@ -14,7 +14,7 @@ interface Props {
 }
 const GameStateDialog = ({ id, title, content, open, onOpen, onClose, btnError, btnSuccess, onErrorClick, onSuccessClick }: Props) => {
     useEffect(() => {
-        if (!open) return
+        if (!open) return;
 
         if(onOpen) onOpen();
 
