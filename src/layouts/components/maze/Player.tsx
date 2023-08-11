@@ -110,7 +110,7 @@ const Player = () => {
 
     return (
         <div
-            className="absolute z-50 bg-cover bg-no-repeat"
+            className={`absolute z-50 bg-cover bg-no-repeat`}
             style={{
                 ...player.params.playerSize,
                 top: player.data.currentPosition.top,

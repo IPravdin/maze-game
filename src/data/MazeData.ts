@@ -122,28 +122,22 @@ export class MazeData {
             }
             numLoops++;
 
-            // For each Cell's side: n, s, e, w
             for (let index = 0; index < this.directions.length; index++) {
-                let direction = this.directions[index]; // either n, s, e, w
+                let direction = this.directions[index];
                 const nx = pos.x + this.modifiedDir[direction].x;
                 const ny = pos.y + this.modifiedDir[direction].y;
 
                 if (nx >= 0 && nx < this.size.width && ny >= 0 && ny < this.size.height) {
-                    //Check if the tile is already visited
                     if (!this.mazeMap[nx][ny].visited) {
-                        //Carve through walls from this tile to next
                         this.mazeMap[pos.x][pos.y].walkable[direction] = true;
                         this.mazeMap[nx][ny].walkable[this.modifiedDir[direction].o] = true;
 
-                        //Set Currentcell as next cells Prior visited
                         this.mazeMap[nx][ny].priorPos = pos;
-                        //Update Cell position to newly visited location
                         pos = {
                             x: nx,
                             y: ny
                         };
                         cellsVisited++;
-                        //Recursively call this method on the next tile
                         moveToNext = true;
                         break;
                     }
@@ -151,8 +145,6 @@ export class MazeData {
             }
 
             if (!moveToNext) {
-                //  If it failed to find a direction,
-                //  move the current position back to the prior cell and Recall the method.
                 pos = this.mazeMap[pos.x][pos.y].priorPos!;
             }
             if (numCells === cellsVisited) {

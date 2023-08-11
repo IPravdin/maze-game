@@ -20,11 +20,7 @@ const Pause = () => {
 
     if (menuState === 'credits')
         return (
-            <div className="w-full h-full flex justify-center items-center">
-                <div className="w-96">
-                    <CreditsContent setMenuState={setMenuState} />
-                </div>
-            </div>
+            <CreditsContent setMenuState={setMenuState} />
         );
 
     return (
@@ -32,6 +28,7 @@ const Pause = () => {
             <MenuView
                 content={
                     <>
+                        <button className="btn btn-success">Continue</button>
                         <button className="btn w-full" onClick={() => setConfirmLeave(true)}>Back to Menu</button>
                         <button className="btn" onClick={() => setMenuState('options')}>Options</button>
                         <button className="btn" onClick={() => setMenuState('credits')}>Credits</button>

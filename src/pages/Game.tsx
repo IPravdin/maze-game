@@ -29,8 +29,10 @@ const Game = () => {
     const [enemySoundTriggered, setEnemySoundTriggered] = useState(false);
 
     useEffect(() => {
-        soundPlayer.play('main');
-    }, [soundPlayer])
+        if (gameplay.frozenMode === 'none') {
+            soundPlayer.play('main');
+        }
+    }, [soundPlayer, gameplay.frozenMode])
 
     // ** Sets focus on main div
     useEffect(() => {
@@ -150,7 +152,6 @@ const Game = () => {
                 title="Pause"
                 content={<Pause />}
                 onClose={() => dispatch(gameplayActions.unfroze())}
-                btnSuccess="Continue"
             />
         </div>
     )

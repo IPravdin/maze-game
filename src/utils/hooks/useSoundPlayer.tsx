@@ -1,87 +1,85 @@
 import {createContext, ReactNode, useContext, useState} from "react";
 import useSound from "use-sound";
 import crystalCave from "../../assets/music/crystal_cave_mysterious_ambience.ogg";
-import taleOfWinter from "../../assets/music/037_Tale_of_Winter.mp3";
-import rotatingWorlds from "../../assets/music/026_Rotating_Worlds.mp3";
-import playerStepSound from "../../assets/sounds/386525__glennm__right_foot_stone.wav";
-import coinCollectSound from "../../assets/sounds/402288__matrixxx__retro-coin-02.wav";
+import mysteriousAmbience from "../../assets/music/mysterious_ambience.mp3";
+import playerStepSound from "../../assets/sounds/386525__glennm__right_foot_stone.mp3";
+import coinCollectSound from "../../assets/sounds/402288__matrixxx__retro-coin-02.mp3";
 import ghostSound from "../../assets/sounds/431979__horroraudio__kid-ghost-sigh.wav";
 import playerDeathSound from "../../assets/sounds/204450__ludist__soul-death.mp3";
+import teleportSound from "../../assets/sounds/104076__jobro__alien-windbells-up.wav";
 
-type SongType = 'menu' | 'main' | 'secondary' | 'step' | 'collectCoin' | 'enemy' | 'teleport' | 'death';
+type SongType = 'menu' | 'main' | 'step' | 'collectCoin' | 'enemy' | 'teleport' | 'death';
 
 const SoundPlayerContext = createContext<{
-    volume: number,
+    musicVolume: number,
+    soundVolume: number,
     play: (mode?: SongType) => void,
-    changeVolume: (volume: number) => void,
+    setMusicVolume: (volume: number) => void,
+    setSoundVolume: (volume: number) => void,
 }>({
-    volume: 0,
+    musicVolume: 0,
+    soundVolume: 0,
     play: () => {
         throw new Error('play is not implemented');
     },
-    changeVolume: () => {
-        throw new Error('setVolume is not implemented');
+    setMusicVolume: () => {
+        throw new Error('setMusicVolume is not implemented');
+    },
+    setSoundVolume: () => {
+        throw new Error('setSoundVolume is not implemented');
     },
 })
 export function SoundPlayerProvider({ children }: { children: ReactNode }) {
-    const [volume, setVolume] = useState<number>(0.2);
-    const [soundVolume, setSoundVolume] = useState<number>(1);
+    const [musicVolume, setMusicVolume] = useState<number>(20);
+    const [soundVolume, setSoundVolume] = useState<number>(30);
 
-    const [playMenu, { stop: stopMenu, pause: pauseMenu }] = useSound(taleOfWinter, {
-        volume,
-        soundEnabled: !!volume,
+    const [playMenu, { stop: stopMenu, pause: pauseMenu }] = useSound(mysteriousAmbience, {
+        volume: returnVolumeFormat(musicVolume),
+        soundEnabled: !!musicVolume,
         loop: true
     });
 
     const [playMain, { stop: stopMain, pause: pauseMain }] = useSound(crystalCave, {
-        volume,
-        soundEnabled: !!volume,
+        volume: returnVolumeFormat(musicVolume),
+        soundEnabled: !!musicVolume,
         loop: true
     });
 
-    const [playSec, { stop: stopSec, pause: pauseSec }] = useSound(rotatingWorlds, {
-        volume,
-        soundEnabled: !!volume,
-    });
-
     const [playStep] = useSound(playerStepSound, {
-        volume: soundVolume,
+        volume: returnVolumeFormat(soundVolume),
         soundEnabled: !!soundVolume,
     });
 
     const [playCoinCollect] = useSound(coinCollectSound, {
-        volume: soundVolume,
+        volume: returnVolumeFormat(soundVolume),
         soundEnabled: !!soundVolume,
     });
     const [playGhost, { stop: stopGhost }] = useSound(ghostSound, {
-        volume: soundVolume,
+        volume: returnVolumeFormat(soundVolume),
         soundEnabled: !!soundVolume,
     });
 
-    /*const [playTeleport] = useSound(ghostSound, {
-        volume: soundVolume,
-        soundEnabled: !!soundVolume,
-    });*/
-
     const [playDeath] = useSound(playerDeathSound, {
-        volume: soundVolume,
+        volume: returnVolumeFormat(soundVolume),
+        soundEnabled: !!soundVolume,
+    });
+
+    const [playTeleport] = useSound(teleportSound, {
+        volume: returnVolumeFormat(soundVolume),
         soundEnabled: !!soundVolume,
     });
 
     const musicArray: { id: SongType, stop: (id?: (string | undefined)) => void, pause: (id?: (string | undefined)) => void}[] = [
         { id: 'menu', stop: stopMenu, pause: pauseMenu },
         { id: 'main', stop: stopMain, pause: pauseMain },
-        { id: 'secondary', stop: stopSec, pause: pauseSec },
     ];
-
-    const changeVolume = (volume: number) => {
-        setVolume(prevState => volume);
-    }
 
     const handleStop = (mode: SongType) => {
         musicArray.forEach((item) => {
             if (item.id !== mode) {
                 item.stop();
+            } else {
+                item.pause();
             }
         })
 
@@ -99,10 +97,6 @@ export function SoundPlayerProvider({ children }: { children: ReactNode }) {
                 handleStop(mode);
                 playMain();
                 break;
-            case "secondary":
-                handleStop(mode);
-                playSec();
-                break;
             case "step":
                 playStep();
                 break;
@@ -114,9 +108,12 @@ export function SoundPlayerProvider({ children }: { children: ReactNode }) {
                 playGhost();
                 break;
             case "teleport":
+                handleStop(mode);
                 stopGhost();
+                playTeleport();
                 break;
             case "death":
+                handleStop(mode);
                 stopGhost();
                 playDeath();
                 break;
@@ -126,8 +123,10 @@ export function SoundPlayerProvider({ children }: { children: ReactNode }) {
     return (
         <SoundPlayerContext.Provider
             value={{
-                volume,
-                changeVolume,
+                musicVolume,
+                soundVolume,
+                setMusicVolume,
+                setSoundVolume,
                 play: handlePlay,
             }}
         >
@@ -138,4 +137,8 @@ export function SoundPlayerProvider({ children }: { children: ReactNode }) {
 
 export function useSoundPlayer() {
     return useContext(SoundPlayerContext);
+}
+
+function returnVolumeFormat(stateVolume: number) {
+    return stateVolume / 100;
 }

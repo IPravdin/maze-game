@@ -15,28 +15,16 @@ const MenuV2 = () => {
 
     if (menuState === 'options')
         return (
-            <div className="w-full h-full flex justify-center items-center">
-                <div className="w-96">
-                    <OptionsContent setMenuState={setMenuState} />
-                </div>
-            </div>
+            <OptionsContent setMenuState={setMenuState} />
         );
 
     if (menuState === 'credits')
         return (
-            <div className="w-full h-full flex justify-center items-center">
-                <div className="w-96">
-                    <CreditsContent setMenuState={setMenuState} />
-                </div>
-            </div>
+            <CreditsContent setMenuState={setMenuState} />
         );
 
     return (
-        <div className="w-full h-full flex justify-center items-center">
-            <div className="w-96">
-                <MenuContent setMenuState={setMenuState} />
-            </div>
-        </div>
+        <MenuContent setMenuState={setMenuState} />
     );
 }
 
