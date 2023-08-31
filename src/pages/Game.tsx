@@ -78,7 +78,7 @@ const Game = () => {
             return enemy.movement.forEach((side) => {
                 return side.forEach((cell) => {
                     if (objectsEqual(playerPos, cell)) {
-                        return setEnemySoundTriggered( (prevState) => !prevState);
+                        return setEnemySoundTriggered( true);
                     }
                 })
             })
@@ -90,6 +90,7 @@ const Game = () => {
     useEffect(() => {
         if (enemySoundTriggered) {
             soundPlayer.play('enemy');
+            setEnemySoundTriggered(false);
         }
     }, [enemySoundTriggered, soundPlayer])
 
