@@ -40,7 +40,7 @@ const MenuContent = ({ setMenuState }: { setMenuState: Dispatch<SetStateAction<M
                 open={confirmReset}
                 onClose={() => setConfirmReset(false)}
                 title="Reset a game"
-                content="Are you sure you would like to reset all progress?"
+                content="Are you sure you would like to reset all progress? All statisctics will be lost as well"
                 btnSuccess="No"
                 btnError="Yes"
                 onErrorClick={() => {
