@@ -41,8 +41,8 @@ const gameplaySlice = createSlice({
         setSoundVolume(state, action: PayloadAction<number>) {
             state.soundVolume = action.payload;
         },
-        setFirstLaunch(state) {
-            state.firstLaunch = !state.firstLaunch;
+        setFirstLaunchOff(state) {
+            state.firstLaunch = false;
         }
     }
 })

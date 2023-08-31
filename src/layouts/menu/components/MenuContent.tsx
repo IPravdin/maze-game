@@ -22,7 +22,7 @@ const MenuContent = ({ setMenuState }: { setMenuState: Dispatch<SetStateAction<M
                 content={
                     <>
                         <Link className="w-full" to={routerLinks.game}>
-                            <button className="btn btn-success w-full" onClick={() => dispatch(gameplayActions.setFirstLaunch())}>
+                            <button className="btn btn-success w-full" onClick={() => dispatch(gameplayActions.setFirstLaunchOff())}>
                                 {firstLaunch ? "Start New Game" : "Continue"}
                             </button>
                         </Link>
