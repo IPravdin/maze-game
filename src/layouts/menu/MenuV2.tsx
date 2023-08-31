@@ -16,21 +16,13 @@ const MenuV2 = () => {
 
     switch (menuState) {
         case 'options':
-            return (
-                <OptionsContent setMenuState={setMenuState} />
-            );
+            return <OptionsContent setMenuState={setMenuState} />;
         case 'credits':
-            return (
-                <CreditsContent setMenuState={setMenuState} />
-            );
+            return <CreditsContent setMenuState={setMenuState} />;
         case 'stats':
-            return (
-                <StatsContent setMenuState={setMenuState} />
-            );
+            return <StatsContent setMenuState={setMenuState} />;
         default:
-            return (
-                <MenuContent setMenuState={setMenuState} />
-            );
+            return <MenuContent setMenuState={setMenuState} />;
     }
 }
 

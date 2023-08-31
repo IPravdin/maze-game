@@ -3,7 +3,7 @@ import {ReactNode} from "react";
 
 const MenuView = ({ title, content, cardActions }: { title?: string, content?: ReactNode, cardActions?: ReactNode }) => {
     return (
-        <div className="w-full h-full">
+        <div className="w-full h-full flex justify-center items-center">
             <div className="w-[46rem] max-h-[38rem] m-auto">
                 <div className="card w-full h-full">
                     <div className="card-body w-full h-full">
