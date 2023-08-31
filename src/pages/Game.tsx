@@ -115,7 +115,7 @@ const Game = () => {
     }
 
     return (
-        <div className="w-full h-full" onKeyDown={keyDownListener} tabIndex={0} ref={divRef}>
+        <div className="w-full h-full bg-[#472d3c]" onKeyDown={keyDownListener} tabIndex={0} ref={divRef}>
             <Hud />
             <Maze player={<Player/>}/>
             <GameStateDialog

@@ -6,10 +6,14 @@ import {useNavigate} from "react-router-dom";
 import GameStateDialog from "../components/game/GameStateDialog";
 import {MenuStateType} from "./MenuV2";
 import CreditsContent from "./components/CreditsContent";
+import {mazeActions} from "../../store/slices/maze";
+import {gameplayActions} from "../../store/slices/gameplay";
+import {useDispatch} from "react-redux";
 
 
 const Pause = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [menuState, setMenuState] = useState<MenuStateType>('menu');
     const [confirmLeave, setConfirmLeave] = useState(false);
 
@@ -29,7 +33,13 @@ const Pause = () => {
                 content={
                     <>
                         <button className="btn btn-success">Continue</button>
-                        <button className="btn w-full" onClick={() => setConfirmLeave(true)}>Back to Menu</button>
+                        <button className="btn" onClick={() => setConfirmLeave(true)}>Back to Menu</button>
+                        <button className="btn" onClick={() => {
+                            dispatch(mazeActions.generate());
+                            dispatch(gameplayActions.unfroze());
+                        }}>
+                            Restart Level
+                        </button>
                         <button className="btn" onClick={() => setMenuState('options')}>Options</button>
                         <button className="btn" onClick={() => setMenuState('credits')}>Credits</button>
                     </>
