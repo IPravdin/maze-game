@@ -28,7 +28,11 @@ const GameStateDialog = ({ id, title, content, open, onOpen, onClose, btnError, 
                 {title && <h3 className="font-bold text-lg">{title}</h3>}
                 {content}
                 <div className="modal-action">
-                    {btnError && <button className="btn btn-error" onClick={onErrorClick}>{btnError}</button>}
+                    {btnError && (
+                        <button className="btn btn-error" onClick={onErrorClick}>
+                            {btnError}
+                        </button>
+                    )}
                     {btnSuccess && <button className="btn btn-success" onClick={onSuccessClick}>{btnSuccess}</button>}
                 </div>
             </form>

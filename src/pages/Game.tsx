@@ -15,8 +15,11 @@ import {playerActions} from "../store/slices/player";
 import Pause from "../layouts/menu/Pause";
 import {mazeActions} from "../store/slices/maze";
 import {useSoundPlayer} from "../utils/hooks/useSoundPlayer";
+import routerLinks from "../router-links";
+import {useNavigate} from "react-router-dom";
 
 const Game = () => {
+    const navigate = useNavigate();
     const dispatch: AppDispatch = useDispatch();
     const gameplay = useSelector((state: RootState) => state.gameplay);
     const player = useSelector((state: RootState) => state.player);
@@ -42,6 +45,7 @@ const Game = () => {
 
     // ** Maintains same start data for Reducers
     useEffect(() => {
+        // @ts-ignore
         dispatch(mazeFetch());
     }, [dispatch, maze.params, maze.data.startCoord, maze.data.enemies]);
 
@@ -129,6 +133,10 @@ const Game = () => {
                     </>
                 }
                 onClose={() => {
+                    dispatch(gameplayActions.recordLevel());
+                    dispatch(gameplayActions.addBonusesCollected(player.data?.collectedBonuses ?? 0));
+                    dispatch(gameplayActions.addBonusesTotal(maze.params.bonuses));
+                    dispatch(gameplayActions.addStepsWalked(player.data?.stepsWalked ?? 0));
                     dispatch(mazeActions.generateNext());
                     dispatch(gameplayActions.unfroze());
                 }}
@@ -139,12 +147,17 @@ const Game = () => {
                 id="lost_modal"
                 title="Looser"
                 content={<p className="py-4">Ups... Do you wanna try again?</p>}
-                onClose={() => {
+                btnSuccess="One more try"
+                btnError="Leave Game"
+                onSuccessClick={() => {
                     dispatch(mazeActions.generate());
                     dispatch(gameplayActions.unfroze());
-                    dispatch(playerActions.revive());
                 }}
-                btnSuccess="One more try"
+                onErrorClick={() => {
+                    dispatch(mazeActions.generate());
+                    dispatch(gameplayActions.unfroze());
+                    navigate(routerLinks.menu);
+                }}
             />
             <GameStateDialog
                 open={gameplay.frozenMode === 'pause'}

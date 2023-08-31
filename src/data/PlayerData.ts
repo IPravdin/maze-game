@@ -14,8 +14,8 @@ export class PlayerData extends CreatureData {
     constructor(position: PositionType) {
         super(position)
 
-        this.collectedBonuses = 0
-        this.stepsWalked = 0
+        this.collectedBonuses = 0;
+        this.stepsWalked = 0;
     }
 
     toJson = () => {
@@ -23,7 +23,7 @@ export class PlayerData extends CreatureData {
             collectedBonuses: this.collectedBonuses,
             stepsWalked: this.stepsWalked,
             currentPosition: this.currentPosition,
-            alive: this.alive
+            alive: this.alive,
         }
     }
 }

@@ -9,6 +9,7 @@ import CreditsContent from "./components/CreditsContent";
 import {mazeActions} from "../../store/slices/maze";
 import {gameplayActions} from "../../store/slices/gameplay";
 import {useDispatch} from "react-redux";
+import StatsContent from "./components/StatsContent";
 
 
 const Pause = () => {
@@ -17,15 +18,21 @@ const Pause = () => {
     const [menuState, setMenuState] = useState<MenuStateType>('menu');
     const [confirmLeave, setConfirmLeave] = useState(false);
 
-    if (menuState === 'options')
-        return (
-            <OptionsContent setMenuState={setMenuState} />
-        );
+    switch (menuState) {
+        case "credits":
+            return (
+                <CreditsContent setMenuState={setMenuState} />
+            );
+        case "stats":
+            return (
+                <StatsContent setMenuState={setMenuState} />
+            );
+        case "options":
+            return (
+                <OptionsContent setMenuState={setMenuState} />
+            );
+    }
 
-    if (menuState === 'credits')
-        return (
-            <CreditsContent setMenuState={setMenuState} />
-        );
 
     return (
         <>
@@ -33,7 +40,7 @@ const Pause = () => {
                 content={
                     <>
                         <button className="btn btn-success">Continue</button>
-                        <button className="btn" onClick={() => setConfirmLeave(true)}>Back to Menu</button>
+                        <button className="btn" onClick={() => setConfirmLeave(true)}>Leave Game</button>
                         <button className="btn" onClick={() => {
                             dispatch(mazeActions.generate());
                             dispatch(gameplayActions.unfroze());
@@ -41,6 +48,7 @@ const Pause = () => {
                             Restart Level
                         </button>
                         <button className="btn" onClick={() => setMenuState('options')}>Options</button>
+                        <button className="btn" onClick={() => setMenuState('stats')}>Statistics</button>
                         <button className="btn" onClick={() => setMenuState('credits')}>Credits</button>
                     </>
                 }
@@ -50,7 +58,7 @@ const Pause = () => {
                 open={confirmLeave}
                 onClose={() => setConfirmLeave(false)}
                 title="Leave a game"
-                content="Are you sure you would like to leave a game? All progress won't be saved."
+                content="Are you sure you would like to leave a game? Your progress is saved only when a new level is loaded."
                 btnSuccess="No"
                 btnError="Yes"
                 onErrorClick={() => navigate(routerLinks.menu)}

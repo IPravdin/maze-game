@@ -5,16 +5,20 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from "react-redux";
-import store from "./store";
+import store, {persistor} from "./store";
+import { PersistGate } from 'redux-persist/integration/react';
+import Spinner from "./layouts/components/Spinner";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
     <Provider store={store}>
-        <BrowserRouter>
-            <App />
-        </BrowserRouter>
+        <PersistGate persistor={persistor} loading={<Spinner />}>
+            <BrowserRouter>
+                <App />
+            </BrowserRouter>
+        </PersistGate>
     </Provider>
 );
 

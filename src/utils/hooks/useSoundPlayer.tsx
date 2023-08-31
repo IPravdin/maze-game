@@ -1,4 +1,4 @@
-import {createContext, ReactNode, useContext, useState} from "react";
+import {createContext, ReactNode, useContext} from "react";
 import useSound from "use-sound";
 import crystalCave from "../../assets/music/crystal_cave_mysterious_ambience.ogg";
 import mysteriousAmbience from "../../assets/music/mysterious_ambience.mp3";
@@ -7,6 +7,9 @@ import coinCollectSound from "../../assets/sounds/402288__matrixxx__retro-coin-0
 import ghostSound from "../../assets/sounds/431979__horroraudio__kid-ghost-sigh.wav";
 import playerDeathSound from "../../assets/sounds/204450__ludist__soul-death.mp3";
 import teleportSound from "../../assets/sounds/104076__jobro__alien-windbells-up.wav";
+import {useDispatch, useSelector} from "react-redux";
+import {RootState} from "../../store";
+import {gameplayActions} from "../../store/slices/gameplay";
 
 type SongType = 'menu' | 'main' | 'step' | 'collectCoin' | 'enemy' | 'teleport' | 'death';
 
@@ -30,8 +33,8 @@ const SoundPlayerContext = createContext<{
     },
 })
 export function SoundPlayerProvider({ children }: { children: ReactNode }) {
-    const [musicVolume, setMusicVolume] = useState<number>(20);
-    const [soundVolume, setSoundVolume] = useState<number>(30);
+    const { musicVolume, soundVolume } = useSelector((state: RootState) => state.gameplay);
+    const dispatch = useDispatch();
 
     const [playMenu, { stop: stopMenu, pause: pauseMenu }] = useSound(mysteriousAmbience, {
         volume: returnVolumeFormat(musicVolume),
@@ -118,6 +121,14 @@ export function SoundPlayerProvider({ children }: { children: ReactNode }) {
                 playDeath();
                 break;
         }
+    }
+
+    const setMusicVolume = (vol: number) => {
+        dispatch(gameplayActions.setMusicVolume(vol));
+    }
+
+    const setSoundVolume = (vol: number) => {
+        dispatch(gameplayActions.setSoundVolume(vol));
     }
 
     return (
