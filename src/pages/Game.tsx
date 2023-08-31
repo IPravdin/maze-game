@@ -17,6 +17,7 @@ import {mazeActions} from "../store/slices/maze";
 import {useSoundPlayer} from "../utils/hooks/useSoundPlayer";
 import routerLinks from "../router-links";
 import {useNavigate} from "react-router-dom";
+import {statsActions} from "../store/slices/stats";
 
 const Game = () => {
     const navigate = useNavigate();
@@ -60,7 +61,7 @@ const Game = () => {
                 objectsEqual(enemyCoord, positionToCoord((player.data as PlayerDataJsonType).currentPosition, cellSize)));
         if (clashed) {
             dispatch(playerActions.kill());
-            dispatch(gameplayActions.recordDeath());
+            dispatch(statsActions.recordDeath());
             dispatch(gameplayActions.froze('lost'));
             soundPlayer.play('death');
         }
@@ -133,10 +134,10 @@ const Game = () => {
                     </>
                 }
                 onClose={() => {
-                    dispatch(gameplayActions.recordLevel());
-                    dispatch(gameplayActions.addBonusesCollected(player.data?.collectedBonuses ?? 0));
-                    dispatch(gameplayActions.addBonusesTotal(maze.params.bonuses));
-                    dispatch(gameplayActions.addStepsWalked(player.data?.stepsWalked ?? 0));
+                    dispatch(statsActions.recordLevel());
+                    dispatch(statsActions.addBonusesCollected(player.data?.collectedBonuses ?? 0));
+                    dispatch(statsActions.addBonusesTotal(maze.params.bonuses));
+                    dispatch(statsActions.addStepsWalked(player.data?.stepsWalked ?? 0));
                     dispatch(mazeActions.generateNext());
                     dispatch(gameplayActions.unfroze());
                 }}

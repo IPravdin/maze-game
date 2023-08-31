@@ -6,7 +6,7 @@ import {RootState} from "../../../store";
 
 
 const StatsContent = ({ setMenuState }: { setMenuState: Dispatch<SetStateAction<MenuStateType>>}) => {
-    const gameplay = useSelector((state: RootState) => state.gameplay);
+    const stats = useSelector((state: RootState) => state.stats);
     return (
         <MenuView
             title="Statistics"
@@ -14,10 +14,10 @@ const StatsContent = ({ setMenuState }: { setMenuState: Dispatch<SetStateAction<
                 <>
                     <p><b>You're gameplay progress is displayed here</b></p>
                     <ul>
-                        <li>Levels accomplished: {gameplay.levelsCompleted}</li>
-                        <li>Killed: {gameplay.playerDeath}</li>
-                        <li>Bonuses collected: {gameplay.bonusesCollected} out of {gameplay.bonusesTotal}</li>
-                        <li>Steps walked: {gameplay.stepsWalked}</li>
+                        <li>Levels accomplished: {stats.levelsCompleted}</li>
+                        <li>Killed: {stats.playerDeath}</li>
+                        <li>Bonuses collected: {stats.bonusesCollected} out of {stats.bonusesTotal}</li>
+                        <li>Steps walked: {stats.stepsWalked}</li>
                     </ul>
                 </>
             }

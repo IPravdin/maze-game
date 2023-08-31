@@ -6,6 +6,7 @@ import {mazeReducer} from "./slices/maze";
 import {playerReducer} from "./slices/player";
 import {gameplayReducer} from "./slices/gameplay";
 import {enemiesReducer} from "./slices/enemies";
+import {statsReducer} from "./slices/stats";
 
 const persistConfig = {
     key: 'root',
@@ -16,7 +17,8 @@ const rootReducer = combineReducers({
     maze: mazeReducer,
     player: playerReducer,
     gameplay: gameplayReducer,
-    enemies: enemiesReducer
+    enemies: enemiesReducer,
+    stats: statsReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

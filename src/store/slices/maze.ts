@@ -65,13 +65,20 @@ const mazeSlice = createSlice({
         setBonusCollected(state, action : PayloadAction<CoordinateType>) {
             state.data.mazeMap[action.payload.x][action.payload.y].bonus.collected = true;
         },
-
         setBonuses(state, action: PayloadAction<number>) {
             state.params.bonuses = action.payload;
         },
-
         setEnemies(state, action: PayloadAction<number>) {
             state.params.enemies = action.payload;
+        },
+
+        reset(state) {
+            const newState = mazeInitialState();
+
+            Object.keys(state).forEach((key) => {
+                // @ts-ignore
+                state[key] = newState[key];
+            })
         }
     }
 })

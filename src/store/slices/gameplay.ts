@@ -7,25 +7,17 @@ type StateType = {
     frozen: boolean,
     playerMoveDir: PlayerMoveKeys | null,
     frozenMode: FrozenModeType,
-    playerDeath: number,
-    levelsCompleted: number,
-    bonusesCollected: number,
-    bonusesTotal: number,
-    stepsWalked: number,
     musicVolume: number,
     soundVolume: number,
+    firstLaunch: boolean
 }
 const gameplayInitialState: StateType = {
     frozen: false,
     frozenMode: 'none',
     playerMoveDir: null,
-    playerDeath: 0,
-    levelsCompleted: 0,
-    bonusesCollected: 0,
-    bonusesTotal: 0,
-    stepsWalked: 0,
     musicVolume: 20,
     soundVolume: 30,
+    firstLaunch: true,
 };
 const gameplaySlice = createSlice({
     name: 'gameplay',
@@ -42,21 +34,6 @@ const gameplaySlice = createSlice({
         playerMove(state, action: PayloadAction<PlayerMoveKeys | null>) {
             state.playerMoveDir = action.payload;
         },
-        recordDeath(state) {
-            state.playerDeath++;
-        },
-        recordLevel(state) {
-            state.levelsCompleted++;
-        },
-        addBonusesCollected(state, action: PayloadAction<number>) {
-            state.bonusesCollected += action.payload;
-        },
-        addBonusesTotal(state, action: PayloadAction<number>) {
-            state.bonusesTotal += action.payload;
-        },
-        addStepsWalked(state, actions: PayloadAction<number>) {
-            state.stepsWalked += actions.payload;
-        },
 
         setMusicVolume(state, action: PayloadAction<number>) {
             state.musicVolume = action.payload;
@@ -64,6 +41,9 @@ const gameplaySlice = createSlice({
         setSoundVolume(state, action: PayloadAction<number>) {
             state.soundVolume = action.payload;
         },
+        setFirstLaunch(state) {
+            state.firstLaunch = !state.firstLaunch;
+        }
     }
 })
 
