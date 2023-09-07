@@ -36,13 +36,13 @@ const Game = () => {
         if (gameplay.frozenMode === 'none') {
             soundPlayer.play('main');
         }
-    }, [soundPlayer, gameplay.frozenMode])
+    }, [gameplay.frozenMode])
 
     // ** Sets focus on main div
     useEffect(() => {
         if (!divRef) return
         divRef.current?.focus()
-    }, [divRef, player.data])
+    }, [divRef, player.data]);
 
     // ** Maintains same start data for Reducers
     useEffect(() => {
