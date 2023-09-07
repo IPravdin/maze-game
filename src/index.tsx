@@ -16,7 +16,12 @@ root.render(
     <Provider store={store}>
         <PersistGate persistor={persistor} loading={<Spinner />}>
             <BrowserRouter>
-                <App />
+                <App className="App" />
+                <div className="NoDisplay hidden h-full w-full">
+                    <span className="flex justify-center items-center text-center p-5">
+                        The game is not suitable for small screen sizes, please use other device (for instance, laptop) to access it. Thank you for understanding.
+                    </span>
+                </div>
             </BrowserRouter>
         </PersistGate>
     </Provider>
