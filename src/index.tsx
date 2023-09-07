@@ -8,6 +8,7 @@ import { Provider } from "react-redux";
 import store, {persistor} from "./store";
 import { PersistGate } from 'redux-persist/integration/react';
 import Spinner from "./layouts/components/Spinner";
+import { Analytics } from '@vercel/analytics/react';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -16,6 +17,7 @@ root.render(
     <Provider store={store}>
         <PersistGate persistor={persistor} loading={<Spinner />}>
             <BrowserRouter>
+                <Analytics />
                 <App className="App" />
                 <div className="NoDisplay hidden h-full w-full">
                     <span className="flex justify-center items-center text-center p-5">
