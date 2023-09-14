@@ -296,10 +296,10 @@ export class MazeData {
     }
 
     private recordEnemyMovementCoords = (cell: MazeCell) => {
-        return Object.keys(cell.walkable).map((key ) => {
-            // @ts-ignore
+        return (Object.keys(cell.walkable) as OrientationType[]).map((key) => {
+            console.log(key, cell.walkable[key]);
             if (cell.walkable[key]) {
-                return this.defineNextMovement(key as OrientationType, cell)
+                return this.defineNextMovement(key, cell)
             } else {
                 return []
             }

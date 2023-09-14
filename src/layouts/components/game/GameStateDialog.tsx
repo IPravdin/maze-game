@@ -25,7 +25,7 @@ const GameStateDialog = ({ id, title, content, open, onOpen, onClose, btnError, 
     return (
         <dialog id={id} className="modal" onClose={onClose}>
             <form method="dialog" className="modal-box w-[48rem] max-w-[48rem]">
-                {title && <h3 className="font-bold text-lg">{title}</h3>}
+                {title && <h3 className="font-title text-2xl">{title}</h3>}
                 {content}
                 <div className="modal-action">
                     {btnError && (

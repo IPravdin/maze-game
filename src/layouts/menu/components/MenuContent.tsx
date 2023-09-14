@@ -18,7 +18,8 @@ const MenuContent = ({ setMenuState }: { setMenuState: Dispatch<SetStateAction<M
     return (
         <>
             <MenuView
-                title="Menu"
+                title="aMAZE GAME"
+                titleClasses="font-primary text-8xl pb-20"
                 content={
                     <>
                         <Link className="w-full" to={routerLinks.game}>
@@ -27,7 +28,7 @@ const MenuContent = ({ setMenuState }: { setMenuState: Dispatch<SetStateAction<M
                             </button>
                         </Link>
                         {!firstLaunch && (
-                            <button className="btn" onClick={() => setConfirmReset(true)}>Start New Game</button>
+                            <button className="btn" onClick={() => setConfirmReset(true)}>New Game</button>
                         )}
                         <button className="btn" onClick={() => setMenuState('options')}>Options</button>
                         <button className="btn" onClick={() => setMenuState('stats')}>Statistics</button>

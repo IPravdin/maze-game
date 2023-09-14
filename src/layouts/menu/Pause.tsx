@@ -37,10 +37,10 @@ const Pause = () => {
     return (
         <>
             <MenuView
+                title="Pause"
                 content={
                     <>
                         <button className="btn btn-success">Continue</button>
-                        <button className="btn" onClick={() => setConfirmLeave(true)}>Leave Game</button>
                         <button className="btn" onClick={() => {
                             dispatch(mazeActions.generate());
                             dispatch(gameplayActions.unfroze());
@@ -50,6 +50,7 @@ const Pause = () => {
                         <button className="btn" onClick={() => setMenuState('options')}>Options</button>
                         <button className="btn" onClick={() => setMenuState('stats')}>Statistics</button>
                         <button className="btn" onClick={() => setMenuState('credits')}>Credits</button>
+                        <button className="btn" onClick={() => setConfirmLeave(true)}>Leave Game</button>
                     </>
                 }
             />

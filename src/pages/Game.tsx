@@ -164,7 +164,6 @@ const Game = () => {
             <GameStateDialog
                 open={gameplay.frozenMode === 'pause'}
                 id="pause_modal"
-                title="Pause"
                 content={<Pause />}
                 onClose={() => dispatch(gameplayActions.unfroze())}
             />
