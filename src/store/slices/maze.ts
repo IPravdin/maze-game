@@ -7,7 +7,7 @@ const mazeInitialState = () => {
     const bonuses = 1;
     const enemies = 0;
     const fieldSize: SizeType = { width: 700, height: 700 };
-    const mazeCells: SizeType = { width: 4, height: 4 };
+    const mazeCells: SizeType = { width: 3, height: 3 };
 
     return {
         data: new MazeData({ width: mazeCells.width, height: mazeCells.height }, bonuses, enemies).toJson(),
@@ -44,6 +44,14 @@ const mazeSlice = createSlice({
             const { bonuses, enemies, mazeCells } = state.params;
 
             state.data = new MazeData(mazeCells, bonuses, enemies).toJson();
+        },
+        generateOneMore(state) {
+            // Restore bonuses
+            state.data.mazeMap.forEach((row) => row.forEach((cell) => {
+                if (cell.bonus.placed) {
+                    cell.bonus.collected = false;
+                }
+            }))
         },
         setMazeCells(state, action: PayloadAction<SizeType>) {
             state.params.mazeCells = action.payload;

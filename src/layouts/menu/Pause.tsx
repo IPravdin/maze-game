@@ -6,8 +6,6 @@ import {useNavigate} from "react-router-dom";
 import GameStateDialog from "../components/game/GameStateDialog";
 import {MenuStateType} from "./MenuV2";
 import CreditsContent from "./components/CreditsContent";
-import {mazeActions} from "../../store/slices/maze";
-import {gameplayActions} from "../../store/slices/gameplay";
 import {useDispatch} from "react-redux";
 import StatsContent from "./components/StatsContent";
 
@@ -41,15 +39,15 @@ const Pause = () => {
                 content={
                     <>
                         <button className="btn btn-success">Continue</button>
-                        <button className="btn" onClick={() => {
+                        {/*<button className="btn" onClick={() => {
                             dispatch(mazeActions.generate());
                             dispatch(gameplayActions.unfroze());
                         }}>
                             Restart Level
-                        </button>
+                        </button>*/}
                         <button className="btn" onClick={() => setMenuState('options')}>Options</button>
-                        <button className="btn" onClick={() => setMenuState('stats')}>Statistics</button>
-                        <button className="btn" onClick={() => setMenuState('credits')}>Credits</button>
+                        {/*<button className="btn" onClick={() => setMenuState('stats')}>Statistics</button>
+                        <button className="btn" onClick={() => setMenuState('credits')}>Credits</button>*/}
                         <button className="btn" onClick={() => setConfirmLeave(true)}>Leave Game</button>
                     </>
                 }

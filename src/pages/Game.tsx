@@ -67,7 +67,7 @@ const Game = () => {
         }
     }, [player.data?.currentPosition, enemies.data.enemiesCurCoords]);
 
-    // ** Trigger ghost sound
+    // ** Trigger enemy sound
     useEffect(() => {
         if (!enemies.data.enemiesCurCoords) return;
         if (!player.data) return;
@@ -152,11 +152,13 @@ const Game = () => {
                 btnSuccess="One more try"
                 btnError="Leave Game"
                 onSuccessClick={() => {
-                    dispatch(mazeActions.generate());
+                    dispatch(mazeActions.generateOneMore());
+                    // @ts-ignore
+                    dispatch(mazeFetch());
                     dispatch(gameplayActions.unfroze());
                 }}
                 onErrorClick={() => {
-                    dispatch(mazeActions.generate());
+                    dispatch(mazeActions.generateOneMore());
                     dispatch(gameplayActions.unfroze());
                     navigate(routerLinks.menu);
                 }}
