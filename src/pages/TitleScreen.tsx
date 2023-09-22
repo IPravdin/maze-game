@@ -33,7 +33,7 @@ const TitleScreen = () => {
             tabIndex={0}
             ref={ref}
             onKeyDown={keyDownHandler}
-            onClick={keyDownHandler}
+            //onClick={keyDownHandler}
         >
             <div
                 className="flex justify-center"
