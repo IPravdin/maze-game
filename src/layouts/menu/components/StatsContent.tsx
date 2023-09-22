@@ -23,7 +23,7 @@ const StatsContent = ({ setMenuState }: { setMenuState: Dispatch<SetStateAction<
             }
             cardActions={
                 <>
-                    <button className="btn btn-success" onClick={() => setMenuState('menu')}>
+                    <button className="btn" onClick={() => setMenuState('menu')}>
                         Back
                     </button>
                 </>

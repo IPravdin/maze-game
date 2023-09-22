@@ -15,7 +15,7 @@ const CreditsContent = ({ setMenuState }: { setMenuState: Dispatch<SetStateActio
             }
             cardActions={
                 <>
-                    <button className="btn btn-success" onClick={() => setMenuState('menu')}>
+                    <button className="btn" onClick={() => setMenuState('menu')}>
                         Back
                     </button>
                 </>

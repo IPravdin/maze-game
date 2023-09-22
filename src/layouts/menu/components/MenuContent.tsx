@@ -8,7 +8,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {gameReset} from "../../../store/slices/game-reset";
 import {RootState} from "../../../store";
 import {gameplayActions} from "../../../store/slices/gameplay";
-import SvgTitle from "../../../assets/icons/title";
+import SvgTitle from '../../../assets/icons/title';
 
 const MenuContent = ({ setMenuState }: { setMenuState: Dispatch<SetStateAction<MenuStateType>>}) => {
     const navigate = useNavigate();
@@ -19,11 +19,9 @@ const MenuContent = ({ setMenuState }: { setMenuState: Dispatch<SetStateAction<M
     return (
         <>
             <MenuView
-                /*title="aMAZE GAME"
-                titleClasses="font-primary text-8xl pb-20"*/
                 content={
                     <>
-                        <div className="mb-20">
+                        <div className="flex justify-center mb-20">
                             <SvgTitle />
                         </div>
                         <Link className="w-full" to={routerLinks.game}>

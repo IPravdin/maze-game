@@ -95,7 +95,7 @@ const Game = () => {
     }, [enemySoundTriggered, soundPlayer])
 
     const keyDownListener = (event: React.KeyboardEvent<HTMLDivElement>) => {
-        event.preventDefault()
+        event.preventDefault();
 
         if (gameplay.frozenMode === 'none' && event.code === "Escape") {
             dispatch(gameplayActions.froze('pause'));
