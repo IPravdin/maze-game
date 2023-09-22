@@ -1,8 +1,8 @@
-import { useEffect, useReducer, useState } from 'react';
+import { useEffect, useReducer } from 'react';
 
 type ReducerElement = {
     spriteUrl: string,
-    direction: boolean // "left" | "right",
+    direction: boolean // "right" | "left",
     min: number,
     max: number,
     current: number,
@@ -13,12 +13,13 @@ export function AnimatedTitle({ className }: { className?: string }) {
         const interval = setInterval(() => {
             dispatch({ id: 'enemy0' });
             dispatch({ id: 'enemy1' });
-        }, 500);
+        }, 125);
         return () => clearInterval(interval);
     }, [])
 
     function reducer(state: { [key: string]: ReducerElement }, action: { id: string }): { [key: string]: ReducerElement } {
-        const newCurrent = state[action.id].direction ? state[action.id].current + 1 : state[action.id].current - 1;
+        const changeValue = 0.25;
+        const newCurrent = state[action.id].direction ? state[action.id].current + changeValue : state[action.id].current - changeValue;
         const triggerChange = newCurrent === state[action.id].max || newCurrent === state[action.id].min;
 
         if (triggerChange) {

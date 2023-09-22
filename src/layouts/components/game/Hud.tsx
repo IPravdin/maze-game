@@ -33,7 +33,7 @@ const Hud = () => {
     }
 
     return (
-        <div className="relative bg-[#472d3c] box-border mx-auto my-10" style={{ width: fieldSize.width, height: HEIGHT }}>
+        <div className="relative box-border mx-auto my-10" style={{ width: fieldSize.width, height: HEIGHT }}>
             {bonusesArray?.map((bonus) => bonus)}
         </div>
     )

@@ -13,7 +13,7 @@ const Maze = ({ player }: Props) => {
     const maze = useSelector((state: RootState) => state.maze);
 
     return (
-        <div className="relative bg-[#472d3c] box-border mx-auto my-10" style={{ ...maze.params.fieldSize  }}>
+        <div className="relative box-border mx-auto my-10" style={{ ...maze.params.fieldSize  }}>
             <Map mazeMap={maze.data.mazeMap} cellSize={maze.params.cellSize}/>
             <Enemies />
             {player}

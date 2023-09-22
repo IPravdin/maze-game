@@ -18,7 +18,7 @@ const data: creditsType[] = [
 const CreditsTable = () => {
 
     return (
-        <div className="w-full max-h-[34rem] overflow-auto">
+        <div className="w-full max-h-80 overflow-auto">
             <table className="table table-zebra">
                 <thead>
                     <tr>

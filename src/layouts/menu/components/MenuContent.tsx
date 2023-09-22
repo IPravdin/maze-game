@@ -8,9 +8,14 @@ import {useDispatch, useSelector} from "react-redux";
 import {gameReset} from "../../../store/slices/game-reset";
 import {RootState} from "../../../store";
 import {gameplayActions} from "../../../store/slices/gameplay";
-import SvgTitle from '../../../assets/icons/title';
 
-const MenuContent = ({ setMenuState }: { setMenuState: Dispatch<SetStateAction<MenuStateType>>}) => {
+const MenuContent = ({
+    startTitle = false,
+    setMenuState
+}: {
+    startTitle?: boolean,
+    setMenuState: Dispatch<SetStateAction<MenuStateType>>
+}) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { firstLaunch } = useSelector((state: RootState) => state.gameplay);
@@ -19,11 +24,9 @@ const MenuContent = ({ setMenuState }: { setMenuState: Dispatch<SetStateAction<M
     return (
         <>
             <MenuView
+                startTitle={startTitle}
                 content={
                     <>
-                        <div className="flex justify-center mb-20">
-                            <SvgTitle />
-                        </div>
                         <Link className="w-full" to={routerLinks.game}>
                             <button className="btn btn-success w-full" onClick={() => dispatch(gameplayActions.setFirstLaunchOff())}>
                                 {firstLaunch ? "Start New Game" : "Continue"}

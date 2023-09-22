@@ -5,10 +5,17 @@ import {useSelector} from "react-redux";
 import {RootState} from "../../../store";
 
 
-const StatsContent = ({ setMenuState }: { setMenuState: Dispatch<SetStateAction<MenuStateType>>}) => {
+const StatsContent = ({
+    startTitle = false,
+    setMenuState
+}: {
+    startTitle?: boolean,
+    setMenuState: Dispatch<SetStateAction<MenuStateType>>
+}) => {
     const stats = useSelector((state: RootState) => state.stats);
     return (
         <MenuView
+            startTitle={startTitle}
             title="Statistics"
             content={
                 <>

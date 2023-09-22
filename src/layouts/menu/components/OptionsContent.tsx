@@ -5,10 +5,17 @@ import {useSoundPlayer} from "../../../utils/hooks/useSoundPlayer";
 import RangeInput from "../../components/menu/RangeInput";
 
 
-const OptionsContent = ({ setMenuState }: { setMenuState: Dispatch<SetStateAction<MenuStateType>>}) => {
+const OptionsContent = ({
+    startTitle = false,
+    setMenuState
+}: {
+    startTitle?: boolean,
+    setMenuState: Dispatch<SetStateAction<MenuStateType>>
+}) => {
     const soundPlayer = useSoundPlayer();
     return (
         <MenuView
+            startTitle={startTitle}
             title="Options"
             content={
                 <>

@@ -3,9 +3,16 @@ import {Dispatch, SetStateAction} from "react";
 import {MenuStateType} from "../MenuV2";
 import CreditsTable from "../../components/menu/CreditsTable";
 
-const CreditsContent = ({ setMenuState }: { setMenuState: Dispatch<SetStateAction<MenuStateType>>}) => {
+const CreditsContent = ({
+    startTitle = false,
+    setMenuState
+}: {
+    startTitle?: boolean,
+    setMenuState: Dispatch<SetStateAction<MenuStateType>>
+}) => {
     return (
         <MenuView
+            startTitle={startTitle}
             title="Credits"
             content={
                 <>
