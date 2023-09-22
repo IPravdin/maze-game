@@ -10,10 +10,15 @@ module.exports = {
   daisyui: {
     themes: [
       {
-        dark: {
-          ...require("daisyui/src/theming/themes")["[data-theme=dark]"],
+        business: {
+          ...require("daisyui/src/theming/themes")["[data-theme=business]"],
             primary: "#f4b41b",
             secondary: "#472d3c",
+            "--tab-radius": 0,
+            "--rounded-box": 0,
+            "--rounded-btn": 0,
+            "--rounded-badge": 0,
+            //"base-100": "#d3d1ce"
         }
       }
     ],

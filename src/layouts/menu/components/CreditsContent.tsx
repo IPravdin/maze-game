@@ -16,7 +16,7 @@ const CreditsContent = ({
             title="Credits"
             content={
                 <>
-                    <p>Thank you these creators for inspiration and allowance to use their work in this game prototype</p>
+                    <p>Thank you these creators for inspiration and allowance to use their work in this game</p>
                     <CreditsTable />
                 </>
             }
