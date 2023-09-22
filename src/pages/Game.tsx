@@ -9,7 +9,7 @@ import {AppDispatch, RootState } from "../store";
 import {gameplayActions} from "../store/slices/gameplay";
 import {mazeFetch} from "../store/slices/maze-fetch";
 import Spinner from "../layouts/components/Spinner";
-import { objectsEqual, positionToCoord} from "../utils/helpers";
+import { objectsEqual, positionToCoord, returnBonusCollectionRate } from '../utils/helpers';
 import {PlayerDataJsonType} from "../data/PlayerData";
 import {playerActions} from "../store/slices/player";
 import Pause from "../layouts/menu/Pause";
@@ -18,6 +18,9 @@ import {useSoundPlayer} from "../utils/hooks/useSoundPlayer";
 import routerLinks from "../router-links";
 import {useNavigate} from "react-router-dom";
 import {statsActions} from "../store/slices/stats";
+import { SvgBonus } from '../assets/icons/bonus';
+import { StatCard } from '../layouts/components/menu/StatCard';
+import { Skull } from 'lucide-react';
 
 const Game = () => {
     const navigate = useNavigate();
@@ -27,6 +30,7 @@ const Game = () => {
     const enemies = useSelector((state: RootState) => state.enemies);
     const maze = useSelector((state: RootState) => state.maze);
     const cellSize = useSelector((state: RootState) => state.maze.params.cellSize);
+    const stats = useSelector((state: RootState) => state.stats);
 
     const divRef = useRef<HTMLDivElement>(null);
     const soundPlayer = useSoundPlayer();
@@ -61,7 +65,7 @@ const Game = () => {
                 objectsEqual(enemyCoord, positionToCoord((player.data as PlayerDataJsonType).currentPosition, cellSize)));
         if (clashed) {
             dispatch(playerActions.kill());
-            dispatch(statsActions.recordDeath());
+            dispatch(statsActions.recordLevelDeath());
             dispatch(gameplayActions.froze('lost'));
             soundPlayer.play('death');
         }
@@ -127,11 +131,19 @@ const Game = () => {
             <GameStateDialog
                 open={gameplay.frozenMode === 'won'}
                 id="finish_modal"
-                title="Congrats"
+                title="Congrats!"
                 content={
                     <>
-                        <p>You've collected {player.data.collectedBonuses} out of {maze.params.bonuses}.</p>
-                        <p>For this you stepped {player.data.stepsWalked} times</p>
+                        <p>I've made it. Your level statistics is</p>
+                        <ul className="stats shadow">
+                            <StatCard title={'Your Deaths'} value={stats.current.playerLevelDeath.toString()} icon={<Skull />}/>
+                            <StatCard
+                                title={'Bonus Collection Rate'}
+                                value={returnBonusCollectionRate(player.data.collectedBonuses, maze.params.bonuses).toLocaleString('en-US', { style: 'percent' })}
+                                desc={"You've collected " + player.data.collectedBonuses + " out of " + maze.params.bonuses + " bonuses"}
+                                icon={<SvgBonus width={48} height={48} />}
+                            />
+                        </ul>
                     </>
                 }
                 onClose={() => {
@@ -139,6 +151,7 @@ const Game = () => {
                     dispatch(statsActions.addBonusesCollected(player.data?.collectedBonuses ?? 0));
                     dispatch(statsActions.addBonusesTotal(maze.params.bonuses));
                     dispatch(statsActions.addStepsWalked(player.data?.stepsWalked ?? 0));
+                    dispatch(statsActions.addLevelToTotalDeath());
                     dispatch(mazeActions.generateNext());
                     dispatch(gameplayActions.unfroze());
                 }}

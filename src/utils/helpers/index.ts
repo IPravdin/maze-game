@@ -37,3 +37,7 @@ export const positionToCoord = (position: PositionType, cellSize: SizeType): Coo
         y: +(position.top / cellSize.height).toFixed()
     }
 }
+
+export function returnBonusCollectionRate(bonusesCollected: number, bonusesTotal: number) {
+    return bonusesCollected / bonusesTotal;
+}

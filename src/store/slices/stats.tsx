@@ -1,43 +1,62 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
-type StateType = {
-    playerDeath: number,
+type StatType = {
+    playerTotalDeath: number,
+    playerLevelDeath: number,
     levelsCompleted: number,
     bonusesCollected: number,
     bonusesTotal: number,
     stepsWalked: number,
 }
+
+type StateType = {
+    current: StatType,
+    history: Omit<StatType, "current.playerLevelDeath">[]
+}
 const statsInitialState: StateType = {
-    playerDeath: 0,
-    levelsCompleted: 0,
-    bonusesCollected: 0,
-    bonusesTotal: 0,
-    stepsWalked: 0,
+    current: {
+        playerTotalDeath: 0,
+        playerLevelDeath: 0,
+        levelsCompleted: 0,
+        bonusesCollected: 0,
+        bonusesTotal: 0,
+        stepsWalked: 0,
+    },
+    history: []
 };
 const statsSlice = createSlice({
     name: 'stats',
     initialState: statsInitialState,
     reducers: {
-        recordDeath(state) {
-            state.playerDeath++;
+        recordLevelDeath(state) {
+            state.current.playerLevelDeath++;
+        },
+        addLevelToTotalDeath(state) {
+            state.current.playerTotalDeath += state.current.playerLevelDeath;
+            state.current.playerLevelDeath = 0;
         },
         recordLevel(state) {
-            state.levelsCompleted++;
+            state.current.levelsCompleted++;
         },
         addBonusesCollected(state, action: PayloadAction<number>) {
-            state.bonusesCollected += action.payload;
+            state.current.bonusesCollected += action.payload;
         },
         addBonusesTotal(state, action: PayloadAction<number>) {
-            state.bonusesTotal += action.payload;
+            state.current.bonusesTotal += action.payload;
         },
         addStepsWalked(state, actions: PayloadAction<number>) {
-            state.stepsWalked += actions.payload;
+            state.current.stepsWalked += actions.payload;
         },
 
         reset(state) {
-            Object.keys(state).forEach((key) => {
+            const recordedState = { ...state.current };
+            // @ts-ignore
+            delete recordedState.playerLevelDeath;
+            state.history = state.history.concat(recordedState);
+
+            Object.keys(state.current).forEach((key) => {
                 // @ts-ignore
-                state[key] = statsInitialState[key];
+                state.current[key] = statsInitialState.current[key];
             });
         }
     }
