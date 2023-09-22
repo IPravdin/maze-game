@@ -17,19 +17,19 @@ const SoundPlayerContext = createContext<{
     musicVolume: number,
     soundVolume: number,
     play: (mode?: SongType) => void,
-    setMusicVolume: (volume: number) => void,
-    setSoundVolume: (volume: number) => void,
+    setVolume: ({ target, volume }: { target: 'music' | 'sound', volume: number }) => void,
+    setVolumeDefault: (target: 'music' | 'sound') => void,
 }>({
     musicVolume: 0,
     soundVolume: 0,
     play: () => {
         throw new Error('play is not implemented');
     },
-    setMusicVolume: () => {
-        throw new Error('setMusicVolume is not implemented');
+    setVolume: () => {
+        throw new Error('setVolume is not implemented');
     },
-    setSoundVolume: () => {
-        throw new Error('setSoundVolume is not implemented');
+    setVolumeDefault: () => {
+        throw new Error('setVolumeDefault is not implemented');
     },
 })
 export function SoundPlayerProvider({ children }: { children: ReactNode }) {
@@ -123,12 +123,12 @@ export function SoundPlayerProvider({ children }: { children: ReactNode }) {
         }
     }
 
-    const setMusicVolume = (vol: number) => {
-        dispatch(gameplayActions.setMusicVolume(vol));
+    const setVolume = ({ target, volume }: { target: 'music' | 'sound', volume: number }) => {
+        dispatch(gameplayActions.setVolume({ target, volume }));
     }
 
-    const setSoundVolume = (vol: number) => {
-        dispatch(gameplayActions.setSoundVolume(vol));
+    const setVolumeDefault = (target: 'music' | 'sound') => {
+        dispatch(gameplayActions.setVolumeDefault(target));
     }
 
     return (
@@ -136,8 +136,8 @@ export function SoundPlayerProvider({ children }: { children: ReactNode }) {
             value={{
                 musicVolume,
                 soundVolume,
-                setMusicVolume,
-                setSoundVolume,
+                setVolume,
+                setVolumeDefault,
                 play: handlePlay,
             }}
         >

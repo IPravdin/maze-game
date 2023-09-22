@@ -15,8 +15,8 @@ const gameplayInitialState: StateType = {
     frozen: false,
     frozenMode: 'none',
     playerMoveDir: null,
-    musicVolume: 20,
-    soundVolume: 30,
+    musicVolume: 10,
+    soundVolume: 10,
     firstLaunch: true,
 };
 const gameplaySlice = createSlice({
@@ -35,11 +35,19 @@ const gameplaySlice = createSlice({
             state.playerMoveDir = action.payload;
         },
 
-        setMusicVolume(state, action: PayloadAction<number>) {
-            state.musicVolume = action.payload;
+        setVolume(state, action: PayloadAction<{ target: 'music' | 'sound', volume: number }>) {
+            if (action.payload.target === 'music') {
+                state.musicVolume = action.payload.volume;
+            } else {
+                state.soundVolume = action.payload.volume;
+            }
         },
-        setSoundVolume(state, action: PayloadAction<number>) {
-            state.soundVolume = action.payload;
+        setVolumeDefault(state, action: PayloadAction<'music' | 'sound'>) {
+            if (action.payload === 'music') {
+                state.musicVolume = gameplayInitialState.musicVolume;
+            } else {
+                state.soundVolume = gameplayInitialState.soundVolume;
+            }
         },
         setFirstLaunchOff(state) {
             state.firstLaunch = false;

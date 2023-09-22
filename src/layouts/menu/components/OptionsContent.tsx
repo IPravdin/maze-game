@@ -21,15 +21,17 @@ const OptionsContent = ({
                 <>
                     <p>Here you can configure you're game</p>
                     <RangeInput
-                        id="music-volume"
+                        id="music"
                         value={soundPlayer.musicVolume}
-                        setRangeState={soundPlayer.setMusicVolume}
+                        setRangeState={soundPlayer.setVolume}
+                        setDefault={soundPlayer.setVolumeDefault}
                         label="Change Music Volume"
                     />
                     <RangeInput
-                        id="sound-volume"
+                        id="sound"
                         value={soundPlayer.soundVolume}
-                        setRangeState={soundPlayer.setSoundVolume}
+                        setRangeState={soundPlayer.setVolume}
+                        setDefault={soundPlayer.setVolumeDefault}
                         label="Change Sound Volume"
                     />
                 </>
