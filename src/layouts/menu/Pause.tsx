@@ -38,7 +38,7 @@ const Pause = () => {
                 title="Pause"
                 content={
                     <>
-                        <button className="btn btn-success">Continue</button>
+                        <button className="btn btn-primary">Continue</button>
                         {/*<button className="btn" onClick={() => {
                             dispatch(mazeActions.generate());
                             dispatch(gameplayActions.unfroze());

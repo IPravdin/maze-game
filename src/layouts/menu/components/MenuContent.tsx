@@ -28,7 +28,7 @@ const MenuContent = ({
                 content={
                     <>
                         <Link className="w-full" to={routerLinks.game}>
-                            <button className="btn btn-success w-full" onClick={() => dispatch(gameplayActions.setFirstLaunchOff())}>
+                            <button className="btn btn-primary w-full" onClick={() => dispatch(gameplayActions.setFirstLaunchOff())}>
                                 {firstLaunch ? "Start New Game" : "Continue"}
                             </button>
                         </Link>
