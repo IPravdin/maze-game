@@ -43,7 +43,7 @@ const EnemyMovementCell = ({
         ...movStyle
       }}
     >
-      {coord.x} | {coord.y}
+      {/*{coord.x} | {coord.y}*/}
     </div>
   );
 }
