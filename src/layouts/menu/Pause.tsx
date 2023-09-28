@@ -8,6 +8,8 @@ import {MenuStateType} from "./MenuV2";
 import CreditsContent from "./components/CreditsContent";
 import {useDispatch} from "react-redux";
 import StatsContent from "./components/StatsContent";
+import { mazeActions } from '../../store/slices/maze';
+import { gameplayActions } from '../../store/slices/gameplay';
 
 
 const Pause = () => {
@@ -39,12 +41,12 @@ const Pause = () => {
                 content={
                     <>
                         <button className="btn btn-primary">Continue</button>
-                        {/*<button className="btn" onClick={() => {
+                        <button className="btn" onClick={() => {
                             dispatch(mazeActions.generate());
                             dispatch(gameplayActions.unfroze());
                         }}>
                             Restart Level
-                        </button>*/}
+                        </button>
                         <button className="btn" onClick={() => setMenuState('options')}>Options</button>
                         {/*<button className="btn" onClick={() => setMenuState('stats')}>Statistics</button>
                         <button className="btn" onClick={() => setMenuState('credits')}>Credits</button>*/}

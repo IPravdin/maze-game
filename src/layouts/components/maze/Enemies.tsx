@@ -1,4 +1,3 @@
-import React from "react";
 import Enemy from "./Enemy";
 import {useSelector} from "react-redux";
 import {RootState} from "../../../store";

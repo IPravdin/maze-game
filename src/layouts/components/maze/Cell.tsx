@@ -38,7 +38,7 @@ const Cell = ({coord, cellSize, cell, children}: Props) => {
         >
             {children}
         </div>
-    )
+    );
 }
 
-export default Cell
+export default Cell;

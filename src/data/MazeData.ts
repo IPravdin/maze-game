@@ -14,11 +14,11 @@ export class MazeData {
     readonly directions: OrientationType[];
     readonly modifiedDir: ModifiedDirs;
     constructor(size: SizeType, bonuses: number, enemies: number) {
-        this.size = size
-        this.bonuses = bonuses
-        this.enemiesAmount = enemies
-        this.mazeMap = this.generateMap()
-        this.directions = ["top", "bottom", "left", "right"]
+        this.size = size;
+        this.bonuses = bonuses;
+        this.enemiesAmount = enemies;
+        this.mazeMap = this.generateMap();
+        this.directions = ["top", "bottom", "left", "right"];
         this.modifiedDir = {
             top: {
                 y: -1,
@@ -40,16 +40,16 @@ export class MazeData {
                 x: -1,
                 o: "right"
             }
-        }
+        };
 
-        this.defineMaze()
+        this.defineMaze();
 
-        const {startCord, endCord} = this.defineStartEnd()
-        this.startCoord = startCord
-        this.endCoord = endCord
+        const {startCord, endCord} = this.defineStartEnd();
+        this.startCoord = startCord;
+        this.endCoord = endCord;
 
-        this.enemies = this.defineEnemies()
-        this.defineBonusPlaces(startCord, endCord)
+        this.enemies = this.defineEnemies();
+        this.defineBonusPlaces(startCord, endCord);
     }
 
     toJson = () => {
@@ -209,8 +209,8 @@ export class MazeData {
         const spawnCells: MazeCell[] = this.returnSuitableSpawnCells();
         const enemies: MazeEnemy[] = [];
 
-        for(let i = 0; i < this.enemiesAmount; i++) {
-            this.defineEnemy(spawnCells, enemies, i)
+        for (let i = 0; i < this.enemiesAmount; i++) {
+            this.defineEnemy(spawnCells, enemies, i);
         }
 
         return enemies;
@@ -262,7 +262,7 @@ export class MazeData {
         enemies.push({
             spawn: selectedCell.coord,
             notSpawnRadius: this.returnNotSpawnRadius(selectedCell, notSpawnRad),
-            movement: this.recordEnemyMovementCoords(selectedCell)
+            movement: this.returnEnemyMovementCoords(selectedCell)
         })
     }
 
@@ -295,9 +295,8 @@ export class MazeData {
         return notSpawnRadius;
     }
 
-    private recordEnemyMovementCoords = (cell: MazeCell) => {
+    private returnEnemyMovementCoords = (cell: MazeCell) => {
         return (Object.keys(cell.walkable) as OrientationType[]).map((key) => {
-            console.log(key, cell.walkable[key]);
             if (cell.walkable[key]) {
                 return this.defineNextMovement(key, cell)
             } else {

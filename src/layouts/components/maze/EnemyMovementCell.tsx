@@ -2,20 +2,23 @@ import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store';
 import { CoordinateType } from '../../../utils/types/maze';
-import { SizeType } from '../../../utils/types/global';
 import { objectsEqual, positionToCoord } from '../../../utils/helpers';
 import { useSoundPlayer } from '../../../utils/hooks/useSoundPlayer';
 
 const EnemyMovementCell = ({
-  coord,
-  movStyle
+  coord
 }: {
-  coord: CoordinateType,
-  movStyle: SizeType & { backgroundImage: string }
+  coord: CoordinateType
 }) => {
   const soundPlayer = useSoundPlayer();
   const player = useSelector((state: RootState) => state.player);
   const cellSize = useSelector((state: RootState) => state.maze.params.cellSize);
+  
+  const movStyle = {
+    width: cellSize.width,
+    height: cellSize.height,
+    backgroundImage: "url('/cells/enemy-movement.png')"
+  }
   
   useEffect(() => {
     const playEnemySound = () => {
@@ -39,7 +42,9 @@ const EnemyMovementCell = ({
         top: coord.y * cellSize.height,
         ...movStyle
       }}
-    />
+    >
+      {coord.x} | {coord.y}
+    </div>
   );
 }
 

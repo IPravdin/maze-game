@@ -18,12 +18,20 @@ const Enemy = ({ id, data }: Props) => {
     const maze = useSelector((state: RootState) => state.maze);
     const { speed, size} = useSelector((state: RootState) => state.enemies.params);
     const { cellSize } = maze.params;
-
+    
     const [enemy, setEnemy] = useState(new EnemyData({
         ...data,
         currentPosition: coordToPosition(data.spawn, cellSize)
     }))
-
+    
+    // Redefines enemy after component mount to avoid walk-though-walls bug
+    useEffect(() => {
+        setEnemy(new EnemyData({
+            ...data,
+            currentPosition: coordToPosition(data.spawn, cellSize)
+        }))
+    }, [data]);
+    
     // For npc movements
     useEffect(() => {
         if (speed) {
@@ -36,7 +44,8 @@ const Enemy = ({ id, data }: Props) => {
             return () => clearInterval(interval);
         }
     }, [speed])
-
+    
+    
     const returnNewPosition = (id: number, { currentPosition, spawn, movement, currMovCoord, sprite }: EnemyData): { currentPosition: PositionType, currMovCoord: CurrMovCoordType, sprite: string } => {
         const currentCoord = positionToCoord(currentPosition, cellSize);
 
@@ -55,8 +64,8 @@ const Enemy = ({ id, data }: Props) => {
 
         // ** Enemy on Direction
         if (isCurrMovCoordsDefined(currMovCoord)) {
-            const { dirIndex, posInDir, prevPosInDir } = currMovCoord
-
+            const { dirIndex, posInDir, prevPosInDir } = currMovCoord;
+            
             if (movement[dirIndex].length > 1 ) {
                 if (posInDir === 0 && prevPosInDir < 0) {
                     const newCoord = movement[dirIndex][posInDir + 1];

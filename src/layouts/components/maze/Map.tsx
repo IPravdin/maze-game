@@ -12,7 +12,7 @@ const Map = ({mazeMap, cellSize}: Props) => {
         <div>
             {mazeMap.map((columns, x) => {
                 return columns.map((cell, y) => {
-                        return <Cell key={`cell[${x}][${y}]`} coord={{x, y}} cell={cell} cellSize={cellSize}>{/*{x}|{y}*/}</Cell>
+                        return <Cell key={`cell[${x}][${y}]`} coord={{x, y}} cell={cell} cellSize={cellSize}>{x}|{y}</Cell>
                     }
                 )
             })}
