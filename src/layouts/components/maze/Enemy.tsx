@@ -6,6 +6,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "../../../store";
 import {MazeEnemy} from "../../../utils/types/enemy";
 import {enemiesActions} from "../../../store/slices/enemies";
+import EnemyMovementCells from './EnemyMovementCells';
 
 type Props = {
     id: number,
@@ -129,38 +130,11 @@ const Enemy = ({ id, data }: Props) => {
         return dirIndex >= 0 && posInDir >= 0
     }
 
-    const movStyle = {
-        width: cellSize.width,
-        height: cellSize.height,
-        backgroundImage: "url('/cells/enemy-movement.png')"
-    }
-
     return (
         <div>
+            <EnemyMovementCells id={id} data={enemy.movement} spawn={enemy.spawn} />
             <div
-                key={id + ' spawn'}
-                className='absolute bg-cover bg-no-repeat'
-                style={{
-                    left: enemy.spawn.x * cellSize.width,
-                    top: enemy.spawn.y * cellSize.height,
-                    ...movStyle
-                }}
-            />
-            {enemy.movement.map((movement, index2) => (
-                movement.map((side, index3) => (
-                    <div
-                        key={id + index2 + index3}
-                        className='absolute bg-cover bg-no-repeat'
-                        style={{
-                            left: side.x * cellSize.width,
-                            top: side.y * cellSize.height,
-                            ...movStyle
-                        }}
-                    />
-                ))
-            ))}
-            <div
-                className="absolute z-50 bg-cover bg-no-repeat bg-[url('/src/assets/default-view/enemy-b.png')]"
+                className="absolute z-20 bg-cover bg-no-repeat bg-[url('/src/assets/default-view/enemy-b.png')]"
                 style={{
                     ...size,
                     left: enemy.currentPosition.left,

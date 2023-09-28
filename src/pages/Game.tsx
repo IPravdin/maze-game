@@ -1,5 +1,5 @@
 import Player from "../layouts/components/maze/Player";
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useRef} from "react";
 import GameStateDialog from "../layouts/components/game/GameStateDialog";
 import Hud from "../layouts/components/game/Hud";
 import Maze from "../layouts/components/game/Maze";
@@ -34,7 +34,6 @@ const Game = () => {
 
     const divRef = useRef<HTMLDivElement>(null);
     const soundPlayer = useSoundPlayer();
-    const [enemySoundTriggered, setEnemySoundTriggered] = useState(false);
 
     useEffect(() => {
         if (gameplay.frozenMode === 'none') {
@@ -70,33 +69,6 @@ const Game = () => {
             soundPlayer.play('death');
         }
     }, [player.data?.currentPosition, enemies.data.enemiesCurCoords]);
-
-    // ** Trigger enemy sound
-    useEffect(() => {
-        if (!enemies.data.enemiesCurCoords) return;
-        if (!player.data) return;
-
-        const playerPos = positionToCoord((player.data as PlayerDataJsonType).currentPosition, cellSize);
-
-        maze.data.enemies.forEach((enemy) => {
-            return enemy.movement.forEach((side) => {
-                return side.forEach((cell) => {
-                    if (objectsEqual(playerPos, cell)) {
-                        return setEnemySoundTriggered( true);
-                    }
-                })
-            })
-        });
-
-    }, [player.data?.currentPosition]);
-
-    // ** Produce Enemy Sound
-    useEffect(() => {
-        if (enemySoundTriggered) {
-            soundPlayer.play('enemy');
-            setEnemySoundTriggered(false);
-        }
-    }, [enemySoundTriggered, soundPlayer])
 
     const keyDownListener = (event: React.KeyboardEvent<HTMLDivElement>) => {
         event.preventDefault();
@@ -134,7 +106,7 @@ const Game = () => {
                 title="Congrats!"
                 content={
                     <>
-                        <p>I've made it. Your level statistics is</p>
+                        <p>You've made it. Your level statistics is</p>
                         <ul className="stats shadow">
                             <StatCard title={'Your Deaths'} value={stats.current.playerLevelDeath.toString()} icon={<Skull />}/>
                             <StatCard

@@ -60,6 +60,7 @@ export function SoundPlayerProvider({ children }: { children: ReactNode }) {
     const [playGhost, { stop: stopGhost }] = useSound(ghostSound, {
         volume: returnVolumeFormat(soundVolume),
         soundEnabled: !!soundVolume,
+        interrupt: true,
     });
 
     const [playDeath] = useSound(playerDeathSound, {
