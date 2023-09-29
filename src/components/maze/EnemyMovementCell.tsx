@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../store';
-import { CoordinateType } from '../../../utils/types/maze';
-import { objectsEqual, positionToCoord } from '../../../utils/helpers';
-import { useSoundPlayer } from '../../../utils/hooks/useSoundPlayer';
+import { RootState } from '../../store';
+import { CoordinateType } from '../../utils/types/maze';
+import { objectsEqual, positionToCoord } from '../../utils/helpers';
+import { useSoundPlayer } from '../../utils/hooks/useSoundPlayer';
 
 const EnemyMovementCell = ({
   coord

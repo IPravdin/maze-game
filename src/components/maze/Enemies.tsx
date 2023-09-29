@@ -1,6 +1,6 @@
 import Enemy from "./Enemy";
 import {useSelector} from "react-redux";
-import {RootState} from "../../../store";
+import {RootState} from "../../store";
 
 const Enemies = () => {
     const mazeEnemies = useSelector((state: RootState) => state.maze.data.enemies);

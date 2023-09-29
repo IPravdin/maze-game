@@ -1,36 +1,26 @@
-import Player from "../layouts/components/maze/Player";
+import Player from "../components/maze/Player";
 import React, {useEffect, useRef} from "react";
-import GameStateDialog from "../layouts/components/game/GameStateDialog";
-import Hud from "../layouts/components/game/Hud";
-import Maze from "../layouts/components/game/Maze";
+import Hud from "../components/game/Hud";
+import Maze from "../components/maze/Maze";
 import {PlayerMoveKeys} from "../utils/types/player";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState } from "../store";
 import {gameplayActions} from "../store/slices/gameplay";
 import {mazeFetch} from "../store/slices/maze-fetch";
-import Spinner from "../layouts/components/Spinner";
-import { objectsEqual, positionToCoord, returnBonusCollectionRate } from '../utils/helpers';
+import { objectsEqual, positionToCoord } from '../utils/helpers';
 import {PlayerDataJsonType} from "../data/PlayerData";
 import {playerActions} from "../store/slices/player";
-import Pause from "../layouts/menu/Pause";
-import {mazeActions} from "../store/slices/maze";
 import {useSoundPlayer} from "../utils/hooks/useSoundPlayer";
-import routerLinks from "../router-links";
-import {useNavigate} from "react-router-dom";
 import {statsActions} from "../store/slices/stats";
-import { SvgBonus } from '../assets/icons/bonus';
-import { StatCard } from '../layouts/components/menu/StatCard';
-import { Skull } from 'lucide-react';
+import GameDialogs from '../components/game/GameDialogs';
 
 const Game = () => {
-    const navigate = useNavigate();
     const dispatch: AppDispatch = useDispatch();
     const gameplay = useSelector((state: RootState) => state.gameplay);
     const player = useSelector((state: RootState) => state.player);
     const enemies = useSelector((state: RootState) => state.enemies);
     const maze = useSelector((state: RootState) => state.maze);
     const cellSize = useSelector((state: RootState) => state.maze.params.cellSize);
-    const stats = useSelector((state: RootState) => state.stats);
 
     const divRef = useRef<HTMLDivElement>(null);
     const soundPlayer = useSoundPlayer();
@@ -43,8 +33,8 @@ const Game = () => {
 
     // ** Sets focus on main div
     useEffect(() => {
-        if (!divRef) return
-        divRef.current?.focus()
+        if (!divRef) return;
+        divRef.current?.focus();
     }, [divRef, player.data]);
 
     // ** Maintains same start data for Reducers
@@ -92,70 +82,13 @@ const Game = () => {
         }
     };
 
-    if (!player.data) {
-        return <Spinner />
-    }
-
     return (
         <div className="w-full h-full" onKeyDown={keyDownListener} tabIndex={0} ref={divRef}>
             <Hud />
             <Maze player={<Player/>}/>
-            <GameStateDialog
-                open={gameplay.frozenMode === 'won'}
-                id="finish_modal"
-                title="Congrats!"
-                content={
-                    <>
-                        <p>You've made it. Your level statistics is</p>
-                        <ul className="stats shadow">
-                            <StatCard title={'Your Deaths'} value={stats.current.playerLevelDeath.toString()} icon={<Skull />}/>
-                            <StatCard
-                                title={'Bonus Collection Rate'}
-                                value={returnBonusCollectionRate(player.data.collectedBonuses, maze.params.bonuses).toLocaleString('en-US', { style: 'percent' })}
-                                desc={"You've collected " + player.data.collectedBonuses + " out of " + maze.params.bonuses + " bonuses"}
-                                icon={<SvgBonus width={48} height={48} />}
-                            />
-                        </ul>
-                    </>
-                }
-                onClose={() => {
-                    dispatch(statsActions.recordLevel());
-                    dispatch(statsActions.addBonusesCollected(player.data?.collectedBonuses ?? 0));
-                    dispatch(statsActions.addBonusesTotal(maze.params.bonuses));
-                    dispatch(statsActions.addStepsWalked(player.data?.stepsWalked ?? 0));
-                    dispatch(statsActions.addLevelToTotalDeath());
-                    dispatch(mazeActions.generateNext());
-                    dispatch(gameplayActions.unfroze());
-                }}
-                btnSuccess="Next level"
-            />
-            <GameStateDialog
-                open={gameplay.frozenMode === 'lost'}
-                id="lost_modal"
-                title="Looser"
-                content={<p className="py-4">Ups... Do you wanna try again?</p>}
-                btnSuccess="One more try"
-                btnError="Leave Game"
-                onSuccessClick={() => {
-                    dispatch(mazeActions.generateOneMore());
-                    // @ts-ignore
-                    dispatch(mazeFetch());
-                    dispatch(gameplayActions.unfroze());
-                }}
-                onErrorClick={() => {
-                    dispatch(mazeActions.generateOneMore());
-                    dispatch(gameplayActions.unfroze());
-                    navigate(routerLinks.menu);
-                }}
-            />
-            <GameStateDialog
-                open={gameplay.frozenMode === 'pause'}
-                id="pause_modal"
-                content={<Pause />}
-                onClose={() => dispatch(gameplayActions.unfroze())}
-            />
+            <GameDialogs />
         </div>
-    )
+    );
 }
 
 export default Game;

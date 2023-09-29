@@ -1,7 +1,7 @@
 import MenuView from "./MenuView";
 import {Dispatch, SetStateAction} from "react";
-import {MenuStateType} from "../MenuV2";
-import CreditsTable from "../../components/menu/CreditsTable";
+import {MenuStateType} from "../../pages/Menu";
+import CreditsTable from "./CreditsTable";
 
 const CreditsContent = ({
     startTitle = false,

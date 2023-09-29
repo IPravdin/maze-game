@@ -1,4 +1,4 @@
-import {CreatureSizeType, PositionType, SizeType} from "../../../utils/types/global";
+import {CreatureSizeType, PositionType, SizeType} from "../../utils/types/global";
 
 type Props = {
     position: PositionType,

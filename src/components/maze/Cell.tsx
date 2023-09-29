@@ -1,6 +1,6 @@
 import React, {ReactNode} from "react";
-import {CoordinateType, MazeCell} from "../../../utils/types/maze";
-import {SizeType} from "../../../utils/types/global";
+import {CoordinateType, MazeCell} from "../../utils/types/maze";
+import {SizeType} from "../../utils/types/global";
 
 type Props = {
     coord: CoordinateType

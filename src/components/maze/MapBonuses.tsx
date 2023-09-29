@@ -1,8 +1,8 @@
 import React, {Fragment} from "react";
 import Bonus from "./Bonus";
-import getCreatureSize from "../../../store/slices/get-creature-size";
+import getCreatureSize from "../../store/slices/get-creature-size";
 import {useSelector} from "react-redux";
-import {RootState} from "../../../store";
+import {RootState} from "../../store";
 
 const MazeBonuses = () => {
     const maze = useSelector((state: RootState) => state.maze);

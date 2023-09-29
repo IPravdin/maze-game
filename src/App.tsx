@@ -3,7 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import routerLinks from "./router-links";
 import TitleScreen from "./pages/TitleScreen";
 import {SoundPlayerProvider} from "./utils/hooks/useSoundPlayer";
-import Menu from "./pages/Menu";
+import Menu from './pages/Menu';
 
 function App({ className }: { className?: string }) {
     return (

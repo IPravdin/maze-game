@@ -1,7 +1,7 @@
 import React from "react";
 import Bonus from "../maze/Bonus";
 import {useSelector} from "react-redux";
-import {RootState} from "../../../store";
+import {RootState} from "../../store";
 import Spinner from "../Spinner";
 
 const HEIGHT = 100;

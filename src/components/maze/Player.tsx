@@ -1,14 +1,14 @@
 import React, {useEffect} from "react";
-import { CoordinateType, OrientationType } from "../../../utils/types/maze";
-import {positionToCoord} from "../../../utils/helpers";
+import { CoordinateType, OrientationType } from "../../utils/types/maze";
+import {positionToCoord} from "../../utils/helpers";
 import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch, RootState} from "../../../store";
-import {gameplayActions} from "../../../store/slices/gameplay";
-import {playerActions} from "../../../store/slices/player";
+import {AppDispatch, RootState} from "../../store";
+import {gameplayActions} from "../../store/slices/gameplay";
+import {playerActions} from "../../store/slices/player";
 import Spinner from "../Spinner";
-import {mazeActions} from "../../../store/slices/maze";
-import {PositionType, SizeType} from "../../../utils/types/global";
-import {useSoundPlayer} from "../../../utils/hooks/useSoundPlayer";
+import {mazeActions} from "../../store/slices/maze";
+import {PositionType, SizeType} from "../../utils/types/global";
+import {useSoundPlayer} from "../../utils/hooks/useSoundPlayer";
 
 const returnNewPosition = (mode: OrientationType, currentPosition: PositionType, cellSize: SizeType) => {
     let newPosition: PositionType = {left: 0, top: 0};

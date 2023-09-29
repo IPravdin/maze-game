@@ -1,6 +1,6 @@
-import {creditsType} from "../../../utils/types/menu";
+import {creditsType} from "../../utils/types/menu";
 import {Fragment} from "react";
-import {LicenceEnum} from "../../../utils/enums/licence-enum";
+import {LicenceEnum} from "../../utils/enums/licence-enum";
 
 const data: creditsType[] = [
     { id: 1, key: "maze-pack", author: "Kenney", title: "1-Bit Pack", for: "Bonus and Inspiration for Map Cells", link: "https://www.kenney.nl/assets/1-bit-pack", licence: "CC0", changes: "Map cells was created using the reference to the pack and pack's color scheme" },

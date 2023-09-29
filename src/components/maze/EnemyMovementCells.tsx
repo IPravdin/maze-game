@@ -1,5 +1,5 @@
 import React from 'react';
-import { CoordinateType } from '../../../utils/types/maze';
+import { CoordinateType } from '../../utils/types/maze';
 import EnemyMovementCell from './EnemyMovementCell';
 
 const EnemyMovementCells = ({ data, id, spawn }: { data: CoordinateType[][], id: number, spawn: CoordinateType }) => {

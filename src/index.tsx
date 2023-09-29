@@ -7,7 +7,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { Provider } from "react-redux";
 import store, {persistor} from "./store";
 import { PersistGate } from 'redux-persist/integration/react';
-import Spinner from "./layouts/components/Spinner";
+import Spinner from "./components/Spinner";
 import { Analytics } from '@vercel/analytics/react';
 
 const root = ReactDOM.createRoot(

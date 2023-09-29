@@ -1,5 +1,5 @@
 import {ReactNode} from "react";
-import SvgTitle from '../../../assets/icons/title';
+import SvgTitle from '../../assets/icons/title';
 
 type Props = {
     title?: string,

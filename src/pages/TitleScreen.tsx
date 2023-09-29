@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import routerLinks from "../router-links";
 import { useEffect, useRef, KeyboardEvent, useState } from 'react';
-import { AnimatedTitle } from '../layouts/components/menu/AnimatedTitle';
+import { AnimatedTitle } from '../components/AnimatedTitle';
 import { useSoundPlayer } from '../utils/hooks/useSoundPlayer';
 
 

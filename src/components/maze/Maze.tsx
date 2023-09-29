@@ -1,10 +1,10 @@
-import Map from "../maze/Map";
-import MapBonuses from "../maze/MapBonuses";
-import Finish from "../maze/Finish";
+import Map from "./Map";
+import MapBonuses from "./MapBonuses";
+import Finish from "./Finish";
 import React, { ReactNode } from "react";
 import {useSelector} from "react-redux";
-import {RootState} from "../../../store";
-import Enemies from "../maze/Enemies";
+import {RootState} from "../../store";
+import Enemies from "./Enemies";
 
 interface Props {
     player?: ReactNode,

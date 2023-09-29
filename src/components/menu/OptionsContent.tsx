@@ -1,9 +1,8 @@
 import MenuView from "./MenuView";
-import {Dispatch, SetStateAction} from "react";
-import {MenuStateType} from "../MenuV2";
-import {useSoundPlayer} from "../../../utils/hooks/useSoundPlayer";
-import RangeInput from "../../components/menu/RangeInput";
-
+import { Dispatch, SetStateAction } from 'react';
+import {MenuStateType} from "../../pages/Menu";
+import {useSoundPlayer} from "../../utils/hooks/useSoundPlayer";
+import RangeInput from "../RangeInput";
 
 const OptionsContent = ({
     startTitle = false,

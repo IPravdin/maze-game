@@ -1,13 +1,13 @@
 import MenuView from "./MenuView";
 import {Dispatch, SetStateAction, useState} from "react";
-import routerLinks from "../../../router-links";
+import routerLinks from "../../router-links";
 import {Link, useNavigate} from "react-router-dom";
-import {MenuStateType} from "../MenuV2";
-import GameStateDialog from "../../components/game/GameStateDialog";
+import {MenuStateType} from "../../pages/Menu";
+import Dialog from "../Dialog";
 import {useDispatch, useSelector} from "react-redux";
-import {gameReset} from "../../../store/slices/game-reset";
-import {RootState} from "../../../store";
-import {gameplayActions} from "../../../store/slices/gameplay";
+import {gameReset} from "../../store/slices/game-reset";
+import {RootState} from "../../store";
+import {gameplayActions} from "../../store/slices/gameplay";
 
 const MenuContent = ({
     startTitle = false,
@@ -41,7 +41,7 @@ const MenuContent = ({
                     </>
                 }
             />
-            <GameStateDialog
+            <Dialog
                 id="confirm-game-reset"
                 open={confirmReset}
                 onClose={() => setConfirmReset(false)}

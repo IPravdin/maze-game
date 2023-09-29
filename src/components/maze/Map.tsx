@@ -1,7 +1,7 @@
 import Cell from "./Cell";
 import React from "react";
-import {MazeCell} from "../../../utils/types/maze";
-import {SizeType} from "../../../utils/types/global";
+import {MazeCell} from "../../utils/types/maze";
+import {SizeType} from "../../utils/types/global";
 
 type Props = {
     mazeMap: MazeCell[][],

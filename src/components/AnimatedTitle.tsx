@@ -1,5 +1,5 @@
 import { useEffect, useReducer } from 'react';
-import { useSoundPlayer } from '../../../utils/hooks/useSoundPlayer';
+import { useSoundPlayer } from '../utils/hooks/useSoundPlayer';
 
 const SIZE= 36;
 function collectCoinReducer(state: boolean[], action: number): boolean[] {
