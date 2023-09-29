@@ -1,6 +1,5 @@
-import React, {useState} from "react";
+import React, { useEffect, useState } from 'react';
 import OptionsContent from "./OptionsContent";
-import MenuView from "./MenuView";
 import routerLinks from "../../router-links";
 import {useNavigate} from "react-router-dom";
 import Dialog from "../Dialog";
@@ -10,6 +9,7 @@ import StatsContent from "./StatsContent";
 import { gameplayActions } from '../../store/slices/gameplay';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store';
+import PauseContent from './PauseContent';
 
 const PauseDialog = () => {
   const navigate = useNavigate();
@@ -17,20 +17,22 @@ const PauseDialog = () => {
   const gameplay = useSelector((state: RootState) => state.gameplay);
   const [menuState, setMenuState] = useState<MenuStateType>('menu');
   const [confirmLeave, setConfirmLeave] = useState(false);
-
+  
+  useEffect(() => {
+    console.log(menuState);
+  }, [menuState]);
+  
+  let content = <PauseContent setMenuState={setMenuState} triggerConfirmLeave={setConfirmLeave}/>;
   switch (menuState) {
     case "credits":
-      return (
-          <CreditsContent setMenuState={setMenuState} />
-      );
+      content = <CreditsContent setMenuState={setMenuState} />;
+      break;
     case "stats":
-      return (
-          <StatsContent setMenuState={setMenuState} />
-      );
+      content = <StatsContent setMenuState={setMenuState} />;
+      break;
     case "options":
-      return (
-          <OptionsContent setMenuState={setMenuState} />
-      );
+      content = <OptionsContent setMenuState={setMenuState} />;
+      break;
   }
 
   return (
@@ -38,26 +40,7 @@ const PauseDialog = () => {
       <Dialog
         open={gameplay.frozenMode === 'pause'}
         id="pause_modal"
-        content={(
-          <MenuView
-            title="Pause"
-            content={
-              <>
-                <button className="btn btn-primary">Continue</button>
-                {/*<button className="btn" onClick={() => {
-                            dispatch(mazeActions.generate());
-                            dispatch(gameplayActions.unfroze());
-                        }}>
-                            Restart Level
-                        </button>*/}
-                <button className="btn" onClick={() => setMenuState('options')}>Options</button>
-                {/*<button className="btn" onClick={() => setMenuState('stats')}>Statistics</button>
-                        <button className="btn" onClick={() => setMenuState('credits')}>Credits</button>*/}
-                <button className="btn" onClick={() => setConfirmLeave(true)}>Leave Game</button>
-              </>
-            }
-          />
-        )}
+        content={content}
         onClose={() => dispatch(gameplayActions.unfroze())}
       />
       <Dialog
