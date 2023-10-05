@@ -1,4 +1,5 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import { returnBonusCollectionRate } from '../../utils/helpers';
 
 type StatType = {
     name: string,
@@ -9,10 +10,11 @@ type StatType = {
     bonusesTotal: number,
     stepsWalked: number,
 }
+type HistoryStatType = Omit<StatType, "playerLevelDeath">;
 
 type StateType = {
     current: StatType,
-    history: Omit<StatType, "current.playerLevelDeath">[]
+    history: HistoryStatType[]
 }
 const statsInitialState: StateType = {
     current: {
@@ -54,11 +56,14 @@ const statsSlice = createSlice({
         },
 
         reset(state) {
-            const recordedState = { ...state.current };
+            const recordedState: HistoryStatType = { ...state.current };
             // @ts-ignore
             delete recordedState.playerLevelDeath;
-            state.history = state.history.concat(recordedState);
-
+            const newState = state.history.concat(recordedState);
+            newState.sort((a, b) => returnStatRate(a, b));
+            if (newState.length > 5) newState.pop();
+            state.history = newState;
+            
             Object.keys(state.current).forEach((key) => {
                 // @ts-ignore
                 state.current[key] = statsInitialState.current[key];
@@ -69,3 +74,18 @@ const statsSlice = createSlice({
 
 export const statsActions = statsSlice.actions;
 export const statsReducer = statsSlice.reducer;
+
+function returnStatRate(a: HistoryStatType, b: HistoryStatType) {
+    let rate = 0;
+    const aBonusColRate = returnBonusCollectionRate(a.bonusesCollected, a.bonusesTotal);
+    const bBonusColRate = returnBonusCollectionRate(b.bonusesCollected, b.bonusesTotal);
+    
+    if (a.levelsCompleted > b.levelsCompleted) rate -= 0.6;
+    if (a.levelsCompleted < b.levelsCompleted) rate += 0.6;
+    if (aBonusColRate > bBonusColRate) rate -= 0.2;
+    if (aBonusColRate < bBonusColRate) rate += 0.2;
+    if (a.playerTotalDeath < b.playerTotalDeath) rate -= 0.2;
+    if (a.playerTotalDeath > b.playerTotalDeath) rate += 0.2;
+    
+    return rate;
+}

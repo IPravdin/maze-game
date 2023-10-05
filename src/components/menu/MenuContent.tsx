@@ -29,8 +29,8 @@ export default function MenuContent({
         startTitle={startTitle}
         content={
           <>
-            <CharacterSelect />
             <NameInput />
+            <CharacterSelect />
             <Link className="w-full" to={routerLinks.game}>
               <button className="btn btn-primary w-full" onClick={() => dispatch(gameplayActions.setFirstLaunchOff())}>
                 {firstLaunch ? "Start New Game" : "Continue"}
@@ -50,7 +50,7 @@ export default function MenuContent({
         open={confirmReset}
         onClose={() => setConfirmReset(false)}
         title="Start New Game"
-        content="Are you sure you would like to start new game? All progress will be lost."
+        content="Are you sure you would like to start new game? All progress will be lost. You will be able to see it in the Statistics."
         btnSuccess="No"
         btnError="Yes"
         onErrorClick={() => {
