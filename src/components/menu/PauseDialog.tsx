@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import OptionsContent from "./OptionsContent";
 import routerLinks from "../../router-links";
 import {useNavigate} from "react-router-dom";
@@ -17,10 +17,6 @@ const PauseDialog = () => {
   const gameplay = useSelector((state: RootState) => state.gameplay);
   const [menuState, setMenuState] = useState<MenuStateType>('menu');
   const [confirmLeave, setConfirmLeave] = useState(false);
-  
-  useEffect(() => {
-    console.log(menuState);
-  }, [menuState]);
   
   let content = <PauseContent setMenuState={setMenuState} triggerConfirmLeave={setConfirmLeave}/>;
   switch (menuState) {

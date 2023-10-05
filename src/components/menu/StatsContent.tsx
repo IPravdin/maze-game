@@ -30,7 +30,7 @@ const StatsContent = ({
                     <p>Here you can view your achievements</p>
                     <ul className="stats">
                         <StatCard title={'Levels completed'} value={levelsCompleted.toString()} icon={<Trophy />}/>
-                        <StatCard title={'Your Deaths'} value={playerTotalDeath.toString()} icon={<Skull />}/>
+                        <StatCard title={'Killed'} value={playerTotalDeath.toString()} icon={<Skull />}/>
                         <StatCard
                             title={'Bonus Collection Rate'}
                             value={bonusCollectionRate.toLocaleString('en-US', { style: 'percent' })}
