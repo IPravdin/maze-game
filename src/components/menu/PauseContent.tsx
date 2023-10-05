@@ -9,7 +9,6 @@ export default function PauseContent({
   setMenuState: Dispatch<SetStateAction<MenuStateType>>,
   triggerConfirmLeave: Dispatch<SetStateAction<boolean>>
 }) {
-  
   return (
     <MenuView
       title="Pause"

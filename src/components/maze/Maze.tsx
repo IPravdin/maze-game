@@ -7,7 +7,7 @@ import {RootState} from "../../store";
 import Enemies from "./Enemies";
 
 interface Props {
-    player?: ReactNode,
+  player?: ReactNode,
 }
 const Maze = ({ player }: Props) => {
     const maze = useSelector((state: RootState) => state.maze);

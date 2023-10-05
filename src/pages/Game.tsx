@@ -85,7 +85,7 @@ const Game = () => {
     return (
         <div className="w-full h-full" onKeyDown={keyDownListener} tabIndex={0} ref={divRef}>
             <Hud />
-            <Maze player={<Player/>}/>
+            <Maze player={<Player />}/>
             <GameDialogs />
         </div>
     );
