@@ -36,17 +36,19 @@ const mazeSlice = createSlice({
         },
         generateNext(state) {
             state.params.level++;
-            state.params.mazeCells.height++;
-            state.params.mazeCells.width++;
-            state.params.bonuses++;
+            const { level } = state.params;
+            const levelIsOdd = level % 2 !== 0;
+            const levelIsDivisibleBy3 = level % 3 === 0;
+            
+            state.params.mazeCells.height = (levelIsOdd || level < 4 ) ? state.params.mazeCells.height + 1 : state.params.mazeCells.height;
+            state.params.mazeCells.width = (levelIsOdd || level < 4 ) ? state.params.mazeCells.width + 1 : state.params.mazeCells.width;
+            state.params.bonuses = !levelIsOdd ? state.params.bonuses + 1 : state.params.bonuses;
+            state.params.enemies = levelIsDivisibleBy3 ? state.params.enemies + 1 : state.params.enemies;
+            
             state.params.cellSize.height = state.params.fieldSize.height / state.params.mazeCells.height;
             state.params.cellSize.width = state.params.fieldSize.width / state.params.mazeCells.width;
             
-            const levelIsOdd = state.params.level % 2 !== 0;
-            state.params.enemies = levelIsOdd ? state.params.enemies + 1 : state.params.enemies;
-
             const { bonuses, enemies, mazeCells } = state.params;
-
             state.data = new MazeData(mazeCells, bonuses, enemies).toJson();
         },
         generateOneMore(state) {
