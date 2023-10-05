@@ -27,7 +27,7 @@ const StatsContent = ({
             title="Statistics"
             content={
                 <>
-                    <p>Here you can view your achievements</p>
+                    <p>{current.name}, here you can view your achievements</p>
                     <ul className="stats">
                         <StatCard title={'Levels completed'} value={levelsCompleted.toString()} icon={<Trophy />}/>
                         <StatCard title={'Killed'} value={playerTotalDeath.toString()} icon={<Skull />}/>

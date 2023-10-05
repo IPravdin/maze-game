@@ -1,6 +1,7 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 type StatType = {
+    name: string,
     playerTotalDeath: number,
     playerLevelDeath: number,
     levelsCompleted: number,
@@ -15,6 +16,7 @@ type StateType = {
 }
 const statsInitialState: StateType = {
     current: {
+        name: 'Player',
         playerTotalDeath: 0,
         playerLevelDeath: 0,
         levelsCompleted: 0,
@@ -46,6 +48,9 @@ const statsSlice = createSlice({
         },
         addStepsWalked(state, actions: PayloadAction<number>) {
             state.current.stepsWalked += actions.payload;
+        },
+        changeName(state, action: PayloadAction<string>) {
+            state.current.name = action.payload;
         },
 
         reset(state) {
