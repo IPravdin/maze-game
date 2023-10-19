@@ -26,7 +26,7 @@ body {
   color: white;
 }
 
-@media screen and (max-width:1080px), screen and (max-height:719px){
+@media screen and (max-width:1080px), screen and (max-height:650px){
   .App {
     display: none;
   }
