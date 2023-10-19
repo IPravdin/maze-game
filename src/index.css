@@ -26,12 +26,12 @@ body {
   color: white;
 }
 
-@media screen and (max-width:1080px), screen and (max-height:880px){
+@media screen and (max-width:1080px), screen and (max-height:719px){
   .App {
-    display:none;
+    display: none;
   }
 
   .NoDisplay {
-    display:flex;
+    display: flex;
   }
 }
