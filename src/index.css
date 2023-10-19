@@ -4,6 +4,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  font-size: 0.9vw;
+}
+
 html,
 body {
   width: 100%;
@@ -12,10 +16,6 @@ body {
 
 body {
   margin: 0;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  --container-position: relative;
-  --element-position: absolute;
 }
 
 #root {
@@ -26,7 +26,11 @@ body {
   color: white;
 }
 
-@media screen and (max-width:1080px), screen and (max-height:650px){
+@media screen and (max-width:1079px), screen and (max-height:649px){
+  html {
+    font-size: 6vw;
+  }
+
   .App {
     display: none;
   }
