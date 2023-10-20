@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {PositionType} from "../../utils/types/global";
+import { PositionType } from '../../utils/types/global';
 import {CurrMovCoordType, EnemyData} from "../../data/EnemyData";
 import {coordToPosition, objectsEqual, positionToCoord, returnRandomInt} from "../../utils/helpers";
 import {useDispatch, useSelector} from "react-redux";
@@ -43,8 +43,7 @@ const Enemy = ({ id, data }: Props) => {
             }, speed);
             return () => clearInterval(interval);
         }
-    }, [speed])
-    
+    }, [speed, cellSize])
     
     const returnNewPosition = (id: number, { currentPosition, spawn, movement, currMovCoord, sprite }: EnemyData): { currentPosition: PositionType, currMovCoord: CurrMovCoordType, sprite: string } => {
         const currentCoord = positionToCoord(currentPosition, cellSize);

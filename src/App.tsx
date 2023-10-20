@@ -26,7 +26,7 @@ function App() {
             </SoundPlayerProvider>
           </div>
           <div className="NoDisplay hidden h-full w-full">
-            <div className="flex justify-center items-center text-center p-5">
+            <div className="flex justify-center items-center text-center p-5 w-full">
               The game is not suitable for small screen sizes, please use another device (i.e. laptop) to access it. Thank you for understanding.
             </div>
           </div>
