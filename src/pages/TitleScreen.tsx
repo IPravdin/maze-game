@@ -3,15 +3,19 @@ import routerLinks from "../router-links";
 import { useEffect, useRef, KeyboardEvent, useState } from 'react';
 import { AnimatedTitle } from '../components/AnimatedTitle';
 import { useSoundPlayer } from '../utils/hooks/useSoundPlayer';
+import useMediaQueryHeight from '../utils/hooks/useMediaQueryHeight';
+import { HeightBreakpoints } from '../utils/enums/breakpoints';
 
 
 const TitleScreen = () => {
     const ref = useRef<HTMLDivElement>(null);
     const navigate = useNavigate();
     const soundPlayer = useSoundPlayer();
-
-    // 160px max
-    const [padding, setPadding] = useState(0)
+    
+    const [padding, setPadding] = useState(0);
+    const sm = useMediaQueryHeight(HeightBreakpoints.sm);
+    const md = useMediaQueryHeight(HeightBreakpoints.md);
+    const lg = useMediaQueryHeight(HeightBreakpoints.lg);
 
     // ** Sets focus on main div
     useEffect(() => {
@@ -21,11 +25,16 @@ const TitleScreen = () => {
 
     function keyDownHandler(e: KeyboardEvent<HTMLDivElement>) {
         e.preventDefault();
-
+        let mutiplicator = 1;
+        
+        if (sm) mutiplicator = 1;
+        if (md) mutiplicator = 2;
+        if (lg) mutiplicator = 3;
+        
         if (e.code === 'Space') {
             soundPlayer.play('teleport');
             setInterval(() => setPadding((prevState) => prevState + 1.2), 12.5);
-            setTimeout(() => navigate(routerLinks.menu), 2500);
+            setTimeout(() => navigate(routerLinks.menu), 1250 * mutiplicator);
         }
     }
 

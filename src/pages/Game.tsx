@@ -28,9 +28,9 @@ const Game = () => {
     const divRef = useRef<HTMLDivElement>(null);
     const soundPlayer = useSoundPlayer();
     
-    const hd = useMediaQueryHeight(HeightBreakpoints.sm);
-    const fhd = useMediaQueryHeight(HeightBreakpoints.md);
-    const qhd = useMediaQueryHeight(HeightBreakpoints.lg);
+    const sm = useMediaQueryHeight(HeightBreakpoints.sm);
+    const md = useMediaQueryHeight(HeightBreakpoints.md);
+    const lg = useMediaQueryHeight(HeightBreakpoints.lg);
 
     useEffect(() => {
         if (gameplay.frozenMode === 'none') {
@@ -50,18 +50,18 @@ const Game = () => {
     }, [thunkDispatch, maze.params, maze.data.startCoord, maze.data.enemies]);
     
     useEffect(() => {
-        if (hd) {
+        if (sm) {
             thunkDispatch(resize({ width: 450, height: 450 }));
         }
         
-        if (fhd) {
+        if (md) {
             thunkDispatch(resize({ width: 700, height: 700 }));
         }
         
-        if (qhd) {
+        if (lg) {
             thunkDispatch(resize({ width: 1000, height: 1000 }));
         }
-    }, [hd, fhd, qhd]);
+    }, [sm, md, lg]);
 
     // ** Kills Player
     useEffect(() => {
