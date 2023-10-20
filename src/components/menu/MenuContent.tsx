@@ -5,8 +5,8 @@ import {Link, useNavigate} from "react-router-dom";
 import {MenuStateType} from "../../pages/Menu";
 import Dialog from "../Dialog";
 import {useDispatch, useSelector} from "react-redux";
-import {gameReset} from "../../store/slices/game-reset";
-import {RootState} from "../../store";
+import {gameReset} from "../../store/thunks";
+import { AppDispatch, AppThunkDispatch, RootState } from '../../store';
 import {gameplayActions} from "../../store/slices/gameplay";
 import { playerActions } from '../../store/slices/player';
 import { statsActions } from '../../store/slices/stats';
@@ -19,7 +19,8 @@ export default function MenuContent({
   setMenuState: Dispatch<SetStateAction<MenuStateType>>
 }) {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
+  const thunkDispatch: AppThunkDispatch = useDispatch();
   const { firstLaunch } = useSelector((state: RootState) => state.gameplay);
   const [confirmReset, setConfirmReset] = useState(false);
 
@@ -54,8 +55,7 @@ export default function MenuContent({
         btnSuccess="No"
         btnError="Yes"
         onErrorClick={() => {
-          // @ts-ignore
-          dispatch(gameReset());
+          thunkDispatch(gameReset());
           setTimeout(() => navigate(routerLinks.game), 10);
         }}
       />

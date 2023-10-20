@@ -1,21 +1,24 @@
 import Player from "../components/maze/Player";
-import React, {useEffect, useRef} from "react";
+import React, { useEffect, useRef } from 'react';
 import Hud from "../components/game/Hud";
 import Maze from "../components/maze/Maze";
 import {PlayerMoveKeys} from "../utils/types/player";
 import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch, RootState } from "../store";
+import { AppDispatch, AppThunkDispatch, RootState } from '../store';
 import {gameplayActions} from "../store/slices/gameplay";
-import {mazeFetch} from "../store/slices/maze-fetch";
+import { assignMazeDataToReducers, resize } from '../store/thunks';
 import { objectsEqual, positionToCoord } from '../utils/helpers';
 import {PlayerDataJsonType} from "../data/PlayerData";
 import {playerActions} from "../store/slices/player";
 import {useSoundPlayer} from "../utils/hooks/useSoundPlayer";
 import {statsActions} from "../store/slices/stats";
 import GameDialogs from '../components/game/GameDialogs';
+import useMediaQueryHeight from '../utils/hooks/useMediaQueryHeight';
+import { HeightBreakpoints } from '../utils/enums/breakpoints';
 
 const Game = () => {
     const dispatch: AppDispatch = useDispatch();
+    const thunkDispatch: AppThunkDispatch = useDispatch();
     const gameplay = useSelector((state: RootState) => state.gameplay);
     const player = useSelector((state: RootState) => state.player);
     const enemies = useSelector((state: RootState) => state.enemies);
@@ -24,6 +27,10 @@ const Game = () => {
 
     const divRef = useRef<HTMLDivElement>(null);
     const soundPlayer = useSoundPlayer();
+    
+    const hd = useMediaQueryHeight(HeightBreakpoints.sm);
+    const fhd = useMediaQueryHeight(HeightBreakpoints.md);
+    const qhd = useMediaQueryHeight(HeightBreakpoints.lg);
 
     useEffect(() => {
         if (gameplay.frozenMode === 'none') {
@@ -39,9 +46,22 @@ const Game = () => {
 
     // ** Maintains same start data for Reducers
     useEffect(() => {
-        // @ts-ignore
-        dispatch(mazeFetch());
-    }, [dispatch, maze.params, maze.data.startCoord, maze.data.enemies]);
+        thunkDispatch(assignMazeDataToReducers());
+    }, [thunkDispatch, maze.params, maze.data.startCoord, maze.data.enemies]);
+    
+    useEffect(() => {
+        if (hd) {
+            thunkDispatch(resize({ width: 450, height: 450 }));
+        }
+        
+        if (fhd) {
+            thunkDispatch(resize({ width: 700, height: 700 }));
+        }
+        
+        if (qhd) {
+            thunkDispatch(resize({ width: 1000, height: 1000 }));
+        }
+    }, [hd, fhd, qhd]);
 
     // ** Kills Player
     useEffect(() => {

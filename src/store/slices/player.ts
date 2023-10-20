@@ -5,7 +5,6 @@ import {CoordinateType, OrientationType} from "../../utils/types/maze";
 import {CreatureSizeType, PositionType, SizeType} from "../../utils/types/global";
 import getCreatureSize, {initialCreatureSize} from "./get-creature-size";
 
-
 const playerSprite = (character: 'male' | 'female') => ({
     top: `url('/player/${character}/player-t.png')`,
     bottom: `url('/player/${character}/player-b.png')`,
@@ -75,7 +74,7 @@ const playerSlice = createSlice({
         changeCharacter(state, actions: PayloadAction<'male' | 'female'>) {
             state.params.character = actions.payload;
             state.params.sprite = playerSprite(state.params.character).bottom;
-        }
+        },
     },
 })
 

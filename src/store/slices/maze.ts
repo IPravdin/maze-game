@@ -8,18 +8,23 @@ const mazeInitialState = () => {
     const enemies = 0;
     const fieldSize: SizeType = { width: 700, height: 700 };
     const mazeCells: SizeType = { width: 2, height: 2 };
+    const cellSize = {
+        width: fieldSize.width / mazeCells.width,
+        height: fieldSize.height / mazeCells.height
+    };
 
     return {
         data: new MazeData({ width: mazeCells.width, height: mazeCells.height }, bonuses, enemies).toJson(),
         params: {
             fieldSize,
             mazeCells,
-            cellSize: {
-                width: fieldSize.width / mazeCells.width,
-                height: fieldSize.height / mazeCells.height
-            },
+            cellSize,
             bonuses,
             enemies,
+            hudSize: {
+                width: fieldSize.width,
+                height: fieldSize.height / 7,
+            },
             level: 1,
         },
     }
@@ -93,7 +98,17 @@ const mazeSlice = createSlice({
                 // @ts-ignore
                 state[key] = newState[key];
             })
-        }
+        },
+        
+        resize(state, action: PayloadAction<SizeType>) {
+            state.params.fieldSize.width = action.payload.width;
+            state.params.fieldSize.height = action.payload.height;
+            state.params.cellSize.width = state.params.fieldSize.width / state.params.mazeCells.width;
+            state.params.cellSize.height = state.params.fieldSize.height / state.params.mazeCells.height;
+            
+            state.params.hudSize.width = state.params.fieldSize.width;
+            state.params.hudSize.height = state.params.fieldSize.height / 7;
+        },
     }
 })
 

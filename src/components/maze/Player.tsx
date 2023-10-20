@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import { CoordinateType, OrientationType } from "../../utils/types/maze";
 import {positionToCoord} from "../../utils/helpers";
 import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch, RootState} from "../../store";
+import {RootState} from "../../store";
 import {gameplayActions} from "../../store/slices/gameplay";
 import {playerActions} from "../../store/slices/player";
 import Spinner from "../Spinner";
@@ -36,7 +36,7 @@ const returnNewPosition = (mode: OrientationType, currentPosition: PositionType,
 }
 
 const Player = () => {
-    const dispatch: AppDispatch = useDispatch();
+    const dispatch = useDispatch();
     const gameplay = useSelector((state: RootState) => state.gameplay);
     const player = useSelector((state: RootState) => state.player);
     const maze = useSelector((state: RootState) => state.maze);

@@ -3,7 +3,7 @@ import {PositionType} from "../../utils/types/global";
 import {CurrMovCoordType, EnemyData} from "../../data/EnemyData";
 import {coordToPosition, objectsEqual, positionToCoord, returnRandomInt} from "../../utils/helpers";
 import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch, RootState} from "../../store";
+import {RootState} from "../../store";
 import {MazeEnemy} from "../../utils/types/enemy";
 import {enemiesActions} from "../../store/slices/enemies";
 import EnemyMovementCells from './EnemyMovementCells';
@@ -14,7 +14,7 @@ type Props = {
 }
 
 const Enemy = ({ id, data }: Props) => {
-    const dispatch: AppDispatch = useDispatch();
+    const dispatch = useDispatch();
     const maze = useSelector((state: RootState) => state.maze);
     const { speed, size} = useSelector((state: RootState) => state.enemies.params);
     const { cellSize } = maze.params;

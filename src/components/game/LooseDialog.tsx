@@ -1,16 +1,16 @@
 import { mazeActions } from '../../store/slices/maze';
-import { mazeFetch } from '../../store/slices/maze-fetch';
+import { assignMazeDataToReducers } from '../../store/thunks';
 import { gameplayActions } from '../../store/slices/gameplay';
 import routerLinks from '../../router-links';
 import Dialog from '../Dialog';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AppDispatch, RootState } from '../../store';
+import {RootState } from '../../store';
 import { useDispatch, useSelector } from 'react-redux';
 
 export default function LooseDialog() {
   const navigate = useNavigate();
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch = useDispatch();
   const gameplay = useSelector((state: RootState) => state.gameplay);
   
   return (
@@ -23,7 +23,7 @@ export default function LooseDialog() {
       btnError="Leave Game"
       onSuccessClick={() => {
         // @ts-ignore
-        dispatch(mazeFetch());
+        dispatch(assignMazeDataToReducers());
       }}
       onErrorClick={() => {
         dispatch(gameplayActions.unfroze());

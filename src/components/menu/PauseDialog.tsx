@@ -8,12 +8,12 @@ import CreditsContent from "./CreditsContent";
 import StatsContent from "./StatsContent";
 import { gameplayActions } from '../../store/slices/gameplay';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../store';
+import { RootState } from '../../store';
 import PauseContent from './PauseContent';
 
 const PauseDialog = () => {
   const navigate = useNavigate();
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch = useDispatch();
   const gameplay = useSelector((state: RootState) => state.gameplay);
   const [menuState, setMenuState] = useState<MenuStateType>('menu');
   const [confirmLeave, setConfirmLeave] = useState(false);

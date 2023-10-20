@@ -26,7 +26,7 @@ body {
   color: white;
 }
 
-@media screen and (max-width:1079px), screen and (max-height:649px){
+@media screen and (max-width:1079px), screen and (max-height:594px){
   html {
     font-size: 6vh;
   }

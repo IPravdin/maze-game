@@ -65,7 +65,7 @@ function StatsHistoryContent() {
         History
       </h1>
       <div className="collapse-content overflow-auto w-full max-h-40">
-        <p>Here you can find statistics Top 5 games.</p>
+        <p>Here you can find statistics about local top 5 games.</p>
         {stats.history.map((record, index) => (
           <Fragment key={index}>
             <h2 className="text-xl text-left px-8 pt-2">#{index + 1} {record.name}</h2>

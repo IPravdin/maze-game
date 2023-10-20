@@ -4,16 +4,15 @@ import {useSelector} from "react-redux";
 import {RootState} from "../../store";
 import Spinner from "../Spinner";
 
-const HEIGHT = 100;
 const Hud = () => {
     const maze = useSelector((state: RootState) => state.maze);
     const player = useSelector((state: RootState) => state.player);
-    const { fieldSize } = maze.params;
+    const { hudSize } = maze.params;
 
-    const width = fieldSize.width / maze.params.bonuses;
+    const width = hudSize.width / maze.params.bonuses;
     const bonusSize = {
-        width: width > HEIGHT ? HEIGHT : width,
-        height: width > HEIGHT ? HEIGHT : width
+        width: width > hudSize.height ? hudSize.height : width,
+        height: width > hudSize.height ? hudSize.height : width,
     }
 
     if (!player.data) {
@@ -33,7 +32,7 @@ const Hud = () => {
     }
 
     return (
-        <div className="relative box-border mx-auto my-10" style={{ width: fieldSize.width, height: HEIGHT }}>
+        <div className="relative box-border mx-auto my-10" style={{ width: hudSize.width, height: hudSize.height }}>
             {bonusesArray?.map((bonus) => bonus)}
         </div>
     )
