@@ -15,6 +15,7 @@ import {statsActions} from "../store/slices/stats";
 import GameDialogs from '../components/game/GameDialogs';
 import useMediaQueryHeight from '../utils/hooks/useMediaQueryHeight';
 import { HeightBreakpoints } from '../utils/enums/breakpoints';
+import Tutorial from '../components/game/Tutorial';
 
 const Game = () => {
     const dispatch: AppDispatch = useDispatch();
@@ -107,6 +108,7 @@ const Game = () => {
             <Hud />
             <Maze player={<Player />}/>
             <GameDialogs />
+            <Tutorial />
         </div>
     );
 }
