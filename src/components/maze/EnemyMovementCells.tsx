@@ -13,9 +13,9 @@ const EnemyMovementCells = ({ data, id, spawn }: { data: CoordinateType[][], id:
           />
         ))
       ))}
-      <EnemyMovementCell coord={spawn} />
+      <EnemyMovementCell coord={spawn}/>
     </div>
   );
-}
+};
 
 export default EnemyMovementCells;

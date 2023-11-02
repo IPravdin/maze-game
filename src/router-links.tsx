@@ -1,7 +1,7 @@
 const routerLinks = {
-    titleScreen: '/',
-    menu: '/menu',
-    game: '/game',
-}
+  titleScreen: '/',
+  menu: '/menu',
+  game: '/game',
+};
 
 export default routerLinks;

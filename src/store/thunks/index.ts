@@ -23,7 +23,7 @@ export const assignMazeDataToReducers = (): AppThunk => (dispatch, getState) => 
 export const gameReset = (): AppThunk => (dispatch) => {
   dispatch(statsActions.reset());
   dispatch(mazeActions.reset());
-}
+};
 
 export const resize = (size: SizeType): AppThunk => (dispatch) => {
   dispatch(mazeActions.resize(size));

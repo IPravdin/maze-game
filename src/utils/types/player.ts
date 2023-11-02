@@ -7,4 +7,4 @@ export type PlayerDataJsonType = {
   alive: boolean
 }
 
-export type PlayerMoveKeys = "ArrowRight" | "KeyD" | "ArrowLeft" | "KeyA" | "ArrowDown" | "KeyS" | "ArrowUp" | "KeyW";
+export type PlayerMoveKeys = 'ArrowRight' | 'KeyD' | 'ArrowLeft' | 'KeyA' | 'ArrowDown' | 'KeyS' | 'ArrowUp' | 'KeyW';

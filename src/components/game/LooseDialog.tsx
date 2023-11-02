@@ -5,7 +5,7 @@ import routerLinks from '../../router-links';
 import Dialog from '../Dialog';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import {RootState } from '../../store';
+import { RootState } from '../../store';
 import { useDispatch, useSelector } from 'react-redux';
 
 export default function LooseDialog() {
@@ -16,11 +16,11 @@ export default function LooseDialog() {
   return (
     <Dialog
       open={gameplay.frozenMode === 'lost'}
-      id="lost_modal"
-      title="Looser"
-      content={<p className="py-4">Ups... Do you wanna try again?</p>}
-      btnSuccess="One more try"
-      btnError="Leave Game"
+      id='lost_modal'
+      title='Looser'
+      content={<p className='py-4'>Ups... Do you wanna try again?</p>}
+      btnSuccess='One more try'
+      btnError='Leave Game'
       onSuccessClick={() => {
         // @ts-ignore
         dispatch(assignMazeDataToReducers());

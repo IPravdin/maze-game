@@ -18,7 +18,7 @@ export default function CongratsDialog() {
   const maze = useSelector((state: RootState) => state.maze);
   
   if (!player.data) {
-    return <Spinner />
+    return <Spinner/>;
   }
   
   function onOpen() {
@@ -37,12 +37,12 @@ export default function CongratsDialog() {
   return (
     <Dialog
       open={gameplay.frozenMode === 'won'}
-      id="finish_modal"
-      title="Congrats!"
-      content={<StatCards />}
+      id='finish_modal'
+      title='Congrats!'
+      content={<StatCards/>}
       onOpen={onOpen}
       onClose={onClose}
-      btnSuccess="Next level"
+      btnSuccess='Next level'
     />
   );
 }
@@ -52,7 +52,7 @@ function StatCards() {
   const { bonuses: mazeBonuses, enemies: mazeEnemies } = useSelector((state: RootState) => state.maze.params);
   const { collectedBonuses: playerBonuses } = useSelector((state: RootState) => state.player.data!);
   
-  const levelStatsText = "Your level statistics is";
+  const levelStatsText = 'Your level statistics is';
   const text = `You've made it. You've completed ${stats.current.levelsCompleted} level.`;
   
   return (
@@ -60,7 +60,8 @@ function StatCards() {
       <p>{text} {mazeBonuses || mazeEnemies ? levelStatsText : ''}</p>
       {(!!mazeBonuses || !!mazeEnemies) &&
         <ul className='stats shadow'>
-          {!!mazeEnemies && <StatCard title={'Killed'} value={stats.current.playerLevelDeath.toString()} icon={<Skull/>}/>}
+          {!!mazeEnemies &&
+            <StatCard title={'Killed'} value={stats.current.playerLevelDeath.toString()} icon={<Skull/>}/>}
           {!!mazeBonuses &&
             <StatCard
               title={'Bonus Collection Rate'}

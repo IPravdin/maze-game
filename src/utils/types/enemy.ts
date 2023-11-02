@@ -1,7 +1,7 @@
-import {CoordinateType} from "./maze";
+import { CoordinateType } from './maze';
 
 export type MazeEnemy = {
-    spawn: CoordinateType,
-    notSpawnRadius: CoordinateType[][],
-    movement: CoordinateType[][]
+  spawn: CoordinateType,
+  notSpawnRadius: CoordinateType[][],
+  movement: CoordinateType[][]
 }

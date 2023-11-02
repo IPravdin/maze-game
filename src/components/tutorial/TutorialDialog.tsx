@@ -19,7 +19,7 @@ export default function TutorialDialog({
   
   useEffect(() => {
     if (!ref.current) return;
-    dispatch(gameplayActions.froze("none"));
+    dispatch(gameplayActions.froze('none'));
     ref.current.showModal();
   }, [ref, content]);
   
@@ -27,7 +27,7 @@ export default function TutorialDialog({
     setTutorialStep((prevState) => ({
       index: prevState.index + 1,
       step: steps[prevState.index + 1]
-    }))
+    }));
   };
   
   function keyDownHandler(e: KeyboardEvent<HTMLDialogElement>) {
@@ -43,7 +43,7 @@ export default function TutorialDialog({
   }
   
   return (
-    <dialog className="modal" ref={ref} tabIndex={0} onKeyDown={keyDownHandler}>
+    <dialog className='modal' ref={ref} tabIndex={0} onKeyDown={keyDownHandler}>
       <TutorialScreen
         key={tutorialStep.index}
         title={content[tutorialStep.step][0]}
@@ -57,21 +57,21 @@ function TutorialScreen({ title, content }: { title: string, content?: ReactElem
   //const animationClasses = "overflow-hidden border-r-primary border-r-2 animate-typing whitespace-nowrap my-0 mx-auto tracking-widest";
   const titleArray = splitStringToArray(title);
   return (
-    <div className="h-full w-full p-20">
-      <div className="h-1/2 flex flex-col justify-center items-center">
+    <div className='h-full w-full p-20'>
+      <div className='h-1/2 flex flex-col justify-center items-center'>
         {titleArray.map((text, i) => (
           <div key={i}>
-            <h1 className="text-4xl">
+            <h1 className='text-4xl'>
               {text}
             </h1>
           </div>
         ))}
       </div>
-      <div className="h-1/2 w-full">{content}</div>
-      <div className="flex justify-center">
-        <div className="flex gap-3 text-xl animate-pulse">
+      <div className='h-1/2 w-full'>{content}</div>
+      <div className='flex justify-center'>
+        <div className='flex gap-3 text-xl animate-pulse'>
           press
-          <kbd className="kbd kbd-md">space</kbd>
+          <kbd className='kbd kbd-md'>space</kbd>
           to continue
         </div>
       </div>

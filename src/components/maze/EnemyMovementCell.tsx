@@ -17,8 +17,8 @@ const EnemyMovementCell = ({
   const movStyle = {
     width: cellSize.width,
     height: cellSize.height,
-    backgroundImage: "url('/cells/enemy-movement.png')"
-  }
+    backgroundImage: 'url(\'/cells/enemy-movement.png\')'
+  };
   
   useEffect(() => {
     const playEnemySound = () => {
@@ -29,7 +29,7 @@ const EnemyMovementCell = ({
       if (objectsEqual(playerPos, coord)) {
         soundPlayer.play('enemy');
       }
-    }
+    };
     
     playEnemySound();
   }, [player.data?.currentPosition]);
@@ -46,6 +46,6 @@ const EnemyMovementCell = ({
       {/*{coord.x} | {coord.y}*/}
     </div>
   );
-}
+};
 
 export default EnemyMovementCell;

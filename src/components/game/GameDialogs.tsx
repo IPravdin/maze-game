@@ -6,9 +6,9 @@ import LooseDialog from './LooseDialog';
 export default function GameDialogs() {
   return (
     <>
-      <CongratsDialog />
-      <LooseDialog />
-      <PauseDialog />
+      <CongratsDialog/>
+      <LooseDialog/>
+      <PauseDialog/>
     </>
   );
 }

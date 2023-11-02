@@ -1,8 +1,7 @@
-import React from "react";
-
+import React from 'react';
 
 const Spinner = () => {
-    return <span className="loading loading-spinner loading-lg"/>;
-}
+  return <span className='loading loading-spinner loading-lg'/>;
+};
 
 export default Spinner;
