@@ -2,17 +2,15 @@ import React from "react";
 import {SizeType} from "../../utils/types/global";
 import {CoordinateType} from "../../utils/types/maze";
 
-type Props = {
-    coord: CoordinateType
-    cellSize: SizeType
-}
-const Finish = ({coord, cellSize}: Props) => {
+const Finish = ({coord, cellSize}: {
+  coord: CoordinateType
+  cellSize: SizeType
+}) => {
     const style = {
         width: cellSize.width,
         height: cellSize.height,
         left: coord.x * cellSize.width,
         top: coord.y * cellSize.height,
-
     };
 
     return (
@@ -32,8 +30,7 @@ const Finish = ({coord, cellSize}: Props) => {
                 }}
             />
         </div>
-
-    )
+    );
 }
 
 export default Finish

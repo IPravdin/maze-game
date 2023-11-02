@@ -2,20 +2,19 @@ import Player from "../components/maze/Player";
 import React, { useEffect, useRef } from 'react';
 import Hud from "../components/game/Hud";
 import Maze from "../components/maze/Maze";
-import {PlayerMoveKeys} from "../utils/types/player";
+import { PlayerDataJsonType, PlayerMoveKeys } from '../utils/types/player';
 import {useDispatch, useSelector} from "react-redux";
 import { AppDispatch, AppThunkDispatch, RootState } from '../store';
 import {gameplayActions} from "../store/slices/gameplay";
 import { assignMazeDataToReducers, resize } from '../store/thunks';
 import { objectsEqual, positionToCoord } from '../utils/helpers';
-import {PlayerDataJsonType} from "../data/PlayerData";
 import {playerActions} from "../store/slices/player";
 import {useSoundPlayer} from "../utils/hooks/useSoundPlayer";
 import {statsActions} from "../store/slices/stats";
 import GameDialogs from '../components/game/GameDialogs';
 import useMediaQueryHeight from '../utils/hooks/useMediaQueryHeight';
 import { HeightBreakpoints } from '../utils/enums/breakpoints';
-import Tutorial from '../components/game/Tutorial';
+import Tutorial from '../components/tutorial/Tutorial';
 
 const Game = () => {
     const dispatch: AppDispatch = useDispatch();
@@ -50,6 +49,7 @@ const Game = () => {
         thunkDispatch(assignMazeDataToReducers());
     }, [thunkDispatch, maze.params, maze.data.startCoord, maze.data.enemies]);
     
+    // ** Resizes maze
     useEffect(() => {
         if (sm) {
             thunkDispatch(resize({ width: 450, height: 450 }));

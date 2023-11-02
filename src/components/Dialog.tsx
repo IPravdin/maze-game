@@ -17,10 +17,12 @@ const Dialog = ({ id, title, content, open, onOpen, onClose, btnError, btnSucces
     useEffect(() => {
         if (!open) return;
 
-        if(onOpen) onOpen();
+        if (onOpen) onOpen();
 
         ref.current?.showModal();
-    }, [open]);
+        
+        return () => ref.current?.close();
+    }, [open, ref]);
 
     return (
         <dialog id={id} className="modal" onClose={onClose} ref={ref}>

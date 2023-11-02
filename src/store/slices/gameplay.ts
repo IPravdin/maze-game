@@ -10,12 +10,7 @@ type StateType = {
     musicVolume: number,
     soundVolume: number,
     firstLaunch: boolean,
-    tutorial: {
-        active: boolean,
-        movement: boolean,
-        enemy: boolean,
-        bonus: boolean,
-    },
+    tutorial: boolean,
 }
 const gameplayInitialState: StateType = {
     frozen: false,
@@ -24,12 +19,7 @@ const gameplayInitialState: StateType = {
     musicVolume: 10,
     soundVolume: 10,
     firstLaunch: true,
-    tutorial: {
-        active: true,
-        movement: true,
-        enemy: true,
-        bonus: true,
-    }
+    tutorial: true,
 };
 const gameplaySlice = createSlice({
     name: 'gameplay',
@@ -64,11 +54,8 @@ const gameplaySlice = createSlice({
         setFirstLaunchOff(state) {
             state.firstLaunch = false;
         },
-        changeTutorialState(state) {
-            state.tutorial.active = !state.tutorial.active;
-        },
-        setTutorial(state, action: PayloadAction<{ showMovement?: boolean, showEnemy?: boolean, showBonus?: boolean }>) {
-        
+        setTutorial(state) {
+            state.tutorial = !state.tutorial;
         }
     }
 })

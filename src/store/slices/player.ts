@@ -1,9 +1,10 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {PlayerData, PlayerDataJsonType} from "../../data/PlayerData";
+import {PlayerData} from "../../data/PlayerData";
 import {coordToPosition} from "../../utils/helpers";
 import {CoordinateType, OrientationType} from "../../utils/types/maze";
 import {CreatureSizeType, PositionType, SizeType} from "../../utils/types/global";
 import getCreatureSize, {initialCreatureSize} from "./get-creature-size";
+import { PlayerDataJsonType } from '../../utils/types/player';
 
 const playerSprite = (character: 'male' | 'female') => ({
     top: `url('/player/${character}/player-t.png')`,

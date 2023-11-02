@@ -1,6 +1,6 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {MazeData} from "../../data/MazeData";
-import {CoordinateType} from "../../utils/types/maze";
+import { CoordinateType, MazeDataJsonType } from '../../utils/types/maze';
 import {SizeType} from "../../utils/types/global";
 
 const mazeInitialState = () => {
@@ -54,7 +54,16 @@ const mazeSlice = createSlice({
             state.params.cellSize.width = state.params.fieldSize.width / state.params.mazeCells.width;
             
             const { bonuses, enemies, mazeCells } = state.params;
-            state.data = new MazeData(mazeCells, bonuses, enemies).toJson();
+            
+            // ** Quick fix for luck of generated enemies
+            let data: MazeDataJsonType;
+            let trialTimes = 0;
+            while (true) {
+                data = new MazeData(mazeCells, bonuses, enemies).toJson();
+                trialTimes++;
+                if (data.enemies.length === state.params.enemies || trialTimes > 10) break;
+            }
+            state.data = data;
         },
         generateOneMore(state) {
             // Restore bonuses
