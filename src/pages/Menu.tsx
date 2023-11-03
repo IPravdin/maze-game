@@ -12,7 +12,7 @@ const Menu = () => {
   
   useEffect(() => {
     soundPlayer.play('menu');
-  }, [soundPlayer]);
+  }, []);
   
   switch (menuState) {
     case 'options':
