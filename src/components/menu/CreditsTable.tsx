@@ -21,7 +21,7 @@ const data: creditsType[] = [
     for: 'Enemies and Playable Character Sprites (male and female)',
     link: 'https://www.kenney.nl/assets/tiny-dungeon',
     licence: 'CC0',
-    changes: 'Color of Player and Enemies was slightly modified and the original sprite (turned right) from pack is used to create other character poses (left, top, bottom, and dead).'
+    changes: 'Color of Players and Enemies was slightly modified and the original sprite (turned right) from pack is used to create other character poses (left, top, bottom, and dead).'
   },
   {
     id: 3,
@@ -106,7 +106,6 @@ const data: creditsType[] = [
 ];
 
 const CreditsTable = () => {
-  
   return (
     <div className='w-full max-h-80 overflow-auto'>
       <table className='table table-zebra'>

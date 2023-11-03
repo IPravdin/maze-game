@@ -61,9 +61,6 @@ const mazeSlice = createSlice({
       while (true) {
         data = new MazeData(mazeCells, bonuses, enemies).toJson();
         trialTimes++;
-        console.log('trialTimes', trialTimes);
-        console.log('shouldBe', enemies);
-        console.log('actual', data.enemies.length);
         if (data.enemies.length === state.params.enemies || trialTimes > 10) break;
       }
       state.data = data;

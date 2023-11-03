@@ -12,7 +12,7 @@ const tutorialContent: TutorialType[] = [
       undefined
     ],
     goal: [
-      'Your goal is get to the teleport. It\'s pulsating, so you can\'t miss it! The teleport will move you to the next level.',
+      'Your goal is get to the teleport which will move you to the next level. It\'s pulsating, so you won\'t miss it!',
       undefined
     ],
     movement: [
@@ -28,13 +28,13 @@ const tutorialContent: TutorialType[] = [
   },
   {
     bonus: [
-      'You managed to get to the teleport! Good job!. In the game you can also collect coins. They are optional, but you will get bonus points for them.\n Let\'s practice!',
+      'You managed to get to the teleport! Good job! In the game you can also collect coins. They are optional, but you will get bonus points for them.\n Let\'s practice!',
       undefined
     ]
   },
   {
     enemy: [
-      'And the last thing you I wanted to warn you. There are enemies in the maze.\n They are dangerous, but luckily they are moving only on the cells that are marked.\n And that\'s all what I wanted to tell you. Good luck!',
+      'And the last thing you I wanted to warn you. There are enemies in the maze.\n They are dangerous, but luckily they are moving only on the certain cells that are marked.\n And that\'s all what I wanted to tell you. Good luck!',
       undefined
     ]
   },

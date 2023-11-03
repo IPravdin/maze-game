@@ -39,8 +39,8 @@ const Dialog = ({
   return (
     <dialog id={id} className='modal' onClose={onClose} ref={ref}>
       <form method='dialog' className='modal-box w-[48rem] max-w-[48rem]'>
-        {title && <h3 className='font-title text-2xl'>{title}</h3>}
-        {content}
+        {title && <h3 className='font-title text-4xl mb-3'>{title}</h3>}
+        <span className="text-lg">{content}</span>
         <div className='modal-action'>
           {btnError && (
             <button className='btn btn-error' onClick={onErrorClick}>
