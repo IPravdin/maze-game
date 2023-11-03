@@ -21,7 +21,7 @@ const gameplayInitialState: StateType = {
   soundVolume: 10,
   firstLaunch: true,
   tutorial: true,
-  titleScreen: false,
+  titleScreen: true,
 };
 const gameplaySlice = createSlice({
   name: 'gameplay',
