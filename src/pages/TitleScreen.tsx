@@ -5,11 +5,14 @@ import { AnimatedTitle } from '../components/AnimatedTitle';
 import { useSoundPlayer } from '../utils/hooks/useSoundPlayer';
 import useMediaQueryHeight from '../utils/hooks/useMediaQueryHeight';
 import { HeightBreakpoints } from '../utils/enums/breakpoints';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store';
 
 const TitleScreen = () => {
   const ref = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const soundPlayer = useSoundPlayer();
+  const gameplay = useSelector((state: RootState) => state.gameplay);
   
   const [padding, setPadding] = useState(0);
   const sm = useMediaQueryHeight(HeightBreakpoints.sm);
@@ -21,6 +24,12 @@ const TitleScreen = () => {
     if (!ref) return;
     ref.current?.focus();
   }, [ref]);
+  
+  useEffect(() => {
+    if (!gameplay.titleScreen) {
+      navigate(routerLinks.menu);
+    }
+  }, [gameplay.titleScreen, navigate]);
   
   function keyDownHandler(e: KeyboardEvent<HTMLDivElement>) {
     e.preventDefault();

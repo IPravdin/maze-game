@@ -11,6 +11,7 @@ type StateType = {
   soundVolume: number,
   firstLaunch: boolean,
   tutorial: boolean,
+  titleScreen: boolean,
 }
 const gameplayInitialState: StateType = {
   frozen: false,
@@ -20,6 +21,7 @@ const gameplayInitialState: StateType = {
   soundVolume: 10,
   firstLaunch: true,
   tutorial: true,
+  titleScreen: false,
 };
 const gameplaySlice = createSlice({
   name: 'gameplay',
