@@ -28,7 +28,7 @@ const tutorialContent: TutorialType[] = [
   },
   {
     bonus: [
-      'You managed to get to the teleport! Good job! In the game you can also collect coins. They are optional, but you will get bonus points for them.\n Let\'s practice!',
+      'You managed to get to the teleport! Good job! In the game you can also collect coins. They are not always easily reachable. Sometimes it\'s even impossible to get to them. How lucky are you? 😉',
       undefined
     ]
   },
