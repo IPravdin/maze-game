@@ -44,13 +44,13 @@ const tutorialContent: TutorialType[] = [
       undefined
     ],
     escape: [
-      'In some point of time you will probably want to access options menu 🤔. To do so you can simply press ESC button.\n There you can modify the volume. Also you can view your statistics for the current game and top five previous once.\n You can also start a new game, if you feel that the current is boring or too hard.',
+      'In some point of time you will probably want to access options menu 🤔. To do so you can simply press ESC button.\n There you can modify the volume. Also you can go directly to the main menu which you have already seen 😄.\n There you can start a new game, if you feel that the level is boring or too hard.\n Also you can view your statistics for the current game and top five previous once. And tell us how we can call you 😏.',
       <div className='flex justify-center'>
         <kbd className='kbd kbd-lg'>ESC</kbd>
       </div>
     ],
     quit: [
-      'And lastly, to quit the game you can simply close the tab. Don\'t worry, your progress will be saved 😎.\n Here I will leave you alone 🥺. Hope you will enjoy the game. If you\'ll need any help just text me in any messenger (my number: +380988500288).\n I will be happy to help you. Good luck!😉',
+      'And lastly, to quit the game you can simply close the tab. Don\'t worry, your progress will be saved 😎.\n Here I will leave you alone 🥺. Hope you will enjoy the game.\n If you\'ll need any help just text me in any messenger (my number: +380988500288).\n I will be happy to help you. Good luck!😉',
       undefined
     ]
   }

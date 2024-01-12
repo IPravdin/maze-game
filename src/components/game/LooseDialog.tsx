@@ -20,7 +20,7 @@ export default function LooseDialog() {
       title='Looser'
       content={<p className='py-4'>Ups... Do you wanna try again?</p>}
       btnSuccess='One more try'
-      btnError='Leave Game'
+      btnError='Go to Main Menu'
       onSuccessClick={() => {
         // @ts-ignore
         dispatch(assignMazeDataToReducers());

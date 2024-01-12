@@ -43,7 +43,7 @@ const PauseDialog = () => {
         id='confirm-game-leave'
         open={confirmLeave}
         onClose={() => setConfirmLeave(false)}
-        title='Leave Game'
+        title='Go to Main Menu'
         content='Are you sure you would like to leave a game? Your progress is saved only when a new level is loaded.'
         btnSuccess='No'
         btnError='Yes'

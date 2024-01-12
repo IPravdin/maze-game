@@ -31,7 +31,7 @@ export default function PauseContent({
                         </button>*/}
             <button type='button' className='btn' onClick={() => setMenuState('options')}>Options</button>
             
-            {!pauseExpanded && <button className='btn' onClick={() => triggerConfirmLeave(true)}>Leave Game</button>}
+            {!pauseExpanded && <button className='btn' onClick={() => triggerConfirmLeave(true)}>Go to Main Menu</button>}
             {pauseExpanded && (
               <>
                 <button className="btn" onClick={() => setMenuState('stats')}>Statistics</button>
