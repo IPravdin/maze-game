@@ -1,5 +1,5 @@
 import Player from '../components/maze/Player';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Hud from '../components/game/Hud';
 import Maze from '../components/maze/Maze';
 import { PlayerDataJsonType, PlayerMoveKeys } from '../utils/types/player';
@@ -28,15 +28,18 @@ const Game = () => {
   const divRef = useRef<HTMLDivElement>(null);
   const soundPlayer = useSoundPlayer();
   
+  const [playerTriggered, setPlayerTriggered] = useState(false);
+  
   const sm = useMediaQueryHeight(HeightBreakpoints.sm);
   const md = useMediaQueryHeight(HeightBreakpoints.md);
   const lg = useMediaQueryHeight(HeightBreakpoints.lg);
   
   useEffect(() => {
-    if (gameplay.frozenMode === 'none') {
+    // The main music depends on gameplay.frozenMode and playerTriggered to avoid issues caused by soundPlayer dep
+    if (gameplay.frozenMode === 'none' || playerTriggered) {
       soundPlayer.play('main');
     }
-  }, [gameplay.frozenMode]);
+  }, [gameplay.frozenMode, playerTriggered]);
   
   // ** Sets focus on main div
   useEffect(() => {
@@ -108,7 +111,7 @@ const Game = () => {
       <Hud/>
       <Maze player={<Player/>}/>
       <GameDialogs/>
-      <Tutorial/>
+      <Tutorial onTutorialDialogKeyDown={() => setPlayerTriggered(true)}/>
     </div>
   );
 };
