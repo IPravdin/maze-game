@@ -68,7 +68,7 @@ export default function Tutorial({ onTutorialDialogKeyDown }: { onTutorialDialog
   }, [level]);
   
   if (tutorial && content) {
-    return <TutorialDialog key={level} content={content}/>;
+    return <TutorialDialog key={level} content={content} onKeyDown={onTutorialDialogKeyDown}/>;
   }
   
   return <></>;
