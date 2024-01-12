@@ -52,7 +52,8 @@ export default function PauseContent({
         btnError='Yes'
         onErrorClick={() => {
           thunkDispatch(gameReset());
-          setTimeout(() => window.location.reload() , 10);
+          const timeout = setTimeout(() => window.location.reload() , 10);
+          clearTimeout(timeout);
         }}
       />
     </>

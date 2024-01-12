@@ -56,7 +56,8 @@ export default function MenuContent({
         btnError='Yes'
         onErrorClick={() => {
           thunkDispatch(gameReset());
-          setTimeout(() => navigate(routerLinks.game), 10);
+          const timeout = setTimeout(() => navigate(routerLinks.game), 10);
+          clearTimeout(timeout);
         }}
       />
     </>

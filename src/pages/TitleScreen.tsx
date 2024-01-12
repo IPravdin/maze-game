@@ -41,8 +41,11 @@ const TitleScreen = () => {
     
     if (e.code === 'Space') {
       soundPlayer.play('teleport');
-      setInterval(() => setPadding((prevState) => prevState + 1.2), 12.5);
-      setTimeout(() => navigate(routerLinks.menu), 1250 * mutiplicator);
+      const interval = setInterval(() => setPadding((prevState) => prevState + 1.2), 12.5);
+      const timeout = setTimeout(() => navigate(routerLinks.menu), 1250 * mutiplicator);
+      
+      clearInterval(interval);
+      clearTimeout(timeout);
     }
   }
   
