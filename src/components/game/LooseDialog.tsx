@@ -17,7 +17,7 @@ export default function LooseDialog() {
     <Dialog
       open={gameplay.frozenMode === 'lost'}
       id='lost_modal'
-      title='Looser'
+      title={'It\'s a pity'}
       content={<p className='py-4'>Ups... Do you wanna try again?</p>}
       btnSuccess='One more try'
       btnError='Go to Main Menu'
