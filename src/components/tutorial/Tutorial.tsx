@@ -44,7 +44,7 @@ const tutorialContent: TutorialType[] = [
       undefined
     ],
     escape: [
-      'In some point of time you will probably want to access options menu 🤔. To do so you can simply press ESC button.\n There you can modify the volume. Also you can view your statistics for the current game and top five previous once.\n You can also start a new game, if you feel that the current is boring or too hard.',
+      'In some point of time you will probably want to access options menu 🤔. To do so you can simply press ESC button.\n There you can modify the volume. Also you can view your statistics for the current game and top five previous once.\n You can also start a new game, if you feel that the level is boring or too hard.',
       <div className='flex justify-center'>
         <kbd className='kbd kbd-lg'>ESC</kbd>
       </div>
