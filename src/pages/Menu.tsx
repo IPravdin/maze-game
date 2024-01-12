@@ -8,8 +8,9 @@ import routerLinks from '../router-links';
 import { RootState } from '../store';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import CustomizationContent from '../components/menu/CustomizationContent';
 
-export type MenuStateType = 'options' | 'menu' | 'credits' | 'stats';
+export type MenuStateType = 'options' | 'menu' | 'credits' | 'stats' | 'customization';
 const Menu = () => {
   const soundPlayer = useSoundPlayer();
   const gameplay = useSelector((state: RootState) => state.gameplay);
@@ -33,6 +34,8 @@ const Menu = () => {
       return <CreditsContent startTitle={true} setMenuState={setMenuState}/>;
     case 'stats':
       return <StatsContent startTitle={true} setMenuState={setMenuState}/>;
+    case 'customization':
+      return <CustomizationContent startTitle={true} setMenuState={setMenuState}/>;
     default:
       return <MenuContent startTitle={true} setMenuState={setMenuState}/>;
   }

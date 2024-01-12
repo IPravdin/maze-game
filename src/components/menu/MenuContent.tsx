@@ -8,8 +8,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { gameReset } from '../../store/thunks';
 import { AppDispatch, AppThunkDispatch, RootState } from '../../store';
 import { gameplayActions } from '../../store/slices/gameplay';
-import { playerActions } from '../../store/slices/player';
-import { statsActions } from '../../store/slices/stats';
+import NameInput from './NameInput';
+import CharacterSelect from './CharacterSelect';
 
 export default function MenuContent({
   startTitle = false,
@@ -60,67 +60,5 @@ export default function MenuContent({
         }}
       />
     </>
-  );
-}
-
-function CharacterSelect() {
-  const dispatch = useDispatch();
-  const { character } = useSelector((state: RootState) => state.player.params);
-  return (
-    <div className='flex gap-2 items-center justify-center'>
-      <label
-        className={`cursor-pointer border-2 box-border ${character === 'male' ? 'border-white' : 'border-transparent'}`}>
-        <input
-          className='opacity-0 fixed'
-          type='radio'
-          value='male'
-          name='character'
-          checked={character === 'male'}
-          onChange={() => {
-            dispatch(playerActions.changeCharacter('male'));
-          }}
-        />
-        <img className='w-28 h-28' src='/player/male/player-b.png' alt='male-character-select'/>
-      </label>
-      <label
-        className={`cursor-pointer border-2 box-border ${character === 'female' ? 'border-white' : 'border-transparent'}`}>
-        <input
-          className='opacity-0 fixed'
-          type='radio'
-          value='female'
-          name='character'
-          checked={character === 'female'}
-          onChange={() => {
-            dispatch(playerActions.changeCharacter('female'));
-          }}
-        />
-        <img className='w-28 h-28' src='/player/female/player-b.png' alt='female-character-select'/>
-      </label>
-    </div>
-  );
-}
-
-function NameInput() {
-  const dispatch = useDispatch();
-  const stats = useSelector((state: RootState) => state.stats);
-  
-  return (
-    <div className='flex items-center justify-center'>
-      <div className='flex gap-2'>
-        <label className='label label-text'>
-          Hi! How can I call you?
-        </label>
-        <input
-          defaultValue={stats.current.name}
-          type='text'
-          placeholder={stats.current.name}
-          className='input input-bordered max-w-xs'
-          onBlur={(e) => {
-            const newName = e.target.value;
-            if (newName) dispatch(statsActions.changeName(newName));
-          }}
-        />
-      </div>
-    </div>
   );
 }
