@@ -34,10 +34,14 @@ const PauseDialog = () => {
   return (
     <>
       <Dialog
+        enableEscape
         open={gameplay.frozenMode === 'pause'}
         id='pause_modal'
         content={content}
-        onClose={() => dispatch(gameplayActions.unfroze())}
+        onClose={() => {
+          dispatch(gameplayActions.unfroze());
+          setMenuState('menu');
+        }}
       />
       <Dialog
         id='confirm-game-leave'
