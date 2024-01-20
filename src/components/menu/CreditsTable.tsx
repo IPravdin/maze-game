@@ -128,16 +128,16 @@ const CreditsTable = () => {
                 {key === 'title' &&
                   <td><a className='link' href={row.link}>{row.title}</a></td>}
                 {key === 'licence' ? (
-                  <>
+                  <Fragment>
                     {row.licence ? (
                       <td>
                         <a className='link'
                            href={LicenceEnum[row.licence]}>{row.licence}</a>
                       </td>
                     ) : (
-                      <td>Missing</td>
+                      <td></td>
                     )}
-                  </>
+                  </Fragment>
                 ) : null}
               </Fragment>
             ))}
