@@ -30,9 +30,11 @@ const Game = () => {
   
   const [playerTriggered, setPlayerTriggered] = useState(false);
   
+  const xs = useMediaQueryHeight(HeightBreakpoints.xs);
   const sm = useMediaQueryHeight(HeightBreakpoints.sm);
   const md = useMediaQueryHeight(HeightBreakpoints.md);
   const lg = useMediaQueryHeight(HeightBreakpoints.lg);
+  const xl = useMediaQueryHeight(HeightBreakpoints.xl);
   
   useEffect(() => {
     // The main music depends on gameplay.frozenMode and playerTriggered to avoid issues caused by soundPlayer dep
@@ -54,8 +56,12 @@ const Game = () => {
   
   // ** Resizes maze
   useEffect(() => {
+    if (xs) {
+      thunkDispatch(resize({ width: 490, height: 490 }));
+    }
+    
     if (sm) {
-      thunkDispatch(resize({ width: 450, height: 450 }));
+      thunkDispatch(resize({ width: 600, height: 600 }));
     }
     
     if (md) {
@@ -63,9 +69,13 @@ const Game = () => {
     }
     
     if (lg) {
+      thunkDispatch(resize({ width: 850, height: 850 }));
+    }
+    
+    if (xl) {
       thunkDispatch(resize({ width: 1000, height: 1000 }));
     }
-  }, [sm, md, lg]);
+  }, [xs, sm, md, lg, xl]);
   
   // ** Kills Player
   useEffect(() => {
