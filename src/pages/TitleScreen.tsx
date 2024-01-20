@@ -15,9 +15,9 @@ const TitleScreen = () => {
   const gameplay = useSelector((state: RootState) => state.gameplay);
   
   const [padding, setPadding] = useState(0);
-  const sm = useMediaQueryHeight(HeightBreakpoints.xs);
+  const xs = useMediaQueryHeight(HeightBreakpoints.xs);
   const md = useMediaQueryHeight(HeightBreakpoints.md);
-  const lg = useMediaQueryHeight(HeightBreakpoints.xl);
+  const xl = useMediaQueryHeight(HeightBreakpoints.xl);
   
   // ** Sets focus on main div
   useEffect(() => {
@@ -43,9 +43,9 @@ const TitleScreen = () => {
     e.preventDefault();
     let mutiplicator = 1;
     
-    if (sm) mutiplicator = 1;
+    if (xs) mutiplicator = 1;
     if (md) mutiplicator = 2;
-    if (lg) mutiplicator = 3;
+    if (xl) mutiplicator = 3;
     
     if (e.code === 'Space') {
       soundPlayer.play('teleport');
