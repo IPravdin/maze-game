@@ -45,7 +45,7 @@ const Dialog = ({
       return;
     }
     
-    if (e.code === 'Space' && btnSuccess) {
+    if ((e.code === 'Space' || e.code === 'Enter' ) && btnSuccess) {
       onSuccessClick?.();
       ref.current?.close();
       return;
