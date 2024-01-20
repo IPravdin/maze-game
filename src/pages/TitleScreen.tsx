@@ -15,9 +15,9 @@ const TitleScreen = () => {
   const gameplay = useSelector((state: RootState) => state.gameplay);
   
   const [padding, setPadding] = useState(0);
-  const sm = useMediaQueryHeight(HeightBreakpoints.sm);
+  const sm = useMediaQueryHeight(HeightBreakpoints.xs);
   const md = useMediaQueryHeight(HeightBreakpoints.md);
-  const lg = useMediaQueryHeight(HeightBreakpoints.lg);
+  const lg = useMediaQueryHeight(HeightBreakpoints.xl);
   
   // ** Sets focus on main div
   useEffect(() => {
