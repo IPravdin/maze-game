@@ -11,6 +11,7 @@ interface Props {
   onErrorClick?: () => void,
   btnSuccess?: string,
   onSuccessClick?: () => void,
+  enableEscape?: boolean,
 }
 
 const Dialog = ({
@@ -23,7 +24,8 @@ const Dialog = ({
   btnError,
   btnSuccess,
   onErrorClick,
-  onSuccessClick
+  onSuccessClick,
+  enableEscape = false
 }: Props) => {
   const ref = useRef<HTMLDialogElement>(null);
   useEffect(() => {
@@ -37,11 +39,16 @@ const Dialog = ({
   }, [open, ref]);
   
   function keyDownHandler(e: KeyboardEvent<HTMLDialogElement>) {
-    if (e.code !== 'Space') return;
+    if (enableEscape && e.code === 'Escape') {
+      onClose?.();
+      ref.current?.close();
+      return;
+    }
     
-    if (btnSuccess) {
+    if (e.code === 'Space' && btnSuccess) {
       onSuccessClick?.();
       ref.current?.close();
+      return;
     }
   }
   
