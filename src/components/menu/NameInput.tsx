@@ -21,6 +21,10 @@ export default function NameInput() {
             const newName = e.target.value;
             if (newName) dispatch(statsActions.changeName(newName));
           }}
+          onKeyDown={(e) => {
+            // Fixes bug when keys are not recognised
+            e.stopPropagation();
+          }}
         />
       </div>
     </div>
