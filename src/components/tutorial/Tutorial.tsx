@@ -50,7 +50,7 @@ const tutorialContent: TutorialType[] = [
       </div>
     ],
     quit: [
-      'And lastly, to quit the game you can simply close the tab. Don\'t worry, your progress will be saved 😎.\n And here we are. Hope you will enjoy the game.\n If you need any help just text me in Telegram or WhatsApp (my number: +380988500288).\n I will be happy to help you. Good luck!😉',
+      'And lastly, to quit the game you can simply close the tab. Don\'t worry, your progress will be saved 😎.\n And here we are. Hope you will enjoy the game.\n If you need any help just text me in Telegram, WhatsApp, or Viber (my number: +380988500288).\n I will be happy to help you. Good luck!😉',
       undefined
     ]
   }
