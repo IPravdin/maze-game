@@ -20,7 +20,7 @@ const tutorialContent: TutorialType[] = [
       (
         <div className='flex justify-center'>
           <NavigationKbds btns={['↑', '←', '↓', '→']}/>
-          <div className='divider divider-horizontal'/>
+          <div className='divider divider-horizontal before:bg-white after:bg-white'/>
           <NavigationKbds btns={['W', 'A', 'S', 'D']}/>
         </div>
       )
@@ -57,7 +57,7 @@ const tutorialContent: TutorialType[] = [
       'In the main menu, you can select a character you prefer to play. And please tell us how we can call you 🤩.\n It would be a pleasure to know your nickname. Also It will be used to differentiate play sessions in the statistics.',
       <div className='flex justify-center'>
         <img className='w-28 h-28' src='/player/male/player-b.png' alt='male character'/>
-        <div className='divider divider-horizontal'/>
+        <div className='divider divider-horizontal before:bg-white after:bg-white'/>
         <img className='w-28 h-28' src='/player/female/player-b.png' alt='female character'/>
       </div>
     ],
