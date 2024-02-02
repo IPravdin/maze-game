@@ -44,9 +44,21 @@ const tutorialContent: TutorialType[] = [
       undefined
     ],
     escape: [
-      'In some point of time you will probably want to access options menu 🤔. To do so you can simply press ESC button.\n There you can modify the volume. You can also start a new game, if you feel that the level is boring or too hard.\n The progress of the current and top five previous games will be displayed in the Statistics 📜.',
+      'In some point of time you will probably want to pause a game 🤔.\n To do so you can simply press ESC button. There you can modify the volume of sounds and music.',
       <div className='flex justify-center'>
         <kbd className='kbd kbd-lg'>ESC</kbd>
+      </div>
+    ],
+    menu: [
+      'You can also start a new game, if you feel that the level is boring or too hard.\n Also you can view your statistics for the current game and top five previous once.\n Will you beat your records? 😝',
+      undefined
+    ],
+    customisation: [
+      'In the customization section, you can select a character you prefer to play. And please tell us how we can call you 🤩.\n It would be a pleasure to know your nickname. Also It will be used to differentiate play sessions in the statistics.',
+      <div className='flex justify-center'>
+        <img className='w-28 h-28' src='/player/male/player-b.png' alt='male character'/>
+        <div className='divider divider-horizontal'/>
+        <img className='w-28 h-28' src='/player/female/player-b.png' alt='female character'/>
       </div>
     ],
     quit: [
