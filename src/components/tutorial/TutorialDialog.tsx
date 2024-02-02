@@ -61,7 +61,7 @@ function TutorialScreen({ title, content }: { title: string, content?: ReactElem
   const titleArray = splitStringToArray(title);
   return (
     <div className='h-full w-full p-20'>
-      <div className='h-1/2 flex flex-col justify-center items-center'>
+      <div className='h-1/2 flex flex-col justify-center items-center gap-1'>
         {titleArray.map((text, i) => (
           <div key={i}>
             <h1 className='text-4xl'>
