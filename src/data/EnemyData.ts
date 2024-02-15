@@ -33,4 +33,16 @@ export class EnemyData extends CreatureData {
       prevPosInDir: -1
     };
   }
+  
+  toJson = () => {
+    return {
+      sprite: this.sprite,
+      spawn: this.spawn,
+      movement: this.movement,
+      notSpawnRadius: this.notSpawnRadius,
+      currMovCoord: this.currMovCoord,
+      currentPosition: this.currentPosition,
+      alive: this.alive,
+    };
+  };
 }
