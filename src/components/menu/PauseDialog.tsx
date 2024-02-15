@@ -8,18 +8,27 @@ import CreditsContent from './CreditsContent';
 import StatsContent from './StatsContent';
 import { gameplayActions } from '../../store/slices/gameplay';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../store';
+import { AppThunkDispatch, RootState } from '../../store';
 import PauseContent from './PauseContent';
 import CustomizationContent from './CustomizationContent';
+import { gameReset } from '../../store/thunks';
 
 const PauseDialog = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const thunkDispatch: AppThunkDispatch = useDispatch();
   const gameplay = useSelector((state: RootState) => state.gameplay);
   const [menuState, setMenuState] = useState<MenuStateType>('menu');
   const [confirmLeave, setConfirmLeave] = useState(false);
+  const [confirmReset, setConfirmReset] = useState(false);
   
-  let content = <PauseContent setMenuState={setMenuState} triggerConfirmLeave={setConfirmLeave}/>;
+  let content = (
+    <PauseContent
+      setMenuState={setMenuState}
+      triggerConfirmLeave={setConfirmLeave}
+      triggerConfirmReset={setConfirmReset}/>
+  );
+  
   switch (menuState) {
     case 'credits':
       content = <CreditsContent setMenuState={setMenuState}/>;
@@ -56,6 +65,19 @@ const PauseDialog = () => {
         btnSuccess='No'
         btnError='Yes'
         onErrorClick={() => navigate(routerLinks.menu)}
+      />
+      <Dialog
+        id='confirm-game-reset'
+        open={confirmReset}
+        onClose={() => setConfirmReset(false)}
+        title='Start New Game'
+        content='Are you sure you would like to start new game? All progress will be lost. You will be able to see it in the Statistics.'
+        btnSuccess='No'
+        btnError='Yes'
+        onErrorClick={() => {
+          thunkDispatch(gameReset());
+          setTimeout(() => window.location.reload() , 10);
+        }}
       />
     </>
   );
