@@ -34,7 +34,7 @@ const tutorialContent: TutorialType[] = [
   },
   {
     enemy: [
-      'Another thing I wanted to warn you! There are enemies in the maze 😱.\n They are dangerous, but luckily they are moving only on the certain cells that are marked 😮‍💨.\n You need to stay away from the. Be careful!',
+      'Another thing I wanted to warn you! There are enemies in the maze 😱.\n They are dangerous, but luckily they are moving only on the certain cells that are marked 😮‍💨.\n You need to stay away from them. Be careful!',
       undefined
     ]
   },
