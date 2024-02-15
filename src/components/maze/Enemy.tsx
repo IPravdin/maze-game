@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { PositionType } from '../../utils/types/global';
 import { CurrMovCoordType, EnemyData } from '../../data/EnemyData';
 import { coordToPosition, objectsEqual, positionToCoord, returnRandomInt } from '../../utils/helpers';
@@ -19,14 +19,20 @@ const Enemy = ({ id, data }: Props) => {
   const { speed, size } = useSelector((state: RootState) => state.enemies.params);
   const { cellSize } = maze.params;
   
-  const enemyData = useMemo(() => new EnemyData({
+  const [enemy, setEnemy] = useState(new EnemyData({
     ...data,
     currentPosition: coordToPosition(data.spawn, cellSize)
-  }).toJson(), [data.spawn, data.movement, data.notSpawnRadius, data, cellSize]);
-  
-  const [enemy, setEnemy] = useState(enemyData);
+  }));
   
   const directionBacklog: number[] = [];
+  
+  // Redefines enemy after component mount to avoid walk-though-walls bug
+  useEffect(() => {
+    setEnemy(new EnemyData({
+      ...data,
+      currentPosition: coordToPosition(data.spawn, cellSize)
+    }));
+  }, [data, cellSize]);
   
   // For npc movements
   useEffect(() => {
@@ -41,7 +47,7 @@ const Enemy = ({ id, data }: Props) => {
     }
   }, [speed, cellSize]);
   
-  const returnNewPosition = (id: number, { currentPosition, spawn, movement, currMovCoord, sprite }: Omit<EnemyData, 'toJson'>): {
+  const returnNewPosition = (id: number, { currentPosition, spawn, movement, currMovCoord, sprite }: EnemyData): {
     currentPosition: PositionType,
     currMovCoord: CurrMovCoordType,
     sprite: string
