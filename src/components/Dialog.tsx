@@ -58,12 +58,12 @@ const Dialog = ({
         {title && <h3 className='font-title text-4xl mb-3'>{title}</h3>}
         <span className="text-lg">{content}</span>
         <div className='modal-action'>
+          {btnSuccess && <button className='btn btn-success' onClick={onSuccessClick}>{btnSuccess}</button>}
           {btnError && (
             <button className='btn btn-error' onClick={onErrorClick}>
               {btnError}
             </button>
           )}
-          {btnSuccess && <button className='btn btn-success' onClick={onSuccessClick}>{btnSuccess}</button>}
         </div>
       </form>
     </dialog>
