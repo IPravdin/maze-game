@@ -4,6 +4,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+    font-size: 1.6vh;
+}
+
 html,
 body {
     width: 100%;
