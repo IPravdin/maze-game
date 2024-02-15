@@ -1,7 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 
 const defaultTheme = require("tailwindcss/defaultTheme");
-const businessTheme = require("daisyui/src/theming/themes")["[data-theme=business]"];
+const businessTheme = require("daisyui/src/theming/themes")["business"];
 
 module.exports = {
   plugins: [require("daisyui")],

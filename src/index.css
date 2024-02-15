@@ -26,6 +26,10 @@ body {
     color: white;
 }
 
+.btn {
+    @apply uppercase;
+}
+
 @media screen and (max-width: 1079px), screen and (max-height: 594px) {
     html {
         font-size: 6vh;
