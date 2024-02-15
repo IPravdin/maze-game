@@ -11,7 +11,7 @@ const MenuView = ({ title, startTitle = false, content, cardActions }: Props) =>
   return (
     <div className='w-full h-full flex flex-col justify-center items-center'>
       {startTitle && (
-        <div className='flex justify-center py-40'>
+        <div className='flex justify-center py-28'>
           <SvgTitle/>
         </div>
       )}

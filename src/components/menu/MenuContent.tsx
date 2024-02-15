@@ -41,8 +41,10 @@ export default function MenuContent({
               <button className='btn' onClick={() => setConfirmReset(true)}>New Game</button>
             )}
             <button className='btn' onClick={() => setMenuState('options')}>Options</button>
-            <button className='btn' onClick={() => setMenuState('stats')}>Statistics</button>
-            <button className='btn' onClick={() => setMenuState('credits')}>Credits</button>
+            <div className="flex gap-2 w-full">
+              <button className='btn grow' onClick={() => setMenuState('stats')}>Statistics</button>
+              <button className='btn grow' onClick={() => setMenuState('credits')}>Credits</button>
+            </div>
           </>
         }
       />
