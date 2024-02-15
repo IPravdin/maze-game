@@ -51,7 +51,7 @@ const data: creditsType[] = [
     for: 'Gameplay Soundtrack',
     link: 'https://opengameart.org/content/crystal-cave-mysterious-ambience-seamless-loop',
     licence: 'CC BY 3.0',
-    changes: ''
+    changes: 'Converted from .ogg to .mp3 format'
   },
   {
     id: 6,
