@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useContext } from 'react';
 import useSound from 'use-sound';
-import crystalCave from '../../assets/music/crystal_cave_mysterious_ambience.ogg';
+import crystalCave from '../../assets/music/crystal_cave_mysterious_ambience.mp3';
 import mysteriousAmbience from '../../assets/music/mysterious_ambience.mp3';
 import playerStepSound from '../../assets/sounds/386525__glennm__right_foot_stone.mp3';
 import coinCollectSound from '../../assets/sounds/402288__matrixxx__retro-coin-02.mp3';
@@ -16,7 +16,7 @@ type SongType = 'menu' | 'main' | 'step' | 'collectCoin' | 'enemy' | 'teleport' 
 const SoundPlayerContext = createContext<{
   musicVolume: number,
   soundVolume: number,
-  play: (mode?: SongType) => void,
+  play: (mode: SongType) => void,
   setVolume: ({ target, volume }: { target: 'music' | 'sound', volume: number }) => void,
   setVolumeDefault: (target: 'music' | 'sound') => void,
 }>({
@@ -94,9 +94,7 @@ export function SoundPlayerProvider({ children }: { children: ReactNode }) {
     
   };
   
-  const handlePlay = (mode?: SongType) => {
-    if (!mode) mode = 'main';
-    
+  const handlePlay = (mode: SongType) => {
     switch (mode) {
       case 'menu':
         handleStop(mode);
