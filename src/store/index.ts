@@ -1,6 +1,5 @@
 import { Action, combineReducers, configureStore, ThunkAction, ThunkDispatch } from '@reduxjs/toolkit';
 import storage from 'redux-persist/lib/storage';
-import thunk from 'redux-thunk';
 import { persistReducer, persistStore } from 'redux-persist';
 import { mazeReducer } from './slices/maze';
 import { playerReducer } from './slices/player';
@@ -24,9 +23,7 @@ const rootReducer = combineReducers({
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const store = configureStore({
-  reducer: persistedReducer,
-  devTools: process.env.NODE_ENV !== 'production',
-  middleware: [thunk]
+  reducer: persistedReducer
 });
 
 export type RootState = ReturnType<typeof store.getState>;
