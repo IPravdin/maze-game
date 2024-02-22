@@ -38,10 +38,10 @@ const Game = () => {
   
   useEffect(() => {
     // The main music depends on gameplay.frozenMode and playerTriggered to avoid issues caused by soundPlayer dep
-    if (gameplay.frozenMode === 'none' || playerTriggered) {
+    if (gameplay.frozenMode === 'none' || playerTriggered || soundPlayer.musicVolume) {
       soundPlayer.play('main');
     }
-  }, [gameplay.frozenMode, playerTriggered]);
+  }, [gameplay.frozenMode, playerTriggered, !!soundPlayer.musicVolume]);
   
   // ** Sets focus on main div
   useEffect(() => {

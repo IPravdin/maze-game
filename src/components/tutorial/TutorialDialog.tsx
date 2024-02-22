@@ -5,7 +5,7 @@ import { gameplayActions } from '../../store/slices/gameplay';
 
 export default function TutorialDialog({
   content,
-  onKeyDown,
+  onKeyDown
 }: {
   content: TutorialType,
   onKeyDown?: () => void,
