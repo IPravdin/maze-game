@@ -5,8 +5,10 @@ import { gameplayActions } from '../../store/slices/gameplay';
 
 export default function TutorialDialog({
   content,
+  onKeyDown
 }: {
   content: TutorialType,
+  onKeyDown?: () => void,
 }) {
   const dispatch = useDispatch();
   const steps = Object.keys(content);
@@ -32,6 +34,8 @@ export default function TutorialDialog({
   
   function keyDownHandler(e: KeyboardEvent<HTMLDialogElement>) {
     if (e.code !== 'Space') return;
+    
+    onKeyDown?.();
     
     if (steps.length - 1 === tutorialStep.index) {
       ref.current?.close();
