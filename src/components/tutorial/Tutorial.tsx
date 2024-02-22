@@ -28,7 +28,7 @@ const tutorialContent: TutorialType[] = [
   },
   {
     bonus: [
-      'You managed to get to the teleport! Good job!🥳 In the game you can also collect coins.\n They are not always easily reachable. Sometimes it\'s even impossible to get to them. How lucky are you? 😏',
+      'You managed to get to the teleport! Good job!🎉 In the game you can also collect coins.\n They are not always easily reachable. Sometimes it\'s even impossible to get to them. How lucky are you? 😏',
       undefined
     ]
   },
@@ -40,7 +40,7 @@ const tutorialContent: TutorialType[] = [
   },
   {
     tired: [
-      'Yey! So, a few more things and we will be done with the tutorial 🫠.',
+      'Yey! So, a few more things and we will be done with the tutorial 😶.',
       undefined
     ],
     escape: [
@@ -54,7 +54,7 @@ const tutorialContent: TutorialType[] = [
       undefined
     ],
     customisation: [
-      'In the main menu, you can select a character you prefer to play. And please tell us how we can call you 🤩.\n It would be a pleasure to know your nickname. Also It will be used to differentiate play sessions in the statistics.',
+      'In the main menu, you can select a character you prefer to play. And please tell us how we can call you 😀.\n It would be a pleasure to know your nickname. Also It will be used to differentiate play sessions in the statistics.',
       <div className='flex justify-center'>
         <img className='w-28 h-28' src='/player/male/player-b.png' alt='male character'/>
         <div className='divider divider-horizontal before:bg-white after:bg-white'/>
