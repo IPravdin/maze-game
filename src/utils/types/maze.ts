@@ -1,4 +1,3 @@
-import { SizeType } from './global';
 import { MazeEnemy } from './enemy';
 
 export type OrientationType = 'top' | 'bottom' | 'left' | 'right';
@@ -52,11 +51,8 @@ export type ModifiedDirs = {
 };
 
 export type MazeDataJsonType = {
-  size: SizeType,
   enemies: MazeEnemy[],
   mazeMap: MazeCell[][],
   startCoord: CoordinateType,
   endCoord: CoordinateType,
-  directions: OrientationType[],
-  modifiedDir: ModifiedDirs,
 };

@@ -21,14 +21,12 @@ const Game = () => {
   const thunkDispatch: AppThunkDispatch = useDispatch();
   const gameplay = useSelector((state: RootState) => state.gameplay);
   const player = useSelector((state: RootState) => state.player);
-  const enemies = useSelector((state: RootState) => state.enemies);
   const maze = useSelector((state: RootState) => state.maze);
-  const cellSize = useSelector((state: RootState) => state.maze.params.cellSize);
   
   const divRef = useRef<HTMLDivElement>(null);
   const soundPlayer = useSoundPlayer();
   
-  const [playerTriggered, setPlayerTriggered] = useState(false);
+  const [soundPlayerTriggered, setSoundPlayerTriggered] = useState(false);
   
   const xs = useMediaQueryHeight(HeightBreakpoints.xs);
   const sm = useMediaQueryHeight(HeightBreakpoints.sm);
@@ -37,10 +35,10 @@ const Game = () => {
   const xl = useMediaQueryHeight(HeightBreakpoints.xl);
   
   useEffect(() => {
-    if (gameplay.frozenMode === 'none' || playerTriggered || soundPlayer.musicVolume) {
+    if (gameplay.frozenMode === 'none' || soundPlayerTriggered || soundPlayer.musicVolume) {
       soundPlayer.play('main');
     }
-  }, [gameplay.frozenMode, playerTriggered, !!soundPlayer.musicVolume]);
+  }, [gameplay.frozenMode, soundPlayerTriggered, !!soundPlayer.musicVolume]);
   
   // ** Sets focus on main div
   useEffect(() => {
@@ -76,23 +74,6 @@ const Game = () => {
     }
   }, [xs, sm, md, lg, xl]);
   
-  // ** Kills Player
-  useEffect(() => {
-    if (!enemies.data.enemiesCurCoords) return;
-    if (!player.data) return;
-    if (!player.data?.alive) return;
-    
-    const clashed =
-      enemies.data.enemiesCurCoords.find((enemyCoord) =>
-        objectsEqual(enemyCoord, positionToCoord((player.data as PlayerDataJsonType).currentPosition, cellSize)));
-    if (clashed) {
-      dispatch(playerActions.kill());
-      dispatch(statsActions.recordLevelDeath());
-      dispatch(gameplayActions.froze('lost'));
-      soundPlayer.play('death');
-    }
-  }, [player.data?.currentPosition, enemies.data.enemiesCurCoords]);
-  
   const keyDownListener = (event: React.KeyboardEvent<HTMLDivElement>) => {
     event.preventDefault();
     
@@ -110,7 +91,7 @@ const Game = () => {
         || event.code === 'ArrowUp'
         || event.code === 'KeyW'
       ) {
-        dispatch(gameplayActions.playerMove(event.code as PlayerMoveKeys));
+        dispatch(playerActions.setPlayerMoveDir(event.code as PlayerMoveKeys));
       }
     }
   };
@@ -120,7 +101,7 @@ const Game = () => {
       <Hud/>
       <Maze player={<Player/>}/>
       <GameDialogs/>
-      <Tutorial onTutorialDialogKeyDown={() => setPlayerTriggered(true)}/>
+      <Tutorial onTutorialDialogKeyDown={() => setSoundPlayerTriggered(true)}/>
     </div>
   );
 };

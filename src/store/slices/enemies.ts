@@ -33,12 +33,6 @@ const enemiesSlice = createSlice({
       
       state.data.enemiesCurCoords = mazeEnemies.map((enemy) => enemy.spawn);
     },
-    freezeEnemies(state) {
-      state.params.speed = EnemySpeed.stop;
-    },
-    unfreezeEnemies(state) {
-      state.params.speed = state.params.defaultSpeed;
-    },
     setDefaultSpeed(state, action: PayloadAction<EnemySpeed>) {
       state.params.defaultSpeed = action.payload;
     },
@@ -57,7 +51,6 @@ const enemiesSlice = createSlice({
       .addCase(gameplayActions.unfroze, (state) => {
         state.params.speed = state.params.defaultSpeed;
       });
-    
   }
 });
 
