@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { CoordinateType, OrientationType } from '../../utils/types/maze';
-import { positionToCoord } from '../../utils/helpers';
+import { objectsEqual, positionToCoord } from '../../utils/helpers';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { gameplayActions } from '../../store/slices/gameplay';
@@ -9,6 +9,8 @@ import Spinner from '../Spinner';
 import { mazeActions } from '../../store/slices/maze';
 import { PositionType, SizeType } from '../../utils/types/global';
 import { useSoundPlayer } from '../../utils/hooks/useSoundPlayer';
+import { PlayerDataJsonType } from '../../utils/types/player';
+import { statsActions } from '../../store/slices/stats';
 
 const returnNewPosition = (mode: OrientationType, currentPosition: PositionType, cellSize: SizeType) => {
   let newPosition: PositionType = { left: 0, top: 0 };
@@ -40,11 +42,12 @@ const Player = () => {
   const gameplay = useSelector((state: RootState) => state.gameplay);
   const player = useSelector((state: RootState) => state.player);
   const maze = useSelector((state: RootState) => state.maze);
+  const enemies = useSelector((state: RootState) => state.enemies);
   
   const soundPlayer = useSoundPlayer();
   
   useEffect(() => {
-    const { playerMoveDir } = gameplay;
+    const { playerMoveDir } = player.params;
     
     if (!playerMoveDir) return;
     
@@ -69,8 +72,8 @@ const Player = () => {
       dispatch(playerActions.changeSprite(mode));
     }
     
-    dispatch(gameplayActions.playerMove(null));
-  }, [gameplay.playerMoveDir]);
+    dispatch(playerActions.setPlayerMoveDir(null));
+  }, [player.params.playerMoveDir]);
   
   const movePlayer = (mode: OrientationType): void => {
     if (!player.data) return;
@@ -103,6 +106,23 @@ const Player = () => {
       soundPlayer.play('teleport');
     }
   };
+  
+  // ** Kills Player
+  useEffect(() => {
+    if (!enemies.data.enemiesCurCoords) return;
+    if (!player.data) return;
+    if (!player.data?.alive) return;
+    
+    const clashed =
+      enemies.data.enemiesCurCoords.find((enemyCoord) =>
+        objectsEqual(enemyCoord, positionToCoord((player.data as PlayerDataJsonType).currentPosition, maze.params.cellSize)));
+    if (clashed) {
+      dispatch(playerActions.kill());
+      dispatch(statsActions.recordLevelDeath());
+      dispatch(gameplayActions.froze('lost'));
+      soundPlayer.play('death');
+    }
+  }, [player.data?.currentPosition, enemies.data.enemiesCurCoords]);
   
   if (!player.data) {
     return <Spinner/>;

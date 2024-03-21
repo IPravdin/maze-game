@@ -5,7 +5,6 @@ type FrozenModeType = 'won' | 'lost' | 'pause' | 'none';
 
 type StateType = {
   frozen: boolean,
-  playerMoveDir: PlayerMoveKeys | null,
   frozenMode: FrozenModeType,
   musicVolume: number,
   soundVolume: number,
@@ -19,7 +18,6 @@ const gameplayInitialState: StateType = {
   firstLaunch: true,
   frozen: false,
   frozenMode: 'none',
-  playerMoveDir: null,
   
   musicVolume: 10,
   soundVolume: 10,
@@ -39,9 +37,6 @@ const gameplaySlice = createSlice({
     unfroze(state) {
       state.frozen = false;
       state.frozenMode = 'none';
-    },
-    playerMove(state, action: PayloadAction<PlayerMoveKeys | null>) {
-      state.playerMoveDir = action.payload;
     },
     
     setVolume(state, action: PayloadAction<{ target: 'music' | 'sound', volume: number }>) {

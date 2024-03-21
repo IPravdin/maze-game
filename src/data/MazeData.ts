@@ -6,20 +6,18 @@ import { MazeEnemy } from '../utils/types/enemy';
 export class MazeData {
   readonly size: SizeType;
   private readonly bonuses: number;
-  readonly enemies: MazeEnemy[];
   private readonly enemiesAmount: number;
+  private readonly modifiedDir: ModifiedDirs;
+  
+  readonly enemies: MazeEnemy[];
   readonly mazeMap: MazeCell[][];
   readonly startCoord: CoordinateType;
   readonly endCoord: CoordinateType;
-  readonly directions: OrientationType[];
-  readonly modifiedDir: ModifiedDirs;
   
   constructor(size: SizeType, bonuses: number, enemies: number) {
     this.size = size;
     this.bonuses = bonuses;
     this.enemiesAmount = enemies;
-    this.mazeMap = this.generateMap();
-    this.directions = ['top', 'bottom', 'left', 'right'];
     this.modifiedDir = {
       top: {
         y: -1,
@@ -43,6 +41,7 @@ export class MazeData {
       }
     };
     
+    this.mazeMap = this.generateMap();
     this.defineMaze();
     
     const { startCord, endCord } = this.defineStartEnd();
@@ -55,13 +54,10 @@ export class MazeData {
   
   toJson = () => {
     return {
-      size: this.size,
       enemies: this.enemies,
       mazeMap: this.mazeMap,
       startCoord: this.startCoord,
       endCoord: this.endCoord,
-      directions: this.directions,
-      modifiedDir: this.modifiedDir
     };
   };
   
@@ -100,6 +96,7 @@ export class MazeData {
   };
   
   private defineMaze = () => {
+    const directions: OrientationType[] = ['top', 'bottom', 'left', 'right'];
     let isCompleted = false; // Toggle to stop Maze generation
     let moveToNext = false;
     let cellsVisited = 1; // Cells that have been generated
@@ -117,14 +114,14 @@ export class MazeData {
       this.mazeMap[pos.x][pos.y].visited = true;
       
       if (numLoops >= maxLoops) {
-        shuffle(this.directions);
+        shuffle(directions);
         maxLoops = Math.round(returnRand(this.size.height / 8));
         numLoops = 0;
       }
       numLoops++;
       
-      for (let index = 0; index < this.directions.length; index++) {
-        let direction = this.directions[index];
+      for (let index = 0; index < directions.length; index++) {
+        let direction = directions[index];
         const nx = pos.x + this.modifiedDir[direction].x;
         const ny = pos.y + this.modifiedDir[direction].y;
         
@@ -207,7 +204,7 @@ export class MazeData {
   };
   
   private defineEnemies = () => {
-    const spawnCells: MazeCell[] = this.returnSuitableSpawnCells();
+    const spawnCells: MazeCell[] = this.returnSuitableEnemySpawnCells();
     const enemies: MazeEnemy[] = [];
     
     for (let i = 0; i < this.enemiesAmount; i++) {
@@ -217,7 +214,7 @@ export class MazeData {
     return enemies;
   };
   
-  private returnSuitableSpawnCells = () => {
+  private returnSuitableEnemySpawnCells = () => {
     const spawnCells: MazeCell[] = [];
     this.mazeMap.forEach((row) => {
       row.forEach((cell) => {
@@ -262,12 +259,12 @@ export class MazeData {
     const notSpawnRad = this.size.width > 10 ? 2 : 1;
     enemies.push({
       spawn: selectedCell.coord,
-      notSpawnRadius: this.returnNotSpawnRadius(selectedCell, notSpawnRad),
+      notSpawnRadius: this.returnEnemyNotSpawnRadius(selectedCell, notSpawnRad),
       movement: this.returnEnemyMovementCoords(selectedCell)
     });
   };
   
-  private returnNotSpawnRadius = (currentCell: MazeCell, radius: number) => {
+  private returnEnemyNotSpawnRadius = (currentCell: MazeCell, radius: number) => {
     const startX = currentCell.coord.x - 2;
     const startY = currentCell.coord.y - 2;
     const diameterX = radius * 2 + 1;
@@ -299,16 +296,16 @@ export class MazeData {
   private returnEnemyMovementCoords = (cell: MazeCell) => {
     return (Object.keys(cell.walkable) as OrientationType[]).map((key) => {
       if (cell.walkable[key]) {
-        return this.defineNextMovement(key, cell);
+        return this.defineEnemyNextMovement(key, cell);
       } else {
         return [];
       }
     }).filter((array) => array.length > 0);
   };
   
-  private defineNextMovement = (mode: OrientationType, startCell: MazeCell) => {
+  private defineEnemyNextMovement = (mode: OrientationType, startCell: MazeCell) => {
     const movements: CoordinateType[] = [];
-    let neighbour = this.returnNextMovementCell(mode, startCell);
+    let neighbour = this.returnEnemyNextMovementCell(mode, startCell);
     
     if (!neighbour.startEnd.end && !neighbour.startEnd.start) {
       movements.push(neighbour.coord);
@@ -320,7 +317,7 @@ export class MazeData {
         Object.keys(neighbour.walkable).find((key) => key !== cameFrom && neighbour.walkable[key as OrientationType]) as OrientationType;
       
       if (nextOrientation) {
-        const next = this.returnNextMovementCell(nextOrientation, neighbour);
+        const next = this.returnEnemyNextMovementCell(nextOrientation, neighbour);
         
         // Prevent enemy movement on startEnd
         if (!next.startEnd.end && !next.startEnd.start) {
@@ -333,7 +330,7 @@ export class MazeData {
     return movements;
   };
   
-  private returnNextMovementCell = (mode: OrientationType, startCell: MazeCell) => {
+  private returnEnemyNextMovementCell = (mode: OrientationType, startCell: MazeCell) => {
     let nextCell: MazeCell;
     switch (mode) {
       case 'top':

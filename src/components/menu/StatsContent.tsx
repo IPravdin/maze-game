@@ -57,7 +57,7 @@ function StatsHistoryContent() {
         checked={open}
         onClick={() => setOpen((prevState) => !prevState)}
         /*To satisfy the requirement for checked prop*/
-        onChange={() => console.log(open)}
+        onChange={() => console.log()}
       />
       <h1 className='collapse-title text-2xl font-medium'>
         Last Play Sessions

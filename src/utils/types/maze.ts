@@ -52,11 +52,8 @@ export type ModifiedDirs = {
 };
 
 export type MazeDataJsonType = {
-  size: SizeType,
   enemies: MazeEnemy[],
   mazeMap: MazeCell[][],
   startCoord: CoordinateType,
   endCoord: CoordinateType,
-  directions: OrientationType[],
-  modifiedDir: ModifiedDirs,
 };
