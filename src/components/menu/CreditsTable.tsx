@@ -51,7 +51,7 @@ const data: creditsType[] = [
     for: 'Gameplay Soundtrack',
     link: 'https://opengameart.org/content/crystal-cave-mysterious-ambience-seamless-loop',
     licence: 'CC BY 3.0',
-    changes: ''
+    changes: 'Converted from .ogg to .mp3 format'
   },
   {
     id: 6,
@@ -128,16 +128,16 @@ const CreditsTable = () => {
                 {key === 'title' &&
                   <td><a className='link' href={row.link}>{row.title}</a></td>}
                 {key === 'licence' ? (
-                  <>
+                  <Fragment>
                     {row.licence ? (
                       <td>
                         <a className='link'
                            href={LicenceEnum[row.licence]}>{row.licence}</a>
                       </td>
                     ) : (
-                      <td>Missing</td>
+                      <td></td>
                     )}
-                  </>
+                  </Fragment>
                 ) : null}
               </Fragment>
             ))}

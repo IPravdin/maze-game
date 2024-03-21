@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useRef } from 'react';
+import { KeyboardEvent, ReactNode, useEffect, useRef } from 'react';
 
 interface Props {
   id: string,
@@ -11,6 +11,7 @@ interface Props {
   onErrorClick?: () => void,
   btnSuccess?: string,
   onSuccessClick?: () => void,
+  enableEscape?: boolean,
 }
 
 const Dialog = ({
@@ -23,7 +24,8 @@ const Dialog = ({
   btnError,
   btnSuccess,
   onErrorClick,
-  onSuccessClick
+  onSuccessClick,
+  enableEscape = false
 }: Props) => {
   const ref = useRef<HTMLDialogElement>(null);
   useEffect(() => {
@@ -36,18 +38,32 @@ const Dialog = ({
     return () => ref.current?.close();
   }, [open, ref]);
   
+  function keyDownHandler(e: KeyboardEvent<HTMLDialogElement>) {
+    if (enableEscape && e.code === 'Escape') {
+      onClose?.();
+      ref.current?.close();
+      return;
+    }
+    
+    if ((e.code === 'Space' || e.code === 'Enter' ) && btnSuccess) {
+      onSuccessClick?.();
+      ref.current?.close();
+      return;
+    }
+  }
+  
   return (
-    <dialog id={id} className='modal' onClose={onClose} ref={ref}>
+    <dialog id={id} className='modal' onClose={onClose} ref={ref} tabIndex={0} onKeyDown={keyDownHandler}>
       <form method='dialog' className='modal-box w-[48rem] max-w-[48rem]'>
         {title && <h3 className='font-title text-4xl mb-3'>{title}</h3>}
         <span className="text-lg">{content}</span>
         <div className='modal-action'>
+          {btnSuccess && <button className='btn btn-success' onClick={onSuccessClick}>{btnSuccess}</button>}
           {btnError && (
             <button className='btn btn-error' onClick={onErrorClick}>
               {btnError}
             </button>
           )}
-          {btnSuccess && <button className='btn btn-success' onClick={onSuccessClick}>{btnSuccess}</button>}
         </div>
       </form>
     </dialog>

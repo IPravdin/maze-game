@@ -24,13 +24,15 @@ const Enemy = ({ id, data }: Props) => {
     currentPosition: coordToPosition(data.spawn, cellSize)
   }));
   
+  const directionBacklog: number[] = [];
+  
   // Redefines enemy after component mount to avoid walk-though-walls bug
   useEffect(() => {
     setEnemy(new EnemyData({
       ...data,
       currentPosition: coordToPosition(data.spawn, cellSize)
     }));
-  }, [data]);
+  }, [data, cellSize]);
   
   // For npc movements
   useEffect(() => {
@@ -54,7 +56,7 @@ const Enemy = ({ id, data }: Props) => {
     
     // ** Enemy on Spawn
     if (objectsEqual(spawn, currentCoord)) {
-      const dirIndex = returnRandomInt(0, movement.length - 1);
+      const dirIndex = returnNewDirection(movement.length - 1);
       const newCoord = movement[dirIndex][0];
       const newPos = coordToPosition(newCoord, cellSize);
       dispatch(enemiesActions.recordCoord({ id, newCoord }));
@@ -136,6 +138,29 @@ const Enemy = ({ id, data }: Props) => {
     
     return oldSprite;
   };
+  
+  const returnNewDirection = (directions: number) => {
+    let potential = returnRandomInt(0, directions);
+    
+    if (directionBacklog.length >= 2) {
+      const lastDirection = directionBacklog[directionBacklog.length - 1];
+      const secondLastDirection = directionBacklog[directionBacklog.length - 2];
+      
+      if (lastDirection === secondLastDirection && lastDirection === potential) {
+        do {
+          potential = returnRandomInt(0, directions);
+        } while (potential === lastDirection);
+      }
+    }
+    
+    directionBacklog.push(potential);
+    
+    if (directionBacklog.length > 2) {
+      directionBacklog.shift();
+    }
+    
+    return potential;
+  }
   
   const isCurrMovCoordsDefined = (currMovCoord: CurrMovCoordType) => {
     const { dirIndex, posInDir } = currMovCoord;

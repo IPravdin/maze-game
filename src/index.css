@@ -5,7 +5,7 @@
 @tailwind utilities;
 
 html {
-    font-size: 1.4vh;
+    font-size: 1.6vh;
 }
 
 html,
@@ -24,6 +24,10 @@ body {
     overflow: hidden;
     background-color: #472d3c;
     color: white;
+}
+
+.btn {
+    @apply uppercase;
 }
 
 @media screen and (max-width: 1079px), screen and (max-height: 594px) {

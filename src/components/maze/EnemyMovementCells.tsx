@@ -8,7 +8,7 @@ const EnemyMovementCells = ({ data, id, spawn }: { data: CoordinateType[][], id:
       {data.map((movement, index2) => (
         movement.map((side, index3) => (
           <EnemyMovementCell
-            key={id + index2 + index3}
+            key={id.toString() + index2 + index3}
             coord={side}
           />
         ))

@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 
-const defaultTheme = require('tailwindcss/defaultTheme');
+const defaultTheme = require("tailwindcss/defaultTheme");
 const businessTheme = require("daisyui/src/theming/themes")["[data-theme=business]"];
 
 module.exports = {
@@ -25,25 +25,11 @@ module.exports = {
   },
   theme: {
     extend: {
-      fontFamily:{
+      fontFamily: {
         'title': ['Rubik Maze', ...defaultTheme.fontFamily.sans],
         'sans': ['Oswald', ...defaultTheme.fontFamily.sans],
-      },
-      keyframes: {
-        typing: {
-          from: { width: '0%' },
-          to: { width: '100%' },
-        },
-        'blink-caret': {
-          from: { borderColor: 'transparent' },
-          '50%': { borderColor: '#f4b41b' },
-          to: { borderColor: 'transparent' },
-        }
-      },
-      animation: {
-        typing: 'typing 3s steps(40, end), blink-caret .75s step-end infinite',
       }
-    },
+    }
   }
 }
 

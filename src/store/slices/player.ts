@@ -4,7 +4,7 @@ import { coordToPosition } from '../../utils/helpers';
 import { CoordinateType, OrientationType } from '../../utils/types/maze';
 import { CreatureSizeType, PositionType, SizeType } from '../../utils/types/global';
 import getCreatureSize, { initialCreatureSize } from './get-creature-size';
-import { PlayerDataJsonType } from '../../utils/types/player';
+import { PlayerDataJsonType, PlayerMoveKeys } from '../../utils/types/player';
 
 const playerSprite = (character: 'male' | 'female') => ({
   top: `url('/player/${character}/player-t.png')`,
@@ -17,10 +17,10 @@ const playerSprite = (character: 'male' | 'female') => ({
 const initialState: PlayerState = {
   params: {
     startCoord: { x: 0, y: 0 },
-    cellSize: { width: 0, height: 0 },
     playerSize: initialCreatureSize,
     character: 'male',
     sprite: playerSprite('male').bottom,
+    playerMoveDir: null,
   },
   data: null
 };
@@ -35,9 +35,9 @@ const playerSlice = createSlice({
       state.params = {
         ...state.params,
         startCoord,
-        cellSize,
         playerSize: getCreatureSize(cellSize),
         sprite: playerSprite(state.params.character).bottom,
+        playerMoveDir: null
       };
       
       state.data = new PlayerData(coordToPosition(startCoord, cellSize)).toJson();
@@ -57,17 +57,14 @@ const playerSlice = createSlice({
       
       state.data.currentPosition = actions.payload;
     },
+    setPlayerMoveDir(state, action: PayloadAction<PlayerMoveKeys | null>) {
+      state.params.playerMoveDir = action.payload;
+    },
     kill(state) {
       if (!state.data) return;
       
       state.data.alive = false;
       state.params.sprite = playerSprite(state.params.character).dead;
-    },
-    revive(state) {
-      if (!state.data) return;
-      
-      state.data.alive = true;
-      state.params.sprite = playerSprite(state.params.character).bottom;
     },
     changeSprite(state, actions: PayloadAction<OrientationType>) {
       state.params.sprite = playerSprite(state.params.character)[actions.payload];
@@ -82,10 +79,10 @@ const playerSlice = createSlice({
 type PlayerState = {
   params: {
     startCoord: CoordinateType,
-    cellSize: SizeType,
     playerSize: CreatureSizeType,
     sprite: string,
-    character: 'male' | 'female'
+    character: 'male' | 'female',
+    playerMoveDir: PlayerMoveKeys | null,
   },
   data: PlayerDataJsonType | null
 }

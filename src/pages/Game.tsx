@@ -1,5 +1,5 @@
 import Player from '../components/maze/Player';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Hud from '../components/game/Hud';
 import Maze from '../components/maze/Maze';
 import { PlayerDataJsonType, PlayerMoveKeys } from '../utils/types/player';
@@ -21,22 +21,24 @@ const Game = () => {
   const thunkDispatch: AppThunkDispatch = useDispatch();
   const gameplay = useSelector((state: RootState) => state.gameplay);
   const player = useSelector((state: RootState) => state.player);
-  const enemies = useSelector((state: RootState) => state.enemies);
   const maze = useSelector((state: RootState) => state.maze);
-  const cellSize = useSelector((state: RootState) => state.maze.params.cellSize);
   
   const divRef = useRef<HTMLDivElement>(null);
   const soundPlayer = useSoundPlayer();
   
+  const [soundPlayerTriggered, setSoundPlayerTriggered] = useState(false);
+  
+  const xs = useMediaQueryHeight(HeightBreakpoints.xs);
   const sm = useMediaQueryHeight(HeightBreakpoints.sm);
   const md = useMediaQueryHeight(HeightBreakpoints.md);
   const lg = useMediaQueryHeight(HeightBreakpoints.lg);
+  const xl = useMediaQueryHeight(HeightBreakpoints.xl);
   
   useEffect(() => {
-    if (gameplay.frozenMode === 'none') {
+    if (gameplay.frozenMode === 'none' || soundPlayerTriggered || soundPlayer.musicVolume) {
       soundPlayer.play('main');
     }
-  }, [gameplay.frozenMode]);
+  }, [gameplay.frozenMode, soundPlayerTriggered, !!soundPlayer.musicVolume]);
   
   // ** Sets focus on main div
   useEffect(() => {
@@ -51,8 +53,12 @@ const Game = () => {
   
   // ** Resizes maze
   useEffect(() => {
+    if (xs) {
+      thunkDispatch(resize({ width: 490, height: 490 }));
+    }
+    
     if (sm) {
-      thunkDispatch(resize({ width: 450, height: 450 }));
+      thunkDispatch(resize({ width: 600, height: 600 }));
     }
     
     if (md) {
@@ -60,26 +66,13 @@ const Game = () => {
     }
     
     if (lg) {
+      thunkDispatch(resize({ width: 850, height: 850 }));
+    }
+    
+    if (xl) {
       thunkDispatch(resize({ width: 1000, height: 1000 }));
     }
-  }, [sm, md, lg]);
-  
-  // ** Kills Player
-  useEffect(() => {
-    if (!enemies.data.enemiesCurCoords) return;
-    if (!player.data) return;
-    if (!player.data?.alive) return;
-    
-    const clashed =
-      enemies.data.enemiesCurCoords.find((enemyCoord) =>
-        objectsEqual(enemyCoord, positionToCoord((player.data as PlayerDataJsonType).currentPosition, cellSize)));
-    if (clashed) {
-      dispatch(playerActions.kill());
-      dispatch(statsActions.recordLevelDeath());
-      dispatch(gameplayActions.froze('lost'));
-      soundPlayer.play('death');
-    }
-  }, [player.data?.currentPosition, enemies.data.enemiesCurCoords]);
+  }, [xs, sm, md, lg, xl]);
   
   const keyDownListener = (event: React.KeyboardEvent<HTMLDivElement>) => {
     event.preventDefault();
@@ -98,7 +91,7 @@ const Game = () => {
         || event.code === 'ArrowUp'
         || event.code === 'KeyW'
       ) {
-        dispatch(gameplayActions.playerMove(event.code as PlayerMoveKeys));
+        dispatch(playerActions.setPlayerMoveDir(event.code as PlayerMoveKeys));
       }
     }
   };
@@ -108,7 +101,7 @@ const Game = () => {
       <Hud/>
       <Maze player={<Player/>}/>
       <GameDialogs/>
-      <Tutorial/>
+      <Tutorial onTutorialDialogKeyDown={() => setSoundPlayerTriggered(true)}/>
     </div>
   );
 };

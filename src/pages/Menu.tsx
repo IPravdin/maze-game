@@ -18,7 +18,13 @@ const Menu = () => {
   
   useEffect(() => {
     soundPlayer.play('menu');
-  }, [soundPlayer]);
+  }, []);
+  
+  useEffect(() => {
+    if (!gameplay.menu) {
+      navigate(routerLinks.game);
+    }
+  }, [gameplay.menu, navigate]);
   
   useEffect(() => {
     if (!gameplay.menu) {

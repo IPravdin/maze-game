@@ -15,9 +15,10 @@ const TitleScreen = () => {
   const gameplay = useSelector((state: RootState) => state.gameplay);
   
   const [padding, setPadding] = useState(0);
-  const sm = useMediaQueryHeight(HeightBreakpoints.sm);
+  const [triggerInterval, setTriggerInterval] = useState(false);
+  const xs = useMediaQueryHeight(HeightBreakpoints.xs);
   const md = useMediaQueryHeight(HeightBreakpoints.md);
-  const lg = useMediaQueryHeight(HeightBreakpoints.lg);
+  const xl = useMediaQueryHeight(HeightBreakpoints.xl);
   
   // ** Sets focus on main div
   useEffect(() => {
@@ -31,17 +32,27 @@ const TitleScreen = () => {
     }
   }, [gameplay.titleScreen, navigate]);
   
+  useEffect(() => {
+    if (!triggerInterval) return;
+    
+    const interval = setInterval(() => setPadding((prevState) => prevState + 1.2), 12.5);
+    
+    return () => {
+      clearInterval(interval);
+    }
+  }, [triggerInterval]);
+  
   function keyDownHandler(e: KeyboardEvent<HTMLDivElement>) {
     e.preventDefault();
     let mutiplicator = 1;
     
-    if (sm) mutiplicator = 1;
+    if (xs) mutiplicator = 1;
     if (md) mutiplicator = 2;
-    if (lg) mutiplicator = 3;
+    if (xl) mutiplicator = 3;
     
     if (e.code === 'Space') {
       soundPlayer.play('teleport');
-      setInterval(() => setPadding((prevState) => prevState + 1.2), 12.5);
+      setTriggerInterval(true);
       setTimeout(() => navigate(routerLinks.menu), 1250 * mutiplicator);
     }
   }

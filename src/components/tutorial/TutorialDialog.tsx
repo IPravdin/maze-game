@@ -5,8 +5,10 @@ import { gameplayActions } from '../../store/slices/gameplay';
 
 export default function TutorialDialog({
   content,
+  onKeyDown
 }: {
   content: TutorialType,
+  onKeyDown?: () => void,
 }) {
   const dispatch = useDispatch();
   const steps = Object.keys(content);
@@ -33,6 +35,8 @@ export default function TutorialDialog({
   function keyDownHandler(e: KeyboardEvent<HTMLDialogElement>) {
     if (e.code !== 'Space') return;
     
+    onKeyDown?.();
+    
     if (steps.length - 1 === tutorialStep.index) {
       ref.current?.close();
       dispatch(gameplayActions.unfroze());
@@ -58,7 +62,7 @@ function TutorialScreen({ title, content }: { title: string, content?: ReactElem
   const titleArray = splitStringToArray(title);
   return (
     <div className='h-full w-full p-20'>
-      <div className='h-1/2 flex flex-col justify-center items-center'>
+      <div className='h-1/2 flex flex-col justify-center items-center gap-1'>
         {titleArray.map((text, i) => (
           <div key={i}>
             <h1 className='text-4xl'>

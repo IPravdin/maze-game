@@ -34,11 +34,6 @@ const mazeSlice = createSlice({
   name: 'maze',
   initialState: mazeInitialState(),
   reducers: {
-    generate(state) {
-      const { bonuses, enemies, mazeCells } = state.params;
-      
-      state.data = new MazeData(mazeCells, bonuses, enemies).toJson();
-    },
     generateNext(state) {
       state.params.level++;
       const { level } = state.params;
@@ -73,31 +68,9 @@ const mazeSlice = createSlice({
         }
       }));
     },
-    setMazeCells(state, action: PayloadAction<SizeType>) {
-      state.params.mazeCells = action.payload;
-      
-      state.params.cellSize = {
-        width: state.params.fieldSize.width / state.params.mazeCells.width,
-        height: state.params.fieldSize.height / state.params.mazeCells.height
-      };
-    },
-    setFieldSize(state, action: PayloadAction<SizeType>) {
-      state.params.fieldSize = action.payload;
-      
-      state.params.cellSize = {
-        width: state.params.fieldSize.width / state.params.mazeCells.width,
-        height: state.params.fieldSize.height / state.params.mazeCells.height
-      };
-    },
     
     setBonusCollected(state, action: PayloadAction<CoordinateType>) {
       state.data.mazeMap[action.payload.x][action.payload.y].bonus.collected = true;
-    },
-    setBonuses(state, action: PayloadAction<number>) {
-      state.params.bonuses = action.payload;
-    },
-    setEnemies(state, action: PayloadAction<number>) {
-      state.params.enemies = action.payload;
     },
     
     reset(state) {

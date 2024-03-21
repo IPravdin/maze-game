@@ -42,9 +42,7 @@ const EnemyMovementCell = ({
         top: coord.y * cellSize.height,
         ...movStyle
       }}
-    >
-      {/*{coord.x} | {coord.y}*/}
-    </div>
+    />
   );
 };
 
