@@ -1,8 +1,25 @@
 @import url('https://fonts.googleapis.com/css2?family=Oswald&family=Rubik+Maze&display=swap');
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@plugin "daisyui" {
+    themes: business --default;
+}
+
+@plugin "daisyui/theme" {
+    name: "business";
+    --color-primary: #f4b41b;
+    --color-primary-content: var(--color-base-100);
+    --color-secondary: #472d3c;
+    --radius-box: 0rem;
+    --radius-field: 0rem;
+    --radius-selector: 0rem;
+}
+
+@theme {
+    --font-title: "Rubik Maze", ui-sans-serif, system-ui, sans-serif;
+    --font-sans: "Oswald", ui-sans-serif, system-ui, sans-serif;
+}
 
 html {
     font-size: 1.6vh;

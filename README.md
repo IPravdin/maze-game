@@ -4,7 +4,7 @@
 
 This game was created for the Master's thesis research to complete the Game Studies and Engineering program at University of Klagenfurt, Austria. The research topic was "The Influence of Title Screen and Main Menu on Player Immersion." 
 
-The game was developed using React JS, TypeScript, and other supporting libraries. The development happened in the period from April 2023 to March 2024.
+The game was developed using React, TypeScript, Vite, Tailwind CSS, and other supporting libraries. The development happened in the period from April 2023 to March 2024.
 
 The game has two versions: one with a title screen and main menu and one without. This repository contains the full version of the game with a title screen and main menu.
 
@@ -24,8 +24,11 @@ After you finished with the Node.js and pnpm installation, you can run the follo
 ### `pnpm install`
 Installs all the dependencies needed to run the game.
 
-### `pnpm start`
+### `pnpm dev`
 Runs the app in the development mode.
+
+### `pnpm build`
+Creates a production build.
 
 ## Credits
 It would be impossible to create this game without assets and code from the following sources:
