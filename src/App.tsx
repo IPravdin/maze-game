@@ -11,11 +11,14 @@ import { Analytics } from '@vercel/analytics/react';
 import { Provider } from 'react-redux';
 
 function App() {
+  const shouldRenderAnalytics = typeof window !== 'undefined'
+    && !['localhost', '127.0.0.1'].includes(window.location.hostname);
+
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor} loading={<Spinner/>}>
         <BrowserRouter>
-          <Analytics/>
+          {shouldRenderAnalytics && <Analytics/>}
           <div className='App text-center w-full h-full'>
             <SoundPlayerProvider>
               <Routes>
